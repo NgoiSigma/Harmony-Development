@@ -1,0 +1,11 @@
+thesis {
+    print("Thesis executed successfully.");
+}
+
+antithesis {
+    print("Antithesis executed successfully.");
+}
+
+synthesis {
+    print("Synthesis resolved successfully.");
+}
