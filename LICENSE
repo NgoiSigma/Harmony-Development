@@ -1,21 +1,42 @@
-MIT License
+Harmony License v1.0
 
-Copyright (c) 2024 Ngoi Sigma
+Copyright © 2024 Ngoi Sigma. All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. License for Non-Commercial Use
+This software is provided free of charge for personal and non-commercial use. You are granted the right to use, copy, and distribute the software to other users, provided that:
+You do not use the software for commercial purposes.
+You do not modify or distribute modified versions of the software.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+2. Restrictions
+Users are not permitted to:
+Use the software for commercial purposes without written permission from the author.
+Modify the software or distribute modified versions.
+Sell, rent, or license the software to third parties without the author's permission.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+3. Commercial Use
+To use the software in commercial projects—such as integration into commercial products, development of paid services, or other commercial solutions—you must obtain a paid commercial license.
+To acquire a commercial license, please contact us at ngoisigma@gmail.com.
+
+4. Support and Updates
+Users who have obtained a commercial license are entitled to technical support and software updates under the terms of the license agreement.
+
+5. Disclaimer of Warranties
+This software is provided "as is", without any warranties, either express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, or non-infringement. The author is not liable for any damages arising from the use of this software.
+
+6. Violation of License Terms
+In the event of a violation of these license terms, the right to use the software is immediately revoked, and all copies must be destroyed. The author reserves the right to take legal action in the case of unauthorized commercial use.
+
+Commercial License Option
+For users or companies interested in obtaining a commercial license, please contact ngoisigma@gmail.com for details regarding pricing and terms of the commercial license. The commercial license grants the right to use the software in business environments, provides extended support, and access to future premium updates.
+
+How to Use This License in the Project
+
+1. Create a LICENSE.md file in the root of your project.
+
+2. Copy the text of this license into that file, including your contact information for commercial licensing inquiries.
+
+3. Add a license reference to every source code file as a comment, such as:
+
+// Copyright © 2024 Ngoi Sigma. Licensed under the Harmony License v1.0.
+
+4. Update your README.md to inform users about the non-commercial and commercial use cases, referencing this license.
