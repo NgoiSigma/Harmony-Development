@@ -1,0 +1,11 @@
+thesis {
+    print("Telegram bot initialized.");
+}
+
+antithesis {
+    print("Bot is waiting for a message.");
+}
+
+synthesis {
+    print("Bot received a message and is processing.");
+}
