@@ -1,0 +1,37 @@
+class Lexer:
+    def __init__(self, source_code):
+        self.source_code = source_code
+        self.pos = 0
+        self.tokens = []
+
+    def lex(self):
+        while self.pos < len(self.source_code):
+            current_char = self.source_code[self.pos]
+            if current_char.isalpha():
+                self.tokens.append(self.lex_identifier())
+            elif current_char.isdigit():
+                self.tokens.append(self.lex_number())
+            elif current_char == '{':
+                self.tokens.append('LBRACE')
+                self.pos += 1
+            elif current_char == '}':
+                self.tokens.append('RBRACE')
+                self.pos += 1
+            elif current_char == ' ' or current_char == '\n':
+                self.pos += 1
+            else:
+                raise Exception(f"Unknown character: {current_char}")
+        self.tokens.append('EOF')
+        return self.tokens
+
+    def lex_identifier(self):
+        start_pos = self.pos
+        while self.pos < len(self.source_code) and self.source_code[self.pos].isalpha():
+            self.pos += 1
+        return self.source_code[start_pos:self.pos]
+
+    def lex_number(self):
+        start_pos = self.pos
+        while self.pos < len(self.source_code) and self.source_code[self.pos].isdigit():
+            self.pos += 1
+        return self.source_code[start_pos:self.pos]
