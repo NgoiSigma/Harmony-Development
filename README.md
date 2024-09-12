@@ -1,56 +1,35 @@
-# Harmony-Development
-Language based on Formal Dialectical Logic for resolving contradictions and system analysis
-Harmony is a programming language based on Formal Dialectical Logic (FDL), designed for resolving contradictions and performing system analysis. The language integrates unique operators such as thesis, antithesis, synthesis, and analysis, which provide a structured approach to working with complex, contradictory data.
+# Harmony Development: A Formal Dialectical Programming Paradigm
+The Harmony programming language is based on the principles of Formal Dialectical Logic (FDL), offering a new approach to handling contradictions, system modeling, and multi-paradigm integration. This language is designed for dynamic environments and multilingual adaptability, facilitating programming with various logical frameworks.
 
-Project Overview
-Harmony is developed to handle formal dialectics and logical contradictions, making it suitable for a wide range of applications from AI integration to business automation tools. It offers built-in support for standard programming features like:
-Variables and data types
-Conditional statements and loops
-Built-in libraries for numbers, strings, arrays, and more
-Operators for working with dialectics (thesis, antithesis, synthesis)
-Main Features
-FDL Operators: Thesis, antithesis, synthesis, and analysis for formal dialectics.
-Extensible Libraries: Including math operations, string handling, and array management.
-Integration with Telegram and OpenAI: Special libraries for bot development and AI-driven solutions.
+Goals:
+Provide a universal programming language that supports multiple logical paradigms.
 
-Installation
-To install the Harmony interpreter, follow the steps below:
+Enhance AI systems by resolving contradictions through formal dialectical logic.
 
-Linux Installation
-1. Open the terminal.
-2. Install the Harmony interpreter:
-sudo apt install harmony-lang
-3. Verify the installation by checking the version:
+Create a flexible environment for developing city infrastructure management projects.
 
-harmony --version
+Support the integration of the Harmony language with Telegram, OpenAI, and other services.
 
-Install from Source
 
-1. Clone the repository:
-git clone https://github.com/NgoiSigma/harmony-development.git
-2. Navigate to the project directory:
-cd harmony-development
-3. Build and install the interpreter:
-make
-sudo make install
-4. Verify installation:
-harmony --version
-Usage
-Once installed, you can create and run programs with the .hmn extension. Here is an example program:
-variable X = 10;
-if (X > 5) {
-    print("X is greater than 5");
-} else {
-    print("X is less than or equal to 5");
-}
+AI systems for conflict resolution and logic optimization.
 
-To run the program:
-harmony program.hmn
-Examples
-You can find more examples in the examples/ directory, including:
-Basic operations
-FDL operators in use (thesis, antithesis, synthesis)
-Integration with external services (Telegram, OpenAI)
+Bot management systems that integrate various messaging platforms.
+
+City development programs, particularly in infrastructure and resource optimization.
+
+Educational tools for teaching formal logic and system analysis.
+
+Архитектура:
+
+Parser: Analyzes the source code and transforms it into an abstract syntax tree (AST).
+
+Lexer: Identifies and classifies tokens from the source code.
+
+Grammar: Defines the syntax of the language, supporting operators such as thesis, antithesis, synthesis, analysis, and pragma.
+
+Libraries: Provides essential functions and algorithms for system development.
+
+Logical Operators: Implements dialectical reasoning through logical constructs and systems management tools.
 
 License
 
