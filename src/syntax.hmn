@@ -1,0 +1,47 @@
+program: statement_list
+
+statement_list: statement (NEWLINE statement)*
+
+statement: variable_declaration
+         | variable_assignment
+         | print_statement
+         | if_statement
+         | while_loop
+         | function_declaration
+         | logic_statement
+         | thesis_statement
+         | antithesis_statement
+         | synthesis_statement
+         | analysis_statement
+         | pragma_statement
+
+thesis_statement: 'тезис' IDENTIFIER '{' statement_list '}'
+
+antithesis_statement: 'антитезис' IDENTIFIER '{' statement_list '}'
+
+synthesis_statement: 'синтез' IDENTIFIER '{' statement_list '}'
+
+analysis_statement: 'анализ' IDENTIFIER '{' statement_list '}'
+
+pragma_statement: 'прагма' IDENTIFIER '{' statement_list '}'
+
+variable_declaration: 'переменная' IDENTIFIER '=' expression
+
+variable_assignment: 'присвоить' IDENTIFIER 'значение' expression
+
+print_statement: 'вывести' expression
+
+if_statement: 'если' expression ':' statement_list
+            | 'иначе' ':' statement_list
+            | 'иначе если' expression ':' statement_list
+
+while_loop: 'пока' expression ':' statement_list
+          | 'делать' ':' statement_list
+          | 'конец цикла'
+
+function_declaration: 'функция' IDENTIFIER '(' parameter_list ')' ':' statement_list
+                    | 'возврат' expression
+
+parameter_list: IDENTIFIER (',' IDENTIFIER)*
+
+logic_statement: 'логика' expression ':' statement_list
