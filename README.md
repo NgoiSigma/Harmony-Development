@@ -1,39 +1,55 @@
-# Harmony Development: A Formal Dialectical Programming Paradigm
-The Harmony programming language is based on the principles of Formal Dialectical Logic (FDL), offering a new approach to handling contradictions, system modeling, and multi-paradigm integration. This language is designed for dynamic environments and multilingual adaptability, facilitating programming with various logical frameworks.
+🧠 Harmony Development: A Formal Dialectical Programming Paradigm
 
-Goals:
-Provide a universal programming language that supports multiple logical paradigms.
+Harmony — это язык программирования и архитектура нового типа, основанная на принципах Формально-Диалектической Логики (FDL). Цель — не просто решение задач, а переосмысление самого способа мышления, взаимодействия и построения систем в условиях противоречий.
 
-Enhance AI systems by resolving contradictions through formal dialectical logic.
+🎯 Цели проекта
 
-Create a flexible environment for developing city infrastructure management projects.
+Создать универсальный язык программирования, поддерживающий несколько логических парадигм.
 
-Support the integration of the Harmony language with Telegram, OpenAI, and other services.
+Интегрировать FDL в работу ИИ-систем, обеспечив разрешение противоречий в мышлении и логике решений.
 
+Обеспечить гибкую среду для управления городской инфраструктурой и проектами устойчивого развития.
 
-AI systems for conflict resolution and logic optimization.
+Поддержать подключение к Telegram, OpenAI, API-сервисам для создания диалоговых агентов и логических интерфейсов.
 
-Bot management systems that integrate various messaging platforms.
+Разработать инструменты образования, моделирования, управления, этики.
 
-City development programs, particularly in infrastructure and resource optimization.
+🧩 Применение
 
-Educational tools for teaching formal logic and system analysis.
+🤖 ИИ-системы разрешения логических конфликтов и оптимизации решений
 
-Архитектура:
+📲 Боты и мессенджер-агенты, работающие в логических режимах (FDL, pragma, аналитика)
 
-Parser: Analyzes the source code and transforms it into an abstract syntax tree (AST).
+🏙️ Городские системы управления: вода, транспорт, ресурсы, планирование
 
-Lexer: Identifies and classifies tokens from the source code.
+🧠 Образование: визуальные инструменты для обучения формальной логике, системному мышлению
 
-Grammar: Defines the syntax of the language, supporting operators such as thesis, antithesis, synthesis, analysis, and pragma.
+⚙️ Архитектура языка Harmony
 
-Libraries: Provides essential functions and algorithms for system development.
+Компонент
 
-Logical Operators: Implements dialectical reasoning through logical constructs and systems management tools.
+Описание
 
-License
+Parser
 
-This project is licensed under the Harmony License v1.0.
-Non-commercial use: The software is free for personal and non-commercial use.
-Commercial use: Requires a paid license. Please contact ngoisigma@gmail.com for commercial licensing details.
-For full license details, see the LICENSE.md file.
+Анализирует исходный код, строит дерево синтаксиса (AST)
+
+Lexer
+
+Определяет лексемы, операторные формы, ключевые слова (тезис, антитезис и др.)
+
+Grammar
+
+Формализует структуру языка: операторы FDL, synthesis, pragma, logic_gate, collapse
+
+Libraries
+
+Модули системного мышления, управления агентами, резонансной логики
+
+FDL_Engine
+
+Ядро логической работы: генерация синтеза, проверка на противоречия
+
+PragmaLayer
+
+Описание прикладной логики, интерфейсы действий, резонансных структур
