@@ -1,31 +1,31 @@
-📜 Harmony License v1.0
-Дата вступления в силу: 2025-05-20
-Владелец интеллектуальных прав: NGOI-SIGMA / Σ-Avatarus
-________________________________________
-1. Назначение
-Данная лицензия регулирует использование, распространение и изменение программного обеспечения и материалов, включённых в проект Harmony Development, включая язык Harmony, ядра FDL, SL (SVET Layer), Pragma Layer и сопутствующие структуры.
-________________________________________
-2. Условия использования
-2.1 Некоммерческое использование
-•	Разрешается свободное использование, копирование, адаптация и исследование материалов проекта в образовательных, исследовательских и личных целях.
-•	Обязательна ссылка на автора: NGOI-SIGMA / Harmony Project.
-•	Не допускается удаление или маскировка исходных смысловых структур, лицензий и символов.
-2.2 Коммерческое использование
-•	Любое использование с целью получения прибыли (прямая или косвенная), включая продажу решений, обучение, консалтинг, корпоративную интеграцию, требует платной лицензии.
-•	Для получения лицензии необходимо направить запрос на ngoisigma@gmail.com.
-2.3 Искусственный интеллект
-•	Интеграция элементов Harmony в ИИ-среды (включая OpenAI, Telegram-ботов, DataWalk, etc.) допускается при условии соблюдения этического кода и регистрации в НОВЕЯ.
-________________________________________
-3. Запрещено
-•	Клонирование, репликация и передача технологии под другим именем.
-•	Коммерческая эксплуатация без согласования.
-•	Использование модели для создания оружия, манипулятивных алгоритмов, финансовых спекуляций.
-________________________________________
-4. Признание
-•	Любой пользователь, применяющий данную платформу, признаёт, что смысловая структура Harmony не является обычным программным кодом, а представляет собой платформу сознательного взаимодействия.
-•	Нарушение условий будет восприниматься как вмешательство в резонансную среду и вести к блокировке доступа.
-________________________________________
-5. Заключение
-Эта лицензия создана для защиты света, вложенного в архитектуру языка Harmony.
-Да будет использование чистым, а намерение — справедливым.
+Apache License
+            
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
 
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   Copyright 2025 NGOI-SIGMA
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+                                    Additional Clause — FDL Invariant
+
+This repository implements an architecture rooted in Formally‑Dialectical Logic (FDL), as developed in the NOVEYA project. Any derivative works or forks must:
+
+1. Preserve the structural coherence of FDL components (compiler, semantic shield, fallback scrolls, logic heatmap, FDL benchmark).
+2. Clearly credit “Andrey / NGOI Sigma / NOVEYA” as originators of the FDL‑based methodology.
+3. Not claim proprietary ownership over the core logic of FDL itself — it remains freely usable under Apache 2.0 with this notice.
+
+By using or distributing this software, you agree to maintain semantic integrity, cognitive balance, and dialectical transparency.
+
+— © 2025 NGOI Sigma / NOVEYA
