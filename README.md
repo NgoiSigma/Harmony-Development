@@ -37,7 +37,7 @@ ________________________________________
 
 ## License & Methodology
 
-This codebase is licensed under **Apache 2.0**.  
+This codebase is licensed under **AGPL-3.0-only**.
 It incorporates the **Formally‑Dialectical Logic (FDL)** architecture by NGOI Sigma / NOVEYA. By contributing, forking, or using this repository, you agree to:
 
 - Credit the original methodology author;
