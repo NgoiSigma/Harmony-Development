@@ -12,7 +12,7 @@ android {
         minSdk = 24
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0-NGI-Alpha" // Версия NGI Alpha
+        versionName = "1.0-NGOI-Alpha" // Версия NGOI Alpha
     }
     // ... rest of config
 }
