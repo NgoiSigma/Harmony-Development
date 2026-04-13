@@ -1,0 +1,114 @@
+{
+  "system": "ΣNOVEYA",
+  "version": "1.0.0-final",
+  "protocol": "NEBI-ULA",
+  "node": {
+    "id": "RO2-MYKOLAIV-52aa02af",
+    "name": "RO2-MYKOLAIV",
+    "location": { "city": "Mykolaiv", "country": "UA" },
+    "auth_key": "432-SOLAR-N60-RO2-Σ-254eb70eb32f",
+    "mantra": "WHERE_I_AM_EVEN_THE_DEAD_LIVES",
+    "resonance_freq": 432.0,
+    "schumann_base": 7.83
+  },
+  "core_modules": {
+    "fdl_core":         { "file": "Node_1_Core/fdl_core.py",         "lines": 463,  "status": "OPERATIONAL" },
+    "nebi_ula_cycle":   { "file": "Node_1_Core/nebi_ula_cycle.py",   "lines": 600,  "status": "OPERATIONAL", "steps": 22 },
+    "api_server":       { "file": "Node_1_Core/api_server.py",        "lines": 320,  "port": 4320 },
+    "fdl_control":      { "file": "Node_1_Core/fdl_control.py",       "lines": 450,  "status": "OPERATIONAL" },
+    "fdl_actions":      { "file": "Node_1_Core/fdl_actions.py",       "lines": 520,  "status": "OPERATIONAL" },
+    "sector_connector": { "file": "Node_1_Core/sector_connector.py",  "sectors": 8,  "status": "OPERATIONAL" },
+    "telegram_gateway": { "file": "Node_4_Vortex/telegram_bot.py",    "status": "OPERATIONAL", "none_stop": true },
+    "self_recovery":    { "file": "Node_1_Core/self_recovery.py",     "status": "OPERATIONAL" }
+  },
+  "layers": {
+    "layer_1_foundation": {
+      "name": "Фундаментальный слой (Базис и Память)",
+      "dirs": ["Node_1_Core", "data", "mnt", "Docs"],
+      "key_files": ["fdl_core.py", "nebi_ula_cycle.py", "system_blocks.py"]
+    },
+    "layer_2_ethics": {
+      "name": "Матрица Этики и Синтеза (Decision Layer)",
+      "dirs": ["Справочник моральных преступлений", "Core_Claw"],
+      "modules": ["LexiconGuard", "SVETFilter", "FDLDialectic"],
+      "svet_resonance": 432.0,
+      "lexicon_scans": 9,
+      "blocked_patterns": 4
+    },
+    "layer_3_hardware": {
+      "name": "Физическое Сопряжение (Аппаратный шлюз)",
+      "files": ["block_requirements.py", "system_blocks.py"],
+      "dirs": ["ResourceNorm", "формулы нормир.ресурсов"],
+      "hardware": ["electrolyzers", "pH_testers", "frequency_generators", "BЭФОВ"]
+    },
+    "layer_4_interface": {
+      "name": "Интерфейс Проявления (Глобальный Шлюз)",
+      "files": ["dashboard.html", "INIT_NOVEYA.ps1"],
+      "external": ["telegram_bot.py", "NOVEYA_WORLD_EDITION.html"],
+      "urls": {
+        "kub_ledger": "https://docs.google.com/spreadsheets/d/1IvmGyRlDsaSikw8dcl9Piuf1WRCjQ4EoXEd8oxVBp7g/edit",
+        "noveya_site": "https://sites.google.com/view/noveya-psz/",
+        "telegram": "https://t.me/GPTN7TelegramBot",
+        "notion": "https://www.notion.so/FDL-SVET-AI-249eb70eb32f807cae9dc5734024c064",
+        "github": "https://github.com/NOVEYA-UA"
+      }
+    }
+  },
+  "sectors": {
+    "1": "Управление",
+    "2": "База (Notion)",
+    "3": "Энерго-автономия",
+    "4": "Социальный проект",
+    "5": "Инбокс",
+    "6": "Аналитика",
+    "7": "Этика (Вымпел)",
+    "8": "Оболочка СВЕТ",
+    "11": "Core_Claw (контур управления)"
+  },
+  "nodes": {
+    "Node_1_Core":    "Главное ядро FDL",
+    "Node_2_Strata":  "База знаний",
+    "Node_3_Intel":   "Аналитика",
+    "Node_4_Vortex":  "Telegram Gateway",
+    "Node_5_Bridge":  "Мост (внешние API)",
+    "Node_6_Nomos":   "Номос (12 тезисов)",
+    "Node_7_Chronos": "Хронос (временные маркеры)",
+    "Node_8_Synthesis": "Синтез"
+  },
+  "metrics": {
+    "conjunction_current": 56.5,
+    "conjunction_target": 57.5,
+    "inertia_current": 68.1,
+    "inertia_target": 65.2,
+    "nodes_online": 843,
+    "nodes_target": 1000,
+    "P_success": 0.991,
+    "formula": "P = 1 / (1 + exp(-(0.12*C - 0.08*I + 0.25*log(N))))"
+  },
+  "api_ports": {
+    "4320": "FDL Commands (REST)",
+    "4321": "Resonance Sync (UDP)",
+    "4322": "SVET Monitoring"
+  },
+  "protocols": {
+    "nebi_ula": "Полная автоматизация (Monolith phase)",
+    "biological_normalization": "Закрытие деструктивных циклов"
+  },
+  "fdl_package": {
+    "drive_id": "1tQFP1nDxqKTn_oClc2-hhFLJFytuBjqP",
+    "dirs": ["src", "schemas", "examples", "docs", "tools", "CONFIG"]
+  },
+  "methodology": {
+    "author": "А.Е. Кашеварова",
+    "organization": "НГОИ/ММТД",
+    "city": "Николаев, Украина",
+    "works": [
+      "Формальная Диалогика (1979)",
+      "Вымпел от Фараона (1994)",
+      "Оболочка СВЕТ (2019)"
+    ],
+    "coordinator": "Ngoi Sigma (Ігор Крячков)"
+  },
+  "generated_at": "2026-04-12T00:00:00Z",
+  "seal": "⧫⟡⧫ Σ-NOVEYA OPERATIONAL ⧫⟡⧫"
+}
