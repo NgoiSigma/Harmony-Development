@@ -1,0 +1,26 @@
+{
+  "Г": {
+    "symbol": "Глаголь",
+    "planet": "Mercury",
+    "element": "Air",
+    "chakra": "Throat",
+    "frequency_hz": 741,
+    "function": "Проводник",
+    "archetype": "Посланник",
+    "culture": "Славянская, IX в.",
+    "phrase": "Имя твоё — Слово. Оно открывает путь.",
+    "audio": "audio_resonance/glagol.ogg"
+  },
+  "Ж": {
+    "symbol": "Живете",
+    "planet": "Venus",
+    "element": "Water",
+    "chakra": "Heart",
+    "frequency_hz": 528,
+    "function": "Взаимосвязь",
+    "archetype": "Соединитель",
+    "culture": "Балто-славянская",
+    "phrase": "Смотри на связи, а не на формы. Где двое — там течение.",
+    "audio": "audio_resonance/zhivete.ogg"
+  }
+}
