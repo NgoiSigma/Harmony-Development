@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Народная игра: Логика Языка — А.Е. Кашеварова</title>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1a1a18;--muted:#5a5a56;--hint:#9a9890;
+  --surf:#ffffff;--surf2:#f5f3ee;--surf3:#eeece7;
+  --bdr:rgba(0,0,0,0.12);--bdr2:rgba(0,0,0,0.22);
+  --teal:#0F6E56;--teal-l:#E1F5EE;--teal-t:#085041;
+  --amber:#854F0B;--amber-l:#FAEEDA;--amber-t:#412402;
+  --purple:#534AB7;--purple-l:#EEEDFE;--purple-t:#26215C;
+  --coral:#993C1D;--coral-l:#FAECE7;--coral-t:#4A1B0C;
+  --green-l:#EAF3DE;--green-t:#173404;--green-b:#97C459;
+  --red-l:#FCEBEB;--red-t:#501313;--red-b:#F09595;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --ink:#e8e6df;--muted:#9a9890;--hint:#6a6a66;
+    --surf:#1e1e1c;--surf2:#2a2a28;--surf3:#323230;
+    --bdr:rgba(255,255,255,0.12);--bdr2:rgba(255,255,255,0.22);
+    --teal-l:#04342C;--teal-t:#9FE1CB;
+    --amber-l:#412402;--amber-t:#FAC775;
+    --purple-l:#26215C;--purple-t:#CECBF6;
+    --coral-l:#4A1B0C;--coral-t:#F5C4B3;
+    --green-l:#173404;--green-t:#C0DD97;
+    --red-l:#501313;--red-t:#F7C1C1;
+  }
+}
+body{font-family:'Geologica',sans-serif;background:var(--surf);color:var(--ink);min-height:100vh;}
+#ng{max-width:780px;margin:0 auto;padding:0 0 3rem;}
+.pg-header{padding:1.75rem 1.25rem 1rem;border-bottom:0.5px solid var(--bdr);}
+.pg-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:4px;}
+.pg-sub{font-size:13px;color:var(--muted);}
+.tab-bar{display:flex;gap:4px;padding:0.75rem 1.25rem;border-bottom:0.5px solid var(--bdr);flex-wrap:wrap;background:var(--surf2);}
+.tab{padding:7px 16px;border-radius:8px;border:0.5px solid var(--bdr2);font-size:13px;font-weight:500;cursor:pointer;background:var(--surf2);color:var(--muted);transition:all 0.15s;}
+.tab.on{background:var(--surf);color:var(--ink);border-color:var(--ink);}
+.tab:hover:not(.on){background:var(--surf);}
+.pg{display:none;padding:1.5rem 1.25rem;}
+.pg.on{display:block;animation:fi 0.2s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.sec-label{font-size:11px;font-weight:500;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.75rem;}
+.card{background:var(--surf);border:0.5px solid var(--bdr);border-radius:12px;padding:1rem 1.25rem;margin-bottom:0.75rem;}
+.card-t{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:6px;}
+.card-b{font-size:14px;color:var(--muted);line-height:1.6;}
+.axiom-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-bottom:1.25rem;}
+.ax{border-radius:8px;padding:12px 14px;border:0.5px solid var(--bdr);}
+.ax.teal{background:var(--teal-l);border-color:#5DCAA5;}
+.ax.amber{background:var(--amber-l);border-color:#EF9F27;}
+.ax.purple{background:var(--purple-l);border-color:#AFA9EC;}
+.ax.coral{background:var(--coral-l);border-color:#F0997B;}
+.ax-code{font-size:11px;font-weight:500;letter-spacing:1px;margin-bottom:4px;}
+.ax.teal .ax-code{color:var(--teal-t);}
+.ax.amber .ax-code{color:var(--amber-t);}
+.ax.purple .ax-code{color:var(--purple-t);}
+.ax.coral .ax-code{color:var(--coral-t);}
+.ax-text{font-size:13px;line-height:1.5;}
+.ax.teal .ax-text{color:var(--teal-t);}
+.ax.amber .ax-text{color:var(--amber-t);}
+.ax.purple .ax-text{color:var(--purple-t);}
+.ax.coral .ax-text{color:var(--coral-t);}
+.alpha-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:1rem;table-layout:fixed;}
+.alpha-table th{font-size:11px;font-weight:500;color:var(--muted);padding:6px 8px;text-align:left;border-bottom:0.5px solid var(--bdr);}
+.alpha-table td{padding:7px 8px;border-bottom:0.5px solid var(--bdr);color:var(--ink);word-break:break-word;}
+.alpha-table tr:last-child td{border-bottom:none;}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:500;}
+.badge.keep{background:var(--green-l);color:var(--green-t);}
+.badge.remove{background:var(--red-l);color:var(--red-t);}
+.badge.new{background:var(--purple-l);color:var(--purple-t);}
+.badge.change{background:var(--amber-l);color:var(--amber-t);}
+.toggle-wrap{display:flex;align-items:center;gap:10px;margin-bottom:1rem;}
+.toggle-label{font-size:13px;color:var(--muted);}
+.toggle{position:relative;width:40px;height:22px;cursor:pointer;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:var(--bdr2);border-radius:11px;transition:0.2s;}
+.toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:var(--surf);border-radius:50%;transition:0.2s;}
+.toggle input:checked+.toggle-slider{background:var(--teal);}
+.toggle input:checked+.toggle-slider:before{transform:translateX(18px);}
+.text-demo{background:var(--surf2);border:0.5px solid var(--bdr);border-radius:8px;padding:1rem;font-size:16px;line-height:1.9;color:var(--ink);font-family:'Playfair Display',serif;margin-bottom:0.75rem;}
+.text-demo .hl{background:var(--amber-l);border-radius:2px;padding:0 2px;}
+.text-demo u{text-decoration:none;border-bottom:2px solid var(--teal);}
+.quiz-q{font-size:15px;color:var(--ink);font-weight:500;margin-bottom:0.75rem;line-height:1.5;}
+.quiz-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem;}
+.quiz-opt{padding:9px 14px;border:0.5px solid var(--bdr2);border-radius:8px;font-size:14px;cursor:pointer;background:var(--surf);color:var(--ink);text-align:left;transition:all 0.15s;font-family:'Geologica',sans-serif;}
+.quiz-opt:hover:not([disabled]){background:var(--surf2);}
+.quiz-opt.correct{background:var(--green-l);border-color:var(--green-b);color:var(--green-t);}
+.quiz-opt.wrong{background:var(--red-l);border-color:var(--red-b);color:var(--red-t);}
+.quiz-feedback{font-size:13px;padding:10px 14px;border-radius:8px;margin-bottom:1rem;line-height:1.5;}
+.quiz-feedback.ok{background:var(--green-l);color:var(--green-t);}
+.quiz-feedback.err{background:var(--red-l);color:var(--red-t);}
+.progress-bar{height:4px;background:var(--bdr);border-radius:2px;margin-bottom:1.25rem;overflow:hidden;}
+.progress-fill{height:100%;background:var(--teal);border-radius:2px;transition:width 0.3s;}
+.score-badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);margin-bottom:1rem;}
+.score-num{font-size:16px;font-weight:500;color:var(--ink);}
+.btn{padding:8px 16px;border:0.5px solid var(--bdr2);border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;background:var(--surf);color:var(--ink);transition:all 0.15s;font-family:'Geologica',sans-serif;}
+.btn:hover{background:var(--surf2);}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);}
+.btn.primary:hover{background:var(--teal-t);}
+.divider{height:0.5px;background:var(--bdr);margin:1.25rem 0;}
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem;}
+.team-card{border:0.5px solid var(--bdr);border-radius:12px;padding:1rem;text-align:center;}
+.team-card.muravei{background:var(--teal-l);}
+.team-card.strekoza{background:var(--amber-l);}
+.team-icon{font-size:16px;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:700;}
+.team-card.muravei .team-icon{background:var(--surf);color:var(--teal-t);}
+.team-card.strekoza .team-icon{background:var(--surf);color:var(--amber-t);}
+.team-name{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:4px;}
+.team-desc{font-size:12px;color:var(--muted);line-height:1.4;}
+.stat-row{display:flex;gap:8px;margin-bottom:1rem;}
+.stat{flex:1;background:var(--surf2);border-radius:8px;padding:10px;text-align:center;}
+.stat-n{font-size:22px;font-weight:500;color:var(--ink);}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
+.epigraph{border-left:2px solid var(--teal);padding:0.6rem 1rem;margin-bottom:1.25rem;background:var(--surf2);border-radius:0 8px 8px 0;}
+.epigraph p{font-size:15px;font-style:italic;color:var(--ink);line-height:1.6;}
+.epigraph cite{font-size:12px;color:var(--muted);display:block;margin-top:4px;font-style:normal;}
+select, input[type="number"]{background:var(--surf);color:var(--ink);border:0.5px solid var(--bdr2);border-radius:8px;padding:6px 10px;font-family:'Geologica',sans-serif;font-size:14px;}
+code{font-size:12px;background:var(--surf2);padding:2px 6px;border-radius:4px;color:var(--ink);}
+.footer-brand{text-align:center;padding:2rem 1rem 0;font-size:12px;color:var(--hint);border-top:0.5px solid var(--bdr);margin-top:2rem;}
+</style>
+</head>
+<body>
+<div id="ng">
+
+<div class="pg-header">
+  <div class="pg-title">Народная игра: логика языка</div>
+  <div class="pg-sub">Коллективный разум включим — правила письма улучшим &nbsp;·&nbsp; А.Е. Кашеварова, Николаев &nbsp;·&nbsp; Семикнижие НОВЕЯ</div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab on" onclick="goTab('intro',this)">Зачин</button>
+  <button class="tab" onclick="goTab('axioms',this)">Аксиомы</button>
+  <button class="tab" onclick="goTab('alphabet',this)">Алфавит</button>
+  <button class="tab" onclick="goTab('trainer',this)">Тренажёр</button>
+  <button class="tab" onclick="goTab('game',this)">Игра</button>
+</div>
+
+<div id="tab-intro" class="pg on">
+  <div class="epigraph">
+    <p>«Из правил писания нужно устранить внутренние и внешние логические противоречия»</p>
+    <cite>— А.Е. Кашеварова, инженер, Николаев, 2014</cite>
+  </div>
+  <div class="sec-label">Суть проекта</div>
+  <div class="card">
+    <div class="card-t">Почему это важно?</div>
+    <div class="card-b">Кашеварова задаётся вопросом: почему для освоения языка эсперанто требуется 24 урока, а для освоения русского письма — почти <strong style="font-weight:500">960 уроков</strong> за всю школу? Ответ один: в орфографии эсперанто нет логических противоречий. В русской — есть. Проект правил логического писания (логикописание) — это инженерное решение лингвистической задачи.</div>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-n">960</div><div class="stat-l">уроков сейчас</div></div>
+    <div class="stat"><div class="stat-n">36</div><div class="stat-l">букв в новом алфавите</div></div>
+    <div class="stat"><div class="stat-n">÷2</div><div class="stat-l">правил писания</div></div>
+    <div class="stat"><div class="stat-n">0</div><div class="stat-l">надстрочных знаков</div></div>
+  </div>
+  <div class="sec-label">Три блока книги</div>
+  <div class="axiom-grid">
+    <div class="ax teal"><div class="ax-code">Блок I</div><div class="ax-text">Правила игры: как участвовать в народном обсуждении. Команды А и П, стрекозы и муравьи.</div></div>
+    <div class="ax amber"><div class="ax-code">Блок II</div><div class="ax-text">Главные решения: аксиомы нового алфавита и слоговый принцип письма.</div></div>
+    <div class="ax purple"><div class="ax-code">Блок III</div><div class="ax-text">Научные труды автора: теоретический фундамент для специалистов.</div></div>
+  </div>
+  <div class="sec-label">Поэтический зачин</div>
+  <div class="card">
+    <div class="card-b" style="font-style:italic;font-family:'Playfair Display',serif;font-size:15px;line-height:1.9;">
+      Миллионы русскоговорящих<br>разбросаны по всей планете.<br>У каждого из в Мир входящих<br>уже есть или будут дети.<br>И требуется облегчить<br>их русскому письму учить.<br><br>
+      Наукой точной должно стать,<br>как русский следует писать.<br>Для этого начнём дебаты,<br>какие выбрать постулаты.
+    </div>
+  </div>
+  <button class="btn primary" style="margin-top:0.5rem;" onclick="goTab('axioms', document.querySelectorAll('.tab')[1])">К аксиомам системы →</button>
+</div>
+
+<div id="tab-axioms" class="pg">
+  <div class="sec-label">Пять аксиом системы</div>
+  <div class="axiom-grid">
+    <div class="ax teal"><div class="ax-code">Аксиома А</div><div class="ax-text">Симметрия гласных. Каждой твёрдой гласной соответствует мягкая и йотированная (полугласная) буква с новыми графическими знаками.</div></div>
+    <div class="ax amber"><div class="ax-code">Аксиома Б</div><div class="ax-text">Реорганизация согласных. Выделена группа полусогласных. Й отнесена к полугласным; Ь — к полусогласным.</div></div>
+    <div class="ax purple"><div class="ax-code">Аксиома В</div><div class="ax-text">Оптимизация алфавита. Исключены Ъ и Щ. Изменена графика Й и Ё (без надстрочных знаков). Ударение — подчёркиванием.</div></div>
+    <div class="ax coral"><div class="ax-code">Аксиома Г</div><div class="ax-text">Слоговый принцип. Мягкость согласного — только через последующую мягкую гласную или Ь. Йотированные буквы согласных не смягчают.</div></div>
+    <div class="ax teal" style="grid-column:1/-1;"><div class="ax-code">Аксиома Д — Результат</div><div class="ax-text">Алфавит из 36 букв. Количество правил писания уменьшилось вдвое. Отсутствие надстрочных знаков ускоряет набор текста.</div></div>
+  </div>
+  <div class="divider"></div>
+  <div class="sec-label">Логика противоречий</div>
+  <div class="card">
+    <div class="card-t">Внутреннее противоречие № 1</div>
+    <div class="card-b">Буква Й называется «И краткое» — то есть признаётся звуком, близким к гласному И. Но в алфавите стоит в ряду согласных. Это нарушение принципа: схожие по природе звуки должны относиться к одному классу. Решение Кашеваровой: перенести Й в группу <span class="badge new">полугласных</span>.</div>
+  </div>
+  <div class="card">
+    <div class="card-t">Внутреннее противоречие № 2</div>
+    <div class="card-b">Буква Ъ (твёрдый знак) в современном языке не обозначает никакого звука и служит только разделителем. Но разделитель уже есть — пробел. Двух символов с одинаковой функцией быть не должно. Решение: <span class="badge remove">исключить Ъ</span>, использовать иные средства разделения.</div>
+  </div>
+  <div class="card">
+    <div class="card-t">Внешнее противоречие — перегрузка</div>
+    <div class="card-b">В эсперанто — 28 правил, 0 исключений. В русском — сотни правил, тысячи исключений. Причина: орфография создавалась лингвистами, методологически не оснащёнными системным анализом. Кашеварова — инженер-системщик — применяет к языку тот же аппарат, что и к техническим системам.</div>
+  </div>
+  <button class="btn" onclick="goTab('alphabet', document.querySelectorAll('.tab')[2])">Посмотреть новый алфавит →</button>
+</div>
+
+<div id="tab-alphabet" class="pg">
+  <div class="sec-label">Старый и новый алфавит</div>
+  <div class="toggle-wrap">
+    <span class="toggle-label">Показать:</span>
+    <label class="toggle"><input type="checkbox" id="alpha-toggle" onchange="updateAlpha()"><span class="toggle-slider"></span></label>
+    <span id="alpha-mode-label" style="font-size:13px;color:var(--muted);">Только изменения</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="alpha-table" id="alpha-tbl">
+      <thead><tr><th style="width:20%">Буква</th><th style="width:22%">Статус</th><th style="width:28%">Группа</th><th style="width:30%">Примечание</th></tr></thead>
+      <tbody id="alpha-body"></tbody>
+    </table>
+  </div>
+  <div class="divider"></div>
+  <div class="sec-label">Новый принцип ударения</div>
+  <div class="card">
+    <div class="card-t">Подчёркивание вместо надстрочного знака</div>
+    <div class="card-b">Традиционный знак ударения (´) — надстрочный, требует специальных режимов ввода. Кашеварова предлагает: ударная гласная <span style="border-bottom:2px solid var(--teal);padding:0 2px;">подчёркивается</span>. Это нативно для любого текстового редактора и не требует дополнительных таблиц символов.</div>
+  </div>
+  <div class="text-demo">
+    Старый: <span class="hl">ма́ма</span> &nbsp;→&nbsp; Новый: ма<u>м</u>а<br>
+    Старый: <span class="hl">Рос́сия</span> &nbsp;→&nbsp; Новый: Росс<u>и</u>я<br>
+    Старый: <span class="hl">лю́ди</span> &nbsp;→&nbsp; Новый: л<u>ю</u>ди
+  </div>
+  <button class="btn" onclick="goTab('trainer', document.querySelectorAll('.tab')[3])">Перейти к тренажёру →</button>
+</div>
+
+<div id="tab-trainer" class="pg">
+  <div class="sec-label">Диалектическая разминка</div>
+  <div class="epigraph">
+    <p>«Обнаружить противоречие — первый шаг к его устранению»</p>
+    <cite>— принцип диалектической логики</cite>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="q-progress" style="width:0%"></div></div>
+  <div class="score-badge">Вопрос <span id="q-num" class="score-num">1</span> из 6 &nbsp;·&nbsp; Верно: <span id="q-score" class="score-num">0</span></div>
+  <div id="q-area"></div>
+  <div id="q-result" style="display:none;padding:1rem 0;">
+    <div class="card" style="text-align:center;">
+      <div class="card-t" id="result-title" style="font-size:18px;margin-bottom:8px;"></div>
+      <div class="card-b" id="result-body"></div>
+      <button class="btn primary" style="margin-top:1rem;" onclick="resetQuiz()">Пройти снова</button>
+    </div>
+  </div>
+</div>
+
+<div id="tab-game" class="pg">
+  <div class="sec-label">Народная игра — правила</div>
+  <div class="epigraph">
+    <p>«Принцип игры — добровольность и щедрость умственного вклада в дело совершенствования русского писания»</p>
+    <cite>— А.Е. Кашеварова</cite>
+  </div>
+  <div class="team-grid">
+    <div class="team-card muravei">
+      <div class="team-icon">М</div>
+      <div class="team-name">Муравьи</div>
+      <div class="team-desc">Теоретизируют, обсуждают предложения, помогают в обработке данных и подведении итогов</div>
+    </div>
+    <div class="team-card strekoza">
+      <div class="team-icon">С</div>
+      <div class="team-name">Стрекозы</div>
+      <div class="team-desc">Высказывают мнение без обоснования, участвуют в голосовании, не тратят время на дебаты</div>
+    </div>
+  </div>
+  <div class="sec-label">Этапы игры</div>
+  <div style="position:relative;padding-left:20px;border-left:2px solid var(--teal);margin-bottom:1.25rem;">
+    <div style="margin-bottom:1rem;"><div style="font-size:11px;font-weight:500;color:var(--teal-t);letter-spacing:1px;margin-bottom:3px;">Этап 0 — Нулевой</div><div style="font-size:14px;color:var(--ink);line-height:1.5;">Сплочение единомышленников. Формирование команд А (согласных) и П (несогласных). Выбор управляющих игрой.</div></div>
+    <div style="margin-bottom:1rem;"><div style="font-size:11px;font-weight:500;color:var(--teal-t);letter-spacing:1px;margin-bottom:3px;">Этап 1 — Три месяца</div><div style="font-size:14px;color:var(--ink);line-height:1.5;">Накопление мнений. Каждый участник регистрирует свои идеи с кодом и датой. Что не нравится в официальных правилах?</div></div>
+    <div style="margin-bottom:1rem;"><div style="font-size:11px;font-weight:500;color:var(--teal-t);letter-spacing:1px;margin-bottom:3px;">Этап 2 — Систематизация</div><div style="font-size:14px;color:var(--ink);line-height:1.5;">Муравьи сортируют идеи по частям речи и морфологическим уровням. Команда П составляет сравнительную таблицу.</div></div>
+    <div><div style="font-size:11px;font-weight:500;color:var(--teal-t);letter-spacing:1px;margin-bottom:3px;">Итог — Комитет из 6</div><div style="font-size:14px;color:var(--ink);line-height:1.5;">Рейтинговое голосование. Формулировка «Альтернативных правил русского писания». Обращение к правительству.</div></div>
+  </div>
+  <div class="sec-label">Твой код участника</div>
+  <div class="card">
+    <div class="card-b" style="margin-bottom:10px;">Система кодирования: <code>№\КС</code> — порядковый номер + команда (А/П) + роль (М/С)</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+      <input id="player-n" type="number" min="1" max="9999" value="1" style="width:70px;" placeholder="#">
+      <select id="player-team">
+        <option value="А">Команда А — согласен с автором</option>
+        <option value="П">Команда П — не согласен</option>
+      </select>
+      <select id="player-role">
+        <option value="М">Муравей</option>
+        <option value="С">Стрекоза</option>
+      </select>
+      <button class="btn" onclick="genCode()">Получить код</button>
+    </div>
+    <div id="code-out" style="margin-top:10px;font-size:16px;font-weight:500;color:var(--ink);display:none;"></div>
+  </div>
+</div>
+
+<div class="footer-brand">Семикнижие НОВЕЯ &nbsp;·&nbsp; Николаевское городское общество исследователей &nbsp;·&nbsp; НГОИ</div>
+</div>
+
+<script>
+function goTab(id,btn){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('tab-'+id).classList.add('on');
+  if(btn)btn.classList.add('on');
+}
+const alphaData=[
+  {l:'А Э О У Ы',status:'keep',group:'твёрдые гласные',note:'без изменений'},
+  {l:'[аз][эз][оз][уз][ыз]',status:'new',group:'мягкие гласные',note:'новые знаки — мягкие пары твёрдых'},
+  {l:'Я Е Ю И',status:'keep',group:'йотированные',note:'остаются; не смягчают согласных'},
+  {l:'Й',status:'change',group:'полугласная',note:'перенесена из согласных; новая графика без точек'},
+  {l:'Ё',status:'change',group:'полугласная',note:'новая графика без надстрочных точек'},
+  {l:'Ь',status:'change',group:'полусогласная',note:'перенесена из вспомогательных'},
+  {l:'Ъ',status:'remove',group:'—',note:'исключена: функция избыточна'},
+  {l:'Щ',status:'remove',group:'—',note:'исключена: заменяется конструкцией'},
+  {l:'Б В Г Д Ж З К Л М Н П Р С Т Ф Х Ц Ч Ш',status:'keep',group:'согласные',note:'18 букв без изменений'},
+];
+function statusBadge(s){const m={keep:'сохраняется',remove:'исключается',new:'новая',change:'изменяется'};return`<span class="badge ${s}">${m[s]}</span>`;}
+function updateAlpha(){
+  const all=document.getElementById('alpha-toggle').checked;
+  document.getElementById('alpha-mode-label').textContent=all?'Все буквы':'Только изменения';
+  const rows=all?alphaData:alphaData.filter(d=>d.status!=='keep');
+  document.getElementById('alpha-body').innerHTML=rows.map(d=>`<tr><td style="font-weight:500;">${d.l}</td><td>${statusBadge(d.status)}</td><td style="color:var(--muted);">${d.group}</td><td style="color:var(--muted);">${d.note}</td></tr>`).join('');
+}
+updateAlpha();
+const questions=[
+  {q:'Буква Й называется «И краткое». К какой группе она должна относиться согласно логике Кашеваровой?',opts:['К согласным — как сейчас','К полугласным — как и другие краткие звуки','К гласным — раз похожа на И','К знакам препинания'],correct:1,fb:'Верно! Кашеварова указывает: если звук по природе близок к гласному, его нельзя помещать в ряд согласных — это внутреннее логическое противоречие.'},
+  {q:'Зачем нужен твёрдый знак Ъ по старым правилам?',opts:['Обозначает особый звук','Служит только разделителем перед йотированными','Показывает ударение','Заменяет мягкий знак'],correct:1,fb:'Правильно. И именно в этом — противоречие: пробел уже выполняет разделительную функцию. Два символа с одинаковой ролью — нарушение принципа экономии системы.'},
+  {q:'Почему в эсперанто достаточно 24 уроков для освоения письма, а в русском — ~960?',opts:['Эсперанто — искусственный язык, там меньше слов','В эсперанто нет логических противоречий в орфографии','Русский язык сложнее по грамматике','Учителя русского хуже объясняют'],correct:1,fb:'Точно! Кашеварова формулирует: «Лингвисты не в состоянии создать системный комплекс правил. Необходимо, чтобы инженеры им помогли». Системный подход устраняет противоречия, а с ними — и лишние правила.'},
+  {q:'Что означает «слоговый принцип» в системе Кашеваровой?',opts:['Слова нужно разбивать на слоги при письме','Мягкость согласного обозначается последующей мягкой гласной или Ь','Каждый слог пишется отдельно','Ударение ставится на каждый слог'],correct:1,fb:'Верно! При слоговом принципе не нужны отдельные правила для каждого сочетания: мягкость видна из следующей буквы. Это сокращает список правил вдвое.'},
+  {q:'Как предлагает обозначать ударение Кашеварова?',opts:['Точкой над буквой','Надстрочным знаком ´','Подчёркиванием ударной гласной','Заглавной буквой'],correct:2,fb:'Правильно! Подчёркивание — встроенная функция любого текстового редактора. Надстрочный знак требует специальных таблиц символов. Логика выбора: простое техническое решение заменяет сложное.'},
+  {q:'Как называются участники игры, которые обсуждают идеи и помогают обрабатывать результаты?',opts:['Стрекозы','Муравьи','Комитет','Управляющие'],correct:1,fb:'Верно! Кашеварова разделяет участников по стилю: муравьи — методичные аналитики, стрекозы — голосуют, не обязаны обосновывать. Обе роли нужны коллективному разуму.'},
+];
+let qIdx=0,score=0,answered=false;
+function renderQ(){
+  const q=questions[qIdx];
+  document.getElementById('q-progress').style.width=Math.round(qIdx/questions.length*100)+'%';
+  document.getElementById('q-num').textContent=qIdx+1;
+  document.getElementById('q-score').textContent=score;
+  document.getElementById('q-area').innerHTML=`<div class="quiz-q">${q.q}</div><div class="quiz-opts">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerQ(${i})">${o}</button>`).join('')}</div><div id="quiz-fb" style="display:none;" class="quiz-feedback"></div><div id="quiz-next" style="display:none;margin-top:0.5rem;"><button class="btn primary" onclick="nextQ()">${qIdx<questions.length-1?'Следующий вопрос →':'Итоги игры →'}</button></div>`;
+  answered=false;
+}
+function answerQ(i){
+  if(answered)return;
+  answered=true;
+  const q=questions[qIdx];
+  const opts=document.querySelectorAll('.quiz-opt');
+  opts[i].classList.add(i===q.correct?'correct':'wrong');
+  opts[q.correct].classList.add('correct');
+  opts.forEach(o=>o.disabled=true);
+  if(i===q.correct)score++;
+  document.getElementById('q-score').textContent=score;
+  const fb=document.getElementById('quiz-fb');
+  fb.style.display='block';
+  fb.className='quiz-feedback '+(i===q.correct?'ok':'err');
+  fb.textContent=q.fb;
+  document.getElementById('quiz-next').style.display='block';
+}
+function nextQ(){
+  qIdx++;
+  if(qIdx>=questions.length){
+    document.getElementById('q-area').style.display='none';
+    document.getElementById('q-progress').style.width='100%';
+    document.getElementById('q-result').style.display='block';
+    const pct=Math.round(score/questions.length*100);
+    document.getElementById('result-title').textContent=pct>=80?'Отличный результат!':pct>=50?'Хороший старт!':'Продолжай изучать!';
+    document.getElementById('result-body').textContent='Верно: '+score+' из '+questions.length+' ('+pct+'%). '+(pct>=80?'Логика языка тебе покорна!':'Перечитай аксиомы и попробуй снова — каждый раз будет лучше.');
+  } else {
+    renderQ();
+  }
+}
+function resetQuiz(){
+  qIdx=0;score=0;answered=false;
+  document.getElementById('q-area').style.display='block';
+  document.getElementById('q-result').style.display='none';
+  renderQ();
+}
+function genCode(){
+  const n=document.getElementById('player-n').value||'1';
+  const t=document.getElementById('player-team').value;
+  const r=document.getElementById('player-role').value;
+  const out=document.getElementById('code-out');
+  out.style.display='block';
+  out.innerHTML='Твой код: <code style="font-size:17px;padding:3px 10px;">'+n+'\\'+t+r+'</code>';
+}
+renderQ();
+</script>
+</body>
+</html>

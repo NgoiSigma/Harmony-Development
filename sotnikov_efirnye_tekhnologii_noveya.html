@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сотников В.Я. — Эфирные технологии · Семикнижие НОВЕЯ</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1a1a18;--muted:#5a5a56;--hint:#9a9890;
+  --s:#ffffff;--s2:#f5f3ee;--b:rgba(0,0,0,0.12);--b2:rgba(0,0,0,0.22);
+  --teal:#0F6E56;--tl:#E1F5EE;--tt:#085041;
+  --blue:#185FA5;--bl:#E6F1FB;--bt:#042C53;
+  --amber:#854F0B;--al:#FAEEDA;--at:#412402;
+  --purple:#534AB7;--pl:#EEEDFE;--pt:#26215C;
+}
+@media(prefers-color-scheme:dark){
+  :root{--ink:#e8e6df;--muted:#9a9890;--s:#1e1e1c;--s2:#2a2a28;--b:rgba(255,255,255,0.12);--b2:rgba(255,255,255,0.22);--tl:#04342C;--tt:#9FE1CB;--bl:#042C53;--bt:#B5D4F4;--al:#412402;--at:#FAC775;--pl:#26215C;--pt:#CECBF6;}
+}
+body{font-family:'Space Grotesk',sans-serif;background:var(--s);color:var(--ink);min-height:100vh;}
+#sv{max-width:800px;margin:0 auto;padding:0 0 3rem;}
+.hdr{padding:1.5rem 1.25rem 1rem;border-bottom:0.5px solid var(--b);}
+.hdr-eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.hdr-title{font-size:22px;font-weight:500;color:var(--ink);line-height:1.3;margin-bottom:3px;}
+.hdr-sub{font-size:13px;color:var(--muted);}
+.tabs{display:flex;gap:3px;padding:0.6rem 1.25rem;border-bottom:0.5px solid var(--b);background:var(--s2);flex-wrap:wrap;}
+.t{padding:5px 13px;border-radius:6px;border:0.5px solid var(--b2);font-size:12px;font-weight:500;cursor:pointer;background:transparent;color:var(--muted);transition:all 0.15s;font-family:'Space Grotesk',sans-serif;}
+.t.on{background:var(--s);color:var(--ink);border-color:var(--ink);}
+.t:hover:not(.on){background:var(--s);}
+.pg{display:none;padding:1.25rem 1.25rem;}
+.pg.on{display:block;animation:fi 0.2s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+.lbl{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:0.65rem;}
+.card{background:var(--s);border:0.5px solid var(--b);border-radius:10px;padding:1rem 1.2rem;margin-bottom:0.75rem;}
+.card-t{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:5px;}
+.card-b{font-size:13px;color:var(--muted);line-height:1.6;}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:7px;margin-bottom:1.1rem;}
+.concept{border-radius:8px;padding:11px 13px;border:0.5px solid var(--b);}
+.concept.t1{background:var(--bl);border-color:#85B7EB;}
+.concept.t2{background:var(--tl);border-color:#5DCAA5;}
+.concept.t3{background:var(--al);border-color:#EF9F27;}
+.concept.t4{background:var(--pl);border-color:#AFA9EC;}
+.concept-code{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;margin-bottom:4px;}
+.concept.t1 .concept-code{color:var(--bt);}
+.concept.t2 .concept-code{color:var(--tt);}
+.concept.t3 .concept-code{color:var(--at);}
+.concept.t4 .concept-code{color:var(--pt);}
+.concept-text{font-size:12px;line-height:1.5;}
+.concept.t1 .concept-text{color:var(--bt);}
+.concept.t2 .concept-text{color:var(--tt);}
+.concept.t3 .concept-text{color:var(--at);}
+.concept.t4 .concept-text{color:var(--pt);}
+.epigraph{border-left:2px solid var(--teal);padding:0.6rem 1rem;margin-bottom:1.1rem;background:var(--s2);border-radius:0 8px 8px 0;}
+.epigraph p{font-size:14px;font-style:italic;color:var(--ink);line-height:1.6;}
+.epigraph cite{font-size:11px;color:var(--muted);display:block;margin-top:3px;font-style:normal;font-family:'Space Mono',monospace;}
+.stat-row{display:flex;gap:7px;margin-bottom:1rem;flex-wrap:wrap;}
+.stat{flex:1;min-width:80px;background:var(--s2);border-radius:8px;padding:10px;text-align:center;}
+.stat-n{font-size:20px;font-weight:500;color:var(--ink);font-family:'Space Mono',monospace;}
+.stat-l{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.3;}
+.timeline{position:relative;padding-left:18px;border-left:2px solid var(--teal);margin-bottom:1rem;}
+.tl-item{margin-bottom:1rem;}
+.tl-code{font-family:'Space Mono',monospace;font-size:10px;color:var(--tt);letter-spacing:1px;margin-bottom:3px;}
+.tl-text{font-size:13px;color:var(--ink);line-height:1.5;}
+.btn{padding:7px 14px;border:0.5px solid var(--b2);border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;background:var(--s);color:var(--ink);transition:all 0.15s;font-family:'Space Grotesk',sans-serif;}
+.btn:hover{background:var(--s2);}
+.btn.pri{background:var(--teal);color:#fff;border-color:var(--teal);}
+.btn.pri:hover{background:var(--tt);}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:3px;font-weight:500;font-family:'Space Mono',monospace;}
+.badge.blue{background:var(--bl);color:var(--bt);}
+.badge.amber{background:var(--al);color:var(--at);}
+.tech-row{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin-bottom:0.9rem;padding:0.85rem 1rem;background:var(--s2);border-radius:8px;border:0.5px solid var(--b);}
+.tech-num{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:var(--teal);line-height:1;}
+.tech-body{font-size:13px;color:var(--ink);line-height:1.6;}
+.sim-wrap{background:var(--s2);border:0.5px solid var(--b);border-radius:10px;padding:1rem;margin-bottom:1rem;}
+.sim-display{background:var(--s);border:0.5px solid var(--b);border-radius:7px;padding:0.75rem;margin-bottom:0.75rem;text-align:center;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.sim-val{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--ink);}
+.sim-unit{font-size:11px;color:var(--muted);margin-top:3px;}
+.sim-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.sim-ctrl{display:flex;flex-direction:column;gap:4px;}
+.sim-ctrl label{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;}
+.sim-ctrl input[type=range]{width:100%;}
+.noveya-box{background:var(--s2);border:0.5px solid var(--teal);border-radius:10px;padding:1rem 1.2rem;margin-top:1.25rem;}
+.noveya-box .nb-head{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--teal);margin-bottom:6px;}
+.noveya-box p{font-size:13px;color:var(--muted);line-height:1.6;}
+.quiz-q{font-size:14px;color:var(--ink);font-weight:500;margin-bottom:0.65rem;line-height:1.5;}
+.qopts{display:flex;flex-direction:column;gap:5px;margin-bottom:0.9rem;}
+.qopt{padding:8px 12px;border:0.5px solid var(--b2);border-radius:7px;font-size:13px;cursor:pointer;background:var(--s);color:var(--ink);text-align:left;transition:all 0.15s;font-family:'Space Grotesk',sans-serif;}
+.qopt:hover:not([disabled]){background:var(--s2);}
+.qopt.ok{background:var(--tl);border-color:#5DCAA5;color:var(--tt);}
+.qopt.err{background:#FCEBEB;border-color:#F09595;color:#501313;}
+.qfb{font-size:12px;padding:9px 12px;border-radius:7px;margin-bottom:0.9rem;line-height:1.5;}
+.qfb.ok{background:var(--tl);color:var(--tt);}
+.qfb.err{background:#FCEBEB;color:#501313;}
+.pbar{height:3px;background:var(--b);border-radius:2px;margin-bottom:1rem;overflow:hidden;}
+.pfill{height:100%;background:var(--teal);border-radius:2px;transition:width 0.3s;}
+.sc{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);margin-bottom:0.9rem;font-family:'Space Mono',monospace;}
+.sc span{font-size:15px;font-weight:700;color:var(--ink);}
+.footer-brand{text-align:center;padding:2rem 1rem 0;font-size:11px;color:var(--hint);border-top:0.5px solid var(--b);margin-top:2rem;font-family:'Space Mono',monospace;}
+</style>
+</head>
+<body>
+<div id="sv">
+<div class="hdr">
+  <div class="hdr-eyebrow">Семикнижие НОВЕЯ · Внешнее кольцо · Эфирные технологии</div>
+  <div class="hdr-title">Сотников В.Я. — Эфирные технологии</div>
+  <div class="hdr-sub">Структура эфира · Огневые технологии · Сверхъединичный генератор &nbsp;·&nbsp; Николаев, 2006</div>
+</div>
+<div class="tabs">
+  <button class="t on" onclick="goT('intro',this)">Введение</button>
+  <button class="t" onclick="goT('ether',this)">Эфир и космос</button>
+  <button class="t" onclick="goT('fire',this)">Огневые технологии</button>
+  <button class="t" onclick="goT('gen',this)">Генератор</button>
+  <button class="t" onclick="goT('quiz',this)">Тренажёр</button>
+</div>
+
+<div id="tab-intro" class="pg on">
+  <div class="epigraph"><p>«Первопричиной всех материальных и силовых проявлений во вселенной является исходная субстанция, традиционно называемая эфир»</p><cite>— В.Я. Сотников, 2006</cite></div>
+  <div class="lbl">Три работы — одна концепция</div>
+  <div class="concept-grid">
+    <div class="concept t1"><div class="concept-code">Работа I</div><div class="concept-text">Структура эфирного наполнения Солнечной системы и её влияние на поведение планет (2006)</div></div>
+    <div class="concept t2"><div class="concept-code">Работа II</div><div class="concept-text">Способ повышения эффективности огневых технологий на примере городского теплогенерирующего хозяйства</div></div>
+    <div class="concept t3"><div class="concept-code">Работа III</div><div class="concept-text">Электростатический сверхъединичный генератор — преобразователь ударных волн эфира в тороидальные эфирные плазмоиды</div></div>
+  </div>
+  <div class="lbl">Ключевые постулаты системы</div>
+  <div class="concept-grid">
+    <div class="concept t1"><div class="concept-code">Постулат 1</div><div class="concept-text">Эфир — первичная субстанция с газоподобными свойствами, способная порождать замкнутые тороидальные вихри</div></div>
+    <div class="concept t2"><div class="concept-code">Постулат 2</div><div class="concept-text">Материя — структурное образование эфира. Диэлектрическая постоянная — проявление плотности эфирного наполнения</div></div>
+    <div class="concept t3"><div class="concept-code">Постулат 3</div><div class="concept-text">Электроток по проводнику — не движение электронов, а движение среды — эфира (по Миткевичу и Ацюковскому)</div></div>
+    <div class="concept t4"><div class="concept-code">Постулат 4</div><div class="concept-text">Магнитное поле тела — следствие тороидального движения его эфирного наполнения</div></div>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-n">3</div><div class="stat-l">научных работы по эфирной физике</div></div>
+    <div class="stat"><div class="stat-n">10%</div><div class="stat-l">реальный КПД огневых технологий сейчас</div></div>
+    <div class="stat"><div class="stat-n">+30%</div><div class="stat-l">экономия топлива по предложению</div></div>
+    <div class="stat"><div class="stat-n">3000%</div><div class="stat-l">заявленный КПД генератора Шоулдерса</div></div>
+  </div>
+  <div class="noveya-box"><div class="nb-head">НОВЕЯ — связь с проектом</div><p>Работы Сотникова — «внешнее кольцо» Семикнижия НОВЕЯ. Они обеспечивают технологическую базу энергетической независимости: повышение КПД котельных Николаева напрямую касается себестоимости тепла для общин, а концепция сверхъединичного генератора — долгосрочной энергетической суверенности проекта.</p></div>
+</div>
+
+<div id="tab-ether" class="pg">
+  <div class="lbl">Тороидальная модель Солнечной системы</div>
+  <div class="card"><div class="card-t">Проблема, которую не решали традиционные гипотезы</div><div class="card-b">Все существующие гипотезы образования Солнечной системы не отвечают: почему орбиты планет почти круговые, располагаются в одной плоскости и именно на таких расстояниях? Сотников предлагает механизм: <strong style="font-weight:500">слоистые тороидальные эфирные вихри Солнца</strong>.</div></div>
+  <div class="lbl">Механизм формирования</div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-code">Шаг 01 — Источник</div><div class="tl-text">Солнце, вращаясь, порождает тороидальное движение своего эфирного наполнения. Дифференциальное вращение — признак структурирования (экватор: 26 суток, широты >35°: 31 сутки).</div></div>
+    <div class="tl-item"><div class="tl-code">Шаг 02 — Расширение</div><div class="tl-text">Тороидальные вихри выходят за пределы фотосферы и «раздуваются». Каждый вихрь порождает следующий присоединённый слой — медленнее и крупнее.</div></div>
+    <div class="tl-item"><div class="tl-code">Шаг 03 — Слоистость</div><div class="tl-text">Формируется многослойная структура тороидальных вихрей. Зазоры между слоями — <strong style="font-weight:500">каналы планетарных орбит</strong>.</div></div>
+    <div class="tl-item"><div class="tl-code">Шаг 04 — «Шарикоподшипник»</div><div class="tl-text">Планеты — подобие шариков в многослойном эфирном шарикоподшипнике. Орбиты стационарны только в зазорах между слоями. Смещение передаётся по всей системе.</div></div>
+  </div>
+  <div class="lbl">Объяснение наблюдаемых явлений</div>
+  <div class="concept-grid">
+    <div class="concept t1"><div class="concept-code">Большое красное пятно</div><div class="concept-text">Атмосферный вихрь на границе разрыва угловых скоростей эфирного наполнения Юпитера</div></div>
+    <div class="concept t2"><div class="concept-code">Магнитное поле Земли</div><div class="concept-text">Наведённое тороидальное движение эфирного наполнения от взаимодействия с солнечными вихрями</div></div>
+    <div class="concept t3"><div class="concept-code">Наклон экватора Солнца 7.2°</div><div class="concept-text">Отражает изменившиеся за историю системы условия — воздействие межгалактических потоков эфира</div></div>
+    <div class="concept t4"><div class="concept-code">Правило Тициуса–Боде</div><div class="concept-text">Закономерность расстояний получает физическое обоснование через соотношение размеров слоёв вихрей</div></div>
+  </div>
+  <div class="noveya-box"><div class="nb-head">НОВЕЯ — связь с проектом</div><p>Тороидальная модель Сотникова перекликается с 12-секторной архитектурой НОВЕЯ (Nebi-Ula): каждый сектор — как слой эфирного вихря, обладающий собственной скоростью и функцией, но связанный с остальными через общий центр. Космологическая модель становится управленческой метафорой.</p></div>
+</div>
+
+<div id="tab-fire" class="pg">
+  <div class="epigraph"><p>«Суммарный КПД существующих огневых технологий составит не более 10–15%. Львиная доля химической энергии топлива переходит в рассеянное тепло»</p><cite>— В.Я. Сотников</cite></div>
+  <div class="lbl">Проблема городских котельных</div>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-n">10%</div><div class="stat-l">реальный КПД с учётом добычи и доставки</div></div>
+    <div class="stat"><div class="stat-n">90%</div><div class="stat-l">потерь в виде тепла и токсинов</div></div>
+    <div class="stat"><div class="stat-n">25–30%</div><div class="stat-l">ожидаемая экономия по методу</div></div>
+  </div>
+  <div class="lbl">Три класса технологий повышения КПД</div>
+  <div class="tech-row"><div class="tech-num">I</div><div class="tech-body"><strong>Прямая инжекция электрического заряда.</strong> Высоковольтные кольцевые электроды с игольчатыми шипами эмитируют электроны в ядро факела. <span class="badge blue">Патент а.с. 2160414</span></div></div>
+  <div class="tech-row"><div class="tech-num">II</div><div class="tech-body"><strong>Активные добавки к топливу.</strong> Вещества, дающие в факеле дополнительные протоны — катализаторы. Снижают токсичность продуктов горения.</div></div>
+  <div class="tech-row"><div class="tech-num">III</div><div class="tech-body"><strong>Ядерные реакции в факеле.</strong> Дополнительный тепловой эффект, трансмутация элементов. <span class="badge amber">Дискуссионно</span></div></div>
+  <div class="lbl">Симулятор экономии топлива</div>
+  <div class="sim-wrap">
+    <div class="sim-display">
+      <div class="sim-val" id="fire-saving">0</div>
+      <div class="sim-unit">тонн условного топлива в год — экономия</div>
+      <div style="margin-top:6px;font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;" id="fire-pct">+0% к КПД горелки</div>
+    </div>
+    <div class="sim-controls">
+      <div class="sim-ctrl"><label>Котельных в городе: <span id="boil-out">10</span></label><input type="range" min="1" max="50" value="10" step="1" oninput="updateFire(this,'boil-out')"></div>
+      <div class="sim-ctrl"><label>Расход на котельную (т/год): <span id="fuel-out">1000</span></label><input type="range" min="100" max="5000" value="1000" step="100" oninput="updateFire(this,'fuel-out')"></div>
+      <div class="sim-ctrl"><label>Уровень технологии: <span id="tech-out">1</span></label><input type="range" min="1" max="3" value="1" step="1" id="tech-sl" oninput="updateFire(this,'tech-out')"></div>
+      <div class="sim-ctrl" style="align-items:center;justify-content:center;"><div style="font-size:11px;color:var(--muted);text-align:center;line-height:1.5;" id="tech-desc">Класс I: инжекция заряда</div></div>
+    </div>
+  </div>
+  <div class="noveya-box"><div class="nb-head">НОВЕЯ — связь с проектом</div><p>Внедрение технологий класса I в котельные Николаевской общины — прямая реализация сектора 06 (Энергетика) НОВЕЯ с расчётным снижением энергозатрат на 25–30% без замены оборудования.</p></div>
+</div>
+
+<div id="tab-gen" class="pg">
+  <div class="epigraph"><p>«Вся установка не создаёт дополнительной энергии — её задача создать условия для преобразования энергии окружающего эфира в форму, доступную нам»</p><cite>— В.Я. Сотников</cite></div>
+  <div class="lbl">Принцип работы генератора</div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-code">Стадия 01 — Импульс</div><div class="tl-text">На остриё катода подаётся короткий отрицательный высоковольтный импульс — <strong style="font-weight:500">волна уплотнения–разряжения эфира</strong> по поверхности проводника.</div></div>
+    <div class="tl-item"><div class="tl-code">Стадия 02 — Фокусировка</div><div class="tl-text">По закону сохранения импульса: сужающийся диаметр нарастит амплитуду волны. На конусе острия волна «опрокидывается».</div></div>
+    <div class="tl-item"><div class="tl-code">Стадия 03 — Тороид</div><div class="tl-text">Опрокидывание — переход в <strong style="font-weight:500">тороидальное движение</strong>. Эфирный тороид (плазмоид) отрывается от острия и движется к аноду.</div></div>
+    <div class="tl-item"><div class="tl-code">Стадия 04 — Энергосъём</div><div class="tl-text">Движущийся тороид индуцирует ток в катушке. Энергия в нагрузке = импульс + <strong style="font-weight:500">энергия давления окружающего эфира</strong>.</div></div>
+  </div>
+  <div class="lbl">Два источника энергии тороида</div>
+  <div class="concept-grid">
+    <div class="concept t2"><div class="concept-code">Источник A</div><div class="concept-text">Энергия первоначального отрицательного импульса от генератора на остриё катода</div></div>
+    <div class="concept t3"><div class="concept-code">Источник B</div><div class="concept-text">Энергия давления внешнего эфира, трансформированная в кинетическую при обжатии тороида</div></div>
+  </div>
+  <div class="card"><div class="card-t">Откуда берётся «сверхъединичность»?</div><div class="card-b">КПД 3000% — отношение энергии в нагрузке к энергии первоначального импульса. Второй источник (давление эфира) в знаменатель не включён. Сотников: не нарушение закона сохранения, а <strong style="font-weight:500">«откачка» кинетической энергии из тороидального вихря среды</strong>. Аналог — ветровая турбина.</div></div>
+  <div class="lbl">Параметры оптимизации</div>
+  <div class="concept-grid">
+    <div class="concept t1"><div class="concept-code">Диаметр стержня</div><div class="concept-text">Чем больше — тем раньше на конусе опрокинется волна и тем крупнее тороид</div></div>
+    <div class="concept t2"><div class="concept-code">Амплитуда импульса</div><div class="concept-text">Чем выше — тем крупнее тороид и больше усвоенная энергия давления эфира</div></div>
+    <div class="concept t3"><div class="concept-code">Длительность импульса</div><div class="concept-text">Чем короче — тем раньше опрокидывание и крупнее тороид на выходе</div></div>
+    <div class="concept t4"><div class="concept-code">Нагрузка катушки</div><div class="concept-text">Слишком большой ток разрушает тороид — нужен баланс между съёмом энергии и сохранением вихря</div></div>
+  </div>
+  <div class="noveya-box"><div class="nb-head">НОВЕЯ — связь с проектом</div><p>Сверхъединичный генератор — потенциальный инструмент энергетической автономии малых общин. В рамках сектора 06 НОВЕЯ это пилотный объект для экспериментальной площадки в Причерноморье.</p></div>
+</div>
+
+<div id="tab-quiz" class="pg">
+  <div class="lbl">Тренажёр по системе Сотникова</div>
+  <div class="pbar"><div class="pfill" id="qp" style="width:0%"></div></div>
+  <div class="sc">Вопрос <span id="qn">1</span> из 6 &nbsp;·&nbsp; Верно: <span id="qs">0</span></div>
+  <div id="qa"></div>
+  <div id="qr" style="display:none;padding:0.75rem 0;">
+    <div class="card" style="text-align:center;">
+      <div class="card-t" id="rt" style="font-size:17px;margin-bottom:6px;"></div>
+      <div class="card-b" id="rb"></div>
+      <button class="btn pri" style="margin-top:0.85rem;" onclick="resetQ()">Пройти снова</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer-brand">Семикнижие НОВЕЯ &nbsp;·&nbsp; НГОИ &nbsp;·&nbsp; В.Я. Сотников &nbsp;·&nbsp; Николаев 2006</div>
+</div>
+
+<script>
+function goT(id,btn){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.t').forEach(t=>t.classList.remove('on'));document.getElementById('tab-'+id).classList.add('on');if(btn)btn.classList.add('on');}
+function updateFire(el,outId){document.getElementById(outId).textContent=el.value;const b=parseInt(document.getElementById('boil-out').textContent);const f=parseInt(document.getElementById('fuel-out').textContent);const tech=parseInt(document.getElementById('tech-out').textContent);const pcts=[27.5,15,10];const pct=pcts[tech-1];const descs=['Класс I: инжекция заряда','Класс II: активные добавки','Класс III: ядерный катализ'];document.getElementById('tech-desc').textContent=descs[tech-1];const saving=Math.round(b*f*pct/100);document.getElementById('fire-saving').textContent=saving.toLocaleString('ru');document.getElementById('fire-pct').textContent='+'+pct+'% к КПД горелки';}
+const qs=[
+  {q:'Почему Сотников считает, что орбиты планет расположены именно на таких расстояниях от Солнца?',opts:['Это случайный результат гравитации','Планеты располагаются в зазорах между слоями тороидальных эфирных вихрей Солнца','Орбиты определяются начальными условиями образования системы','Расстояния определяет масса планет'],correct:1,fb:'Верно! По Сотникову, орбиты — «каналы» многослойного эфирного шарикоподшипника. Планеты стационарны только в зазорах между парами тороидальных вихрей.'},
+  {q:'Что, по Сотникову, является физической причиной Большого красного пятна Юпитера?',opts:['Столкновение с астероидом в прошлом','Граница разрыва угловых скоростей эфирного наполнения при дифференциальном вращении','Особый состав атмосферы Юпитера','Магнитная аномалия ядра планеты'],correct:1,fb:'Правильно. Дифференциальное вращение Юпитера — следствие структурирования эфирного наполнения. На границе разрыва скоростей неизбежно возникает вихрь.'},
+  {q:'Почему реальный КПД огневых технологий Сотников оценивает в 10–15%, а не 60–80%?',opts:['Используется некачественное топливо','Учитываются потери на всей цепочке: добыча + переработка + доставка + сжигание','Старое оборудование работает хуже паспортных данных','Неправильно измеряют КПД'],correct:1,fb:'Точно. Паспортный КПД котла — только последний шаг. Сотников берёт суммарный цикл от скважины до тепла. В этом подходе потери многократно возрастают.'},
+  {q:'Что происходит с эфирной волной при движении по острию катода?',opts:['Волна рассеивается и исчезает','На сужающемся конусе амплитуда нарастает и волна «опрокидывается» в тороидальное движение','Волна отражается обратно по проводнику','Волна трансформируется в тепловое излучение'],correct:1,fb:'Верно! Закон сохранения импульса: при уменьшении сечения амплитуда волны растёт. На конце острия — переход в тороид.'},
+  {q:'Почему Сотников считает КПД 3000% генератора Шоулдерса не нарушением закона сохранения энергии?',opts:['Закон неприменим в разрежённом пространстве','В знаменатель не включена энергия давления окружающего эфира, которую усваивает тороид','Шоулдерс неправильно измерял энергию','Трубка работает за счёт радиоактивного распада'],correct:1,fb:'Правильно. КПД считается как отношение выходной энергии к входному импульсу. Но тороид дополнительно «откачивает» энергию из вихря окружающего эфира — этот вклад в знаменатель не входит.'},
+  {q:'Как тороидальная модель Сотникова соотносится с архитектурой НОВЕЯ?',opts:['Никак — это разные области','Тороидальная модель — космологическая метафора 12-секторной архитектуры: каждый сектор связан с ядром через общий вихрь','НОВЕЯ использует тороиды как логотип','Сотников был членом НГОИ'],correct:1,fb:'Верно! В концепции Семикнижия работы Сотникова обеспечивают «внешнее кольцо» — тонкие энергии. Тороидальная модель Солнечной системы перекликается с 12-секторной архитектурой Nebi-Ula.'},
+];
+let qi=0,sc=0,ans=false;
+function renderQ(){const q=qs[qi];document.getElementById('qp').style.width=Math.round(qi/qs.length*100)+'%';document.getElementById('qn').textContent=qi+1;document.getElementById('qs').textContent=sc;document.getElementById('qa').innerHTML='<div class="quiz-q">'+q.q+'</div><div class="qopts">'+q.opts.map((o,i)=>'<button class="qopt" onclick="ansQ('+i+')">'+o+'</button>').join('')+'</div><div id="qfb" style="display:none;" class="qfb"></div><div id="qnx" style="display:none;margin-top:0.5rem;"><button class="btn pri" onclick="nextQ()">'+(qi<qs.length-1?'Следующий вопрос →':'Итоги →')+'</button></div>';ans=false;}
+function ansQ(i){if(ans)return;ans=true;const q=qs[qi];const opts=document.querySelectorAll('.qopt');opts[i].classList.add(i===q.correct?'ok':'err');opts[q.correct].classList.add('ok');opts.forEach(o=>o.disabled=true);if(i===q.correct)sc++;document.getElementById('qs').textContent=sc;const fb=document.getElementById('qfb');fb.style.display='block';fb.className='qfb '+(i===q.correct?'ok':'err');fb.textContent=q.fb;document.getElementById('qnx').style.display='block';}
+function nextQ(){qi++;if(qi>=qs.length){document.getElementById('qa').style.display='none';document.getElementById('qp').style.width='100%';document.getElementById('qr').style.display='block';const pct=Math.round(sc/qs.length*100);document.getElementById('rt').textContent=pct>=80?'Отличный результат!':pct>=50?'Хорошее начало!':'Изучи материал ещё раз!';document.getElementById('rb').textContent='Верно: '+sc+' из '+qs.length+' ('+pct+'%). '+(pct>=80?'Эфирная физика Сотникова освоена!':'Вернись к разделам и попробуй снова.');}else{renderQ();}}
+function resetQ(){qi=0;sc=0;ans=false;document.getElementById('qa').style.display='block';document.getElementById('qr').style.display='none';renderQ();}
+renderQ();
+</script>
+</body>
+</html>
