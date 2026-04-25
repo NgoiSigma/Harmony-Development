@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIT-S v2 · Протокол Полной Системы</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Tektur:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --bg:       #030508;
+  --panel:    #060a10;
+  --panel2:   #080e18;
+  --border:   #0f2040;
+  --border2:  #1a3560;
+  --tin:      #d4cbb0;
+  --euv:      #00d4ff;
+  --flash:    #ff7700;
+  --crystal:  #7dff4f;
+  --snake:    #40ff88;
+  --fdl-t:    #5599ff;
+  --fdl-a:    #ff4444;
+  --fdl-s:    #ffcc00;
+  --text:     #a8c4e8;
+  --muted:    #3a5878;
+  --dim:      #1a2a40;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+.header {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  height: 56px;
+}
+.logo {
+  font-family: 'Tektur', sans-serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
+  color: var(--euv);
+}
+.logo .ver { color: var(--flash); font-size: 0.75rem; vertical-align: super; }
+.logo .ngoi { color: var(--muted); font-size: 0.6rem; display: block; letter-spacing: 0.25em; margin-top: -2px; }
+
+.header-nav {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+}
+.nav-tab {
+  padding: 6px 14px;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  transition: all 0.2s;
+}
+.nav-tab:hover { color: var(--text); border-color: var(--border2); }
+.nav-tab.active { color: var(--euv); border-color: var(--euv); background: rgba(0,212,255,0.05); }
+
+.header-meta {
+  display: flex; gap: 8px; align-items: center;
+}
+.badge {
+  font-size: 0.55rem;
+  padding: 3px 7px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  letter-spacing: 0.15em;
+}
+.badge.lit { border-color: var(--euv); color: var(--euv); }
+.badge.fdl { border-color: var(--fdl-s); color: var(--fdl-s); }
+
+/* ── LAYOUT ── */
+.main { display: flex; flex: 1; overflow: hidden; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 256px; min-width: 256px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  display: flex; flex-direction: column;
+}
+.sb-section {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sb-title {
+  font-family: 'Tektur', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 11px;
+}
+
+/* Mode buttons */
+.mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.mode-btn {
+  padding: 8px 4px;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 1.4;
+  transition: all 0.2s;
+}
+.mode-btn:hover { border-color: var(--border2); color: var(--text); }
+.mode-btn.active { border-color: var(--flash); color: var(--flash); background: rgba(255,119,0,0.07); }
+.mode-btn.fdl-t { border-color: var(--fdl-t); color: var(--fdl-t); background: rgba(85,153,255,0.07); }
+.mode-btn.fdl-a { border-color: var(--fdl-a); color: var(--fdl-a); background: rgba(255,68,68,0.07); }
+.mode-btn.fdl-s { border-color: var(--fdl-s); color: var(--fdl-s); background: rgba(255,204,0,0.07); }
+
+/* Sliders */
+.ctrl { margin-bottom: 10px; }
+.ctrl label {
+  display: flex; justify-content: space-between;
+  font-size: 0.65rem; color: var(--text); margin-bottom: 4px;
+}
+.ctrl label .v { font-weight: 500; color: var(--euv); }
+input[type=range] {
+  width: 100%; appearance: none;
+  height: 2px; background: var(--border2); outline: none; cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  appearance: none; width: 10px; height: 10px;
+  background: var(--euv); border-radius: 0; cursor: pointer;
+}
+
+/* Buttons */
+.btn {
+  width: 100%; padding: 8px;
+  margin-bottom: 5px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.btn:hover { border-color: var(--euv); color: var(--euv); }
+.btn.primary { border-color: var(--flash); color: var(--flash); }
+.btn.primary:hover { background: rgba(255,119,0,0.1); }
+.btn.snake { border-color: var(--snake); color: var(--snake); }
+.btn.snake:hover { background: rgba(64,255,136,0.07); }
+.btn.fdl { border-color: var(--fdl-s); color: var(--fdl-s); }
+.btn.fdl:hover { background: rgba(255,204,0,0.07); }
+
+/* Hardware panel */
+.hw-row {
+  display: flex; align-items: flex-start; gap: 8px;
+  margin-bottom: 8px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  transition: border-color 0.3s;
+}
+.hw-row.active { border-color: var(--euv); }
+.hw-icon { font-size: 1.1rem; min-width: 22px; text-align: center; margin-top: 2px; }
+.hw-info .hw-label { font-size: 0.6rem; color: var(--euv); letter-spacing: 0.1em; }
+.hw-info .hw-desc { font-size: 0.58rem; color: var(--muted); margin-top: 2px; line-height: 1.5; }
+.hw-bar { height: 2px; background: var(--border2); margin-top: 5px; }
+.hw-bar-fill { height: 100%; background: var(--euv); transition: width 0.8s; }
+
+/* Laser mode selector */
+.laser-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.laser-btn {
+  padding: 7px 4px;
+  font-size: 0.57rem;
+  letter-spacing: 0.07em;
+  text-align: center;
+  line-height: 1.4;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  transition: all 0.2s;
+}
+.laser-btn.active { border-color: var(--flash); color: var(--flash); background: rgba(255,119,0,0.07); }
+.laser-btn:hover { border-color: var(--border2); color: var(--text); }
+
+/* ── CANVAS AREA ── */
+.canvas-area {
+  flex: 1;
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+.canvas-wrap {
+  display: flex; justify-content: center;
+  padding: 16px 16px 0;
+}
+#canvas-container canvas { display: block; }
+
+/* Phase pipeline */
+.pipeline {
+  display: flex; margin: 12px 16px 0;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.pip-step {
+  flex: 1; padding: 8px 6px;
+  text-align: center;
+  font-size: 0.57rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-right: 1px solid var(--border);
+  transition: all 0.3s;
+  line-height: 1.5;
+}
+.pip-step:last-child { border-right: none; }
+.pip-step.active { background: rgba(0,212,255,0.07); color: var(--euv); }
+.pip-step.done { background: rgba(125,255,79,0.05); color: var(--crystal); }
+.pip-step .pip-sub { font-size: 0.5rem; color: var(--muted); margin-top: 2px; }
+
+/* Metrics grid */
+.metrics {
+  display: grid; grid-template-columns: repeat(5,1fr);
+  gap: 6px; margin: 10px 16px 0;
+}
+.metric {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 10px 8px; text-align: center;
+}
+.m-label { font-size: 0.52rem; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 5px; }
+.m-val { font-family: 'Tektur', sans-serif; font-weight: 900; font-size: 1.2rem; color: var(--euv); }
+.m-val.hot { color: var(--flash); }
+.m-val.gold { color: var(--fdl-s); }
+.m-val.green { color: var(--crystal); }
+.m-val.snake { color: var(--snake); }
+
+/* FDL Triad */
+.fdl-triad {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px; margin: 10px 16px 0;
+}
+.fdl-cell {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 12px 10px;
+  transition: border-color 0.5s, background 0.5s;
+}
+.fdl-cell.t-active { border-color: var(--fdl-t); background: rgba(85,153,255,0.06); }
+.fdl-cell.a-active { border-color: var(--fdl-a); background: rgba(255,68,68,0.06); }
+.fdl-cell.s-active { border-color: var(--fdl-s); background: rgba(255,204,0,0.06); }
+.fdl-letter {
+  font-family: 'Tektur', sans-serif; font-weight: 900; font-size: 1.5rem;
+  margin-bottom: 3px;
+}
+.fdl-letter.t { color: var(--fdl-t); }
+.fdl-letter.a { color: var(--fdl-a); }
+.fdl-letter.s { color: var(--fdl-s); }
+.fdl-name { font-size: 0.6rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
+.fdl-desc { font-family: 'Crimson Pro', serif; font-size: 0.78rem; color: var(--text); line-height: 1.5; }
+.fdl-state { font-size: 0.62rem; margin-top: 6px; padding: 4px 6px; border: 1px solid var(--border); color: var(--muted); }
+
+/* Compare panel */
+.compare-panel {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6px; margin: 10px 16px 0;
+}
+.cmp-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 14px;
+}
+.cmp-box.winner { border-color: var(--crystal); }
+.cmp-head {
+  font-family: 'Tektur', sans-serif; font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.cmp-head.tomo { color: var(--muted); }
+.cmp-head.lits { color: var(--crystal); }
+.cmp-row {
+  font-family: 'Crimson Pro', serif; font-size: 0.78rem; color: var(--muted);
+  padding: 4px 0; border-bottom: 1px solid var(--dim);
+  display: flex; align-items: flex-start; gap: 6px; line-height: 1.4;
+}
+.cmp-row .mark { min-width: 14px; }
+.cmp-row.positive { color: var(--text); }
+.cmp-row.positive .mark { color: var(--crystal); }
+.cmp-row.negative .mark { color: var(--fdl-a); }
+
+/* SVET */
+.svet-row {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 6px; margin: 10px 16px 0;
+}
+.svet-cell {
+  background: var(--panel); border: 1px solid var(--border);
+  padding: 10px 8px; text-align: center;
+}
+.sv-letter { font-family: 'Tektur', sans-serif; font-weight: 900; font-size: 1.3rem; color: var(--euv); }
+.sv-word { font-size: 0.52rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
+.sv-status { font-size: 0.62rem; color: var(--text); margin-top: 5px; min-height: 28px; line-height: 1.4; }
+
+/* Log */
+.log {
+  margin: 10px 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  max-height: 80px;
+  overflow-y: auto;
+  font-size: 0.64rem;
+  line-height: 1.6;
+}
+.log-e { color: var(--muted); }
+.log-e.euv { color: var(--euv); }
+.log-e.warn { color: var(--flash); }
+.log-e.ok { color: var(--crystal); }
+.log-e.fdl { color: var(--fdl-s); }
+
+/* Summary */
+.summary {
+  margin: 10px 16px 20px;
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  padding: 16px 20px;
+}
+.summary h3 {
+  font-family: 'Tektur', sans-serif; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--flash); margin-bottom: 10px;
+}
+.summary p {
+  font-family: 'Crimson Pro', serif; font-size: 0.85rem; font-style: italic;
+  color: var(--muted); line-height: 1.75; margin-bottom: 6px;
+}
+.summary .quote {
+  border-left: 2px solid var(--flash);
+  padding-left: 12px;
+  color: var(--text);
+  font-style: normal;
+  font-size: 0.82rem;
+}
+
+/* Section visible control */
+.section-toggle {
+  display: flex; gap: 5px; flex-wrap: wrap;
+  margin: 12px 16px 0;
+}
+.sec-btn {
+  padding: 5px 10px;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  transition: all 0.2s;
+}
+.sec-btn.on { border-color: var(--euv); color: var(--euv); background: rgba(0,212,255,0.06); }
+.sec-btn:hover { color: var(--text); }
+
+/* Active section highlight */
+.collapsible { transition: all 0.3s; overflow: hidden; }
+.collapsible.hidden { display: none; }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">
+    LIT-S <span class="ver">v2</span>
+    <span class="ngoi">NGOI-Σ · NOVEYA · ФДЛ/SVET</span>
+  </div>
+  <div class="header-nav">
+    <button class="nav-tab active" onclick="switchTab('sim')">Симулятор</button>
+    <button class="nav-tab" onclick="switchTab('fdl')">ФДЛ Триада</button>
+    <button class="nav-tab" onclick="switchTab('compare')">LIT vs TOMO</button>
+    <button class="nav-tab" onclick="switchTab('hw')">Hardware</button>
+    <button class="nav-tab" onclick="switchTab('summary')">Резюме</button>
+  </div>
+  <div class="header-meta">
+    <div class="badge lit">EUV</div>
+    <div class="badge fdl">ФДЛ</div>
+    <div class="badge">SVET</div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+  <div class="sb-section">
+    <div class="sb-title">Режим / Фаза</div>
+    <div class="mode-grid">
+      <button class="mode-btn" id="mb-static" onclick="setMode('static')">Теза<br><small>Маски</small></button>
+      <button class="mode-btn" id="mb-flash" onclick="setMode('flash')">Антитеза<br><small>Вспышка</small></button>
+      <button class="mode-btn" id="mb-reflect" onclick="setMode('reflect')">Рефлексия<br><small>Lytagra</small></button>
+      <button class="mode-btn" id="mb-crystal" onclick="setMode('crystal')">Синтез<br><small>Змея</small></button>
+    </div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-title">Лазер-инициатор</div>
+    <div class="laser-btns">
+      <button class="laser-btn active" id="lb-micro" onclick="setLaser('micro')">Микро<br><small>Волевой акт</small></button>
+      <button class="laser-btn" id="lb-macro" onclick="setLaser('macro')">Макро<br><small>Событийный<br>горизонт</small></button>
+    </div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-title">Параметры поля</div>
+    <div class="ctrl">
+      <label>Узлов <span class="v" id="v-nodes">24</span></label>
+      <input type="range" id="s-nodes" min="8" max="48" value="24" oninput="updateParam('nodes',this.value)">
+    </div>
+    <div class="ctrl">
+      <label>Поляризация <span class="v" id="v-polar">0.55</span></label>
+      <input type="range" id="s-polar" min="0" max="1" step="0.01" value="0.55" oninput="updateParam('polar',this.value)">
+    </div>
+    <div class="ctrl">
+      <label>Маски/Фильтры <span class="v" id="v-masks">0.70</span></label>
+      <input type="range" id="s-masks" min="0" max="1" step="0.01" value="0.70" oninput="updateParam('masks',this.value)">
+    </div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-title">Параметры вспышки</div>
+    <div class="ctrl">
+      <label>Накал <span class="v" id="v-intensity">0.80</span></label>
+      <input type="range" id="s-intensity" min="0.1" max="1" step="0.01" value="0.80" oninput="updateParam('intensity',this.value)">
+    </div>
+    <div class="ctrl">
+      <label>Скорость <span class="v" id="v-speed">0.50</span></label>
+      <input type="range" id="s-speed" min="0.05" max="1" step="0.01" value="0.50" oninput="updateParam('speed',this.value)">
+    </div>
+    <div class="ctrl">
+      <label>Отражений (Lytagra) <span class="v" id="v-reflections">5</span></label>
+      <input type="range" id="s-reflections" min="1" max="12" step="1" value="5" oninput="updateParam('reflections',this.value)">
+    </div>
+    <div class="ctrl">
+      <label>Термоинертность <span class="v" id="v-thermo">0.75</span></label>
+      <input type="range" id="s-thermo" min="0" max="1" step="0.01" value="0.75" oninput="updateParam('thermo',this.value)">
+    </div>
+    <div class="ctrl">
+      <label>Вязкость носителя <span class="v" id="v-viscosity">0.65</span></label>
+      <input type="range" id="s-viscosity" min="0" max="1" step="0.01" value="0.65" oninput="updateParam('viscosity',this.value)">
+    </div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-title">Управление</div>
+    <button class="btn primary" onclick="triggerFlash()">⚡ Вспышка Олова</button>
+    <button class="btn fdl" onclick="runFDLCycle()">◈ ФДЛ Полный Цикл</button>
+    <button class="btn snake" onclick="crystallize()">∿ Зафиксировать Змею</button>
+    <button class="btn" onclick="resetSim()">↺ Сброс</button>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-title">Seed</div>
+    <div class="ctrl">
+      <label>Seed <span class="v" id="v-seed">42</span></label>
+      <input type="range" id="s-seed" min="1" max="999" value="42" oninput="updateParam('seed',this.value); reinitNodes()">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+      <button class="btn" onclick="prevSeed()">← Пред</button>
+      <button class="btn" onclick="nextSeed()">След →</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- CANVAS AREA -->
+<div class="canvas-area" id="canvas-area">
+
+  <!-- Canvas -->
+  <div class="canvas-wrap">
+    <div id="canvas-container"></div>
+  </div>
+
+  <!-- Phase pipeline -->
+  <div class="pipeline">
+    <div class="pip-step active" id="ps-0">Теза<div class="pip-sub">Статика·Маски</div></div>
+    <div class="pip-step" id="ps-1">Антитеза<div class="pip-sub">Tin Flash</div></div>
+    <div class="pip-step" id="ps-2">Рефлексия<div class="pip-sub">Lytagra·Интерф.</div></div>
+    <div class="pip-step" id="ps-3">Синтез<div class="pip-sub">Змея·Кристалл</div></div>
+  </div>
+
+  <!-- Section toggles -->
+  <div class="section-toggle">
+    <button class="sec-btn on" onclick="toggleSection('metrics')">Метрики</button>
+    <button class="sec-btn on" onclick="toggleSection('fdl-panel')">ФДЛ</button>
+    <button class="sec-btn on" onclick="toggleSection('svet-panel')">SVET</button>
+    <button class="sec-btn" onclick="toggleSection('compare-panel')">Сравнение</button>
+    <button class="sec-btn" onclick="toggleSection('hw-panel')">Hardware</button>
+  </div>
+
+  <!-- Metrics -->
+  <div class="metrics collapsible" id="metrics">
+    <div class="metric"><div class="m-label">Проводимость</div><div class="m-val" id="m-conduct">0.00</div></div>
+    <div class="metric"><div class="m-label">Активных</div><div class="m-val hot" id="m-active">0</div></div>
+    <div class="metric"><div class="m-label">Рефлексий</div><div class="m-val" id="m-refs">0</div></div>
+    <div class="metric"><div class="m-label">Кристалл%</div><div class="m-val green" id="m-crystal">0%</div></div>
+    <div class="metric"><div class="m-label">Змея-индекс</div><div class="m-val snake" id="m-snake">—</div></div>
+  </div>
+
+  <!-- FDL Triad -->
+  <div class="fdl-triad collapsible" id="fdl-panel">
+    <div class="fdl-cell" id="fdl-t">
+      <div class="fdl-letter t">Т</div>
+      <div class="fdl-name">Теза · Статика</div>
+      <div class="fdl-desc">Система в покое. Узлы экранированы социальными масками-фильтрами. Структура взаимодействий скрыта. «На заборе написано…»</div>
+      <div class="fdl-state" id="fstate-t">Ожидание</div>
+    </div>
+    <div class="fdl-cell" id="fdl-a">
+      <div class="fdl-letter a">А</div>
+      <div class="fdl-name">Антитеза · Вспышка</div>
+      <div class="fdl-desc">Момент накала. Диэлектрик-маска пробит. Узел испускает истинную частоту. Хаос отражений Lytagra — интерференционная буря.</div>
+      <div class="fdl-state" id="fstate-a">Не активирована</div>
+    </div>
+    <div class="fdl-cell" id="fdl-s">
+      <div class="fdl-letter s">С</div>
+      <div class="fdl-name">Синтез · Змея</div>
+      <div class="fdl-desc">Из хаоса рождается кристалл. Суперпозиция отражений формирует «Змею» — истинную топологическую структуру системы. «…а там дрова лежат».</div>
+      <div class="fdl-state" id="fstate-s">Ожидает антитезы</div>
+    </div>
+  </div>
+
+  <!-- SVET -->
+  <div class="svet-row collapsible" id="svet-panel">
+    <div class="svet-cell">
+      <div class="sv-letter">S</div>
+      <div class="sv-word">Structure</div>
+      <div class="sv-status" id="svet-s">Инит.</div>
+    </div>
+    <div class="svet-cell">
+      <div class="sv-letter">V</div>
+      <div class="sv-word">Взаимодействие</div>
+      <div class="sv-status" id="svet-v">Ожидание</div>
+    </div>
+    <div class="svet-cell">
+      <div class="sv-letter">E</div>
+      <div class="sv-word">Эволюция</div>
+      <div class="sv-status" id="svet-e">Не начата</div>
+    </div>
+    <div class="svet-cell">
+      <div class="sv-letter">T</div>
+      <div class="sv-word">Типография</div>
+      <div class="sv-status" id="svet-t">Подложка пуста</div>
+    </div>
+  </div>
+
+  <!-- Compare panel -->
+  <div class="compare-panel collapsible hidden" id="compare-panel">
+    <div class="cmp-box">
+      <div class="cmp-head tomo">Томография (Савельев)</div>
+      <div class="cmp-row negative"><span class="mark">✗</span> Изучает стационарные структуры (морфологию)</div>
+      <div class="cmp-row negative"><span class="mark">✗</span> Всё равно что изучать выключенный компьютер по цвету плат</div>
+      <div class="cmp-row negative"><span class="mark">✗</span> Высокая стоимость оборудования (МРТ)</div>
+      <div class="cmp-row negative"><span class="mark">✗</span> Не фиксирует функцию — фиксирует «мясо»</div>
+      <div class="cmp-row negative"><span class="mark">✗</span> Статический срез — нет динамики накала</div>
+    </div>
+    <div class="cmp-box winner">
+      <div class="cmp-head lits">Литография LIT-S</div>
+      <div class="cmp-row positive"><span class="mark">✓</span> Изучает динамическую проводимость</div>
+      <div class="cmp-row positive"><span class="mark">✓</span> Нам важно как узел отражает свет под нагрузкой</div>
+      <div class="cmp-row positive"><span class="mark">✓</span> Полевая рефлексия — без физического вмешательства</div>
+      <div class="cmp-row positive"><span class="mark">✓</span> Фиксирует функцию, а не субстрат</div>
+      <div class="cmp-row positive"><span class="mark">✓</span> Разрешение зависит от сопряжения элементов, не мощности</div>
+    </div>
+  </div>
+
+  <!-- Hardware panel -->
+  <div class="collapsible hidden" id="hw-panel" style="margin: 10px 16px 0;">
+    <div style="font-family:'Tektur',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Hardware · Эталонный Узел-Приёмник NGOI-Σ</div>
+    <div class="hw-row active" id="hw-thermo">
+      <div class="hw-icon">🔥</div>
+      <div class="hw-info" style="flex:1">
+        <div class="hw-label">Термическая Инертность</div>
+        <div class="hw-desc">Высокий порог когнитивного шума. Сигнал проходит без защитной блокировки при накале. «Снимать кастрюли голыми руками».</div>
+        <div class="hw-bar"><div class="hw-bar-fill" id="hw-thermo-bar" style="width:75%"></div></div>
+      </div>
+    </div>
+    <div class="hw-row" id="hw-viscosity">
+      <div class="hw-icon">🩸</div>
+      <div class="hw-info" style="flex:1">
+        <div class="hw-label">Вязкость Носителя</div>
+        <div class="hw-desc">«Йогуртовая кровь» = плотность записи. Высокая вязкость — высокая информационная ёмкость. Голограмма смысла удерживается дольше.</div>
+        <div class="hw-bar"><div class="hw-bar-fill" id="hw-viscosity-bar" style="width:65%;background:var(--flash)"></div></div>
+      </div>
+    </div>
+    <div class="hw-row" id="hw-snake">
+      <div class="hw-icon">🐍</div>
+      <div class="hw-info" style="flex:1">
+        <div class="hw-label">Змеиный Резонанс</div>
+        <div class="hw-desc">Частотное сопряжение с естественными структурными ритмами. Узел работает в диапазоне вне социальных конструктов.</div>
+        <div class="hw-bar"><div class="hw-bar-fill" id="hw-snake-bar" style="width:90%;background:var(--snake)"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Log -->
+  <div class="log" id="log-panel">
+    <div class="log-e euv">[BOOT] LIT-S v2 Protocol · ФДЛ/SVET/EUV · NGOI-Σ active</div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary collapsible hidden" id="summary-panel">
+    <h3>Executive Summary · «Железный Клин»</h3>
+    <p><strong style="color:var(--euv);font-style:normal">Проект LIT-S (Lithography of Social States)</strong><br>
+    Суть: Переход от морфологического анализа к волновой детерминации.</p>
+    <p>Метод: Извлечение структурных данных через фазовый переход «Олово→Вода→Образ». Инициатор (лазер) — либо <em>Волевой Акт предельного уровня</em> (микромасштаб: пробой диэлектрика-маски), либо <em>Событийный Горизонт</em> (макромасштаб: кризис, технологический переход, «Народная Игра»).</p>
+    <p>Результат: Высокоточный слепок состояния системы (мозга/общества) без физического вмешательства — за счёт фиксации интерференции в момент энергетического накала.</p>
+    <p class="quote">«Мы не смотрим на мозг — мы смотрим на то, как мозг рисует реальность своими импульсами».</p>
+    <p style="margin-top:10px;font-size:0.72rem;color:var(--muted);font-style:normal">
+      Разрешающая способность системы зависит не от мощности томографа, а от <strong style="color:var(--crystal)">правильного сопряжения элементов среды</strong>. Это и есть принцип Органической Инженерии NGOI.
+    </p>
+  </div>
+
+</div>
+</div>
+
+<script>
+// ════════════════════════════════════
+//  STATE
+// ════════════════════════════════════
+let params = {
+  nodes:24, polar:0.55, masks:0.70,
+  intensity:0.80, speed:0.50, reflections:5,
+  thermo:0.75, viscosity:0.65, seed:42
+};
+let simMode = 'static';
+let laserMode = 'micro';
+let nodes = [], pulses = [], crystalEdges = [];
+let refCount = 0, snakeIndex = 0;
+let cycleRunning = false, cyclePhase = 0, cycleTimer = 0;
+let activeTab = 'sim';
+
+// ════════════════════════════════════
+//  P5 SKETCH
+// ════════════════════════════════════
+const sketch = (p) => {
+  const W = 680, H = 380;
+
+  p.setup = () => {
+    let c = p.createCanvas(W, H);
+    c.parent('canvas-container');
+    p.colorMode(p.RGB, 255);
+    initNodes(p);
+  };
+
+  p.draw = () => {
+    p.background(3, 5, 8);
+    if (cycleRunning) runCycle(p);
+    drawBg(p);
+    drawCrystalEdges(p);
+    drawPulses(p);
+    drawNodes(p);
+    if (simMode === 'crystal') drawSnake(p);
+    updateMetrics();
+  };
+
+  p.mousePressed = () => {
+    let minD = 9999, minI = -1;
+    for (let i = 0; i < nodes.length; i++) {
+      let d = p.dist(p.mouseX, p.mouseY, nodes[i].x, nodes[i].y);
+      if (d < minD) { minD = d; minI = i; }
+    }
+    if (minD < 32 && minI >= 0) igniteNode(p, minI);
+  };
+
+  window._p5ref = p;
+};
+
+// ════════════════════════════════════
+//  INIT
+// ════════════════════════════════════
+function initNodes(p) {
+  nodes = []; pulses = []; crystalEdges = [];
+  refCount = 0; snakeIndex = 0;
+  let r = new SR(params.seed);
+  const W = 680, H = 380, cx = W/2, cy = H/2;
+
+  for (let i = 0; i < params.nodes; i++) {
+    let angle = (i / params.nodes) * Math.PI * 2 - Math.PI/2;
+    let rad = r.next() < 0.25 ? 80 + r.next()*40 : 145 + r.next()*55;
+    let x = cx + Math.cos(angle)*rad + (r.next()-0.5)*30;
+    let y = cy + Math.sin(angle)*rad + (r.next()-0.5)*30;
+    let polarized = r.next() < params.polar;
+    nodes.push({
+      x, y,
+      phase: r.next()*Math.PI*2,
+      polarized,
+      maskLevel: params.masks*(0.5+r.next()*0.5),
+      activation: 0,
+      trueFreq: 0.3+r.next()*0.7,
+      group: polarized ? (r.next()<0.5?1:2) : 0,
+      flashed: false,
+      crystalized: false,
+      id: i,
+      // hardware params
+      thermo: params.thermo*(0.6+r.next()*0.8),
+      viscosity: params.viscosity*(0.5+r.next()*1.0)
+    });
+  }
+  updSvet('s', `${params.nodes} узлов · Seed ${params.seed}`);
+  updSvet('v', 'Ожидание');
+  updSvet('e', 'Статика');
+  updSvet('t', 'Пустая подложка');
+  setFDL('t', 'active');
+  log(`[INIT] Поле инициализировано · ${params.nodes} узлов · Поляризация ${(params.polar*100).toFixed(0)}%`);
+}
+
+// ════════════════════════════════════
+//  DRAW
+// ════════════════════════════════════
+function drawBg(p) {
+  // subtle grid
+  p.stroke(15, 28, 50, 50);
+  p.strokeWeight(0.4);
+  for (let x=0;x<680;x+=36) p.line(x,0,x,380);
+  for (let y=0;y<380;y+=36) p.line(0,y,680,y);
+  // center cross
+  p.stroke(20, 40, 80, 40);
+  p.line(340,0,340,380);
+  p.line(0,190,680,190);
+}
+
+function drawCrystalEdges(p) {
+  for (let e of crystalEdges) {
+    let a = e.alpha*255;
+    p.stroke(125, 255, 79, a*0.45);
+    p.strokeWeight(0.7);
+    p.line(e.x1,e.y1,e.x2,e.y2);
+    e.alpha = Math.min(e.alpha+0.004, 0.75);
+  }
+}
+
+function drawPulses(p) {
+  pulses = pulses.filter(pl => pl.life > 0);
+  for (let pl of pulses) {
+    let t = pl.life / pl.maxLife;
+    let a = t * 220;
+    if (pl.type==='flash') {
+      p.noFill();
+      // EUV ring: tin color
+      p.stroke(212, 203, 176, a);
+      p.strokeWeight(2);
+      p.ellipse(pl.x, pl.y, pl.r*2, pl.r*2);
+      // inner EUV blue
+      p.stroke(0, 212, 255, a*0.55);
+      p.strokeWeight(1);
+      p.ellipse(pl.x, pl.y, pl.r*1.35, pl.r*1.35);
+      pl.r += params.speed*5;
+    } else if (pl.type==='reflect') {
+      p.noFill();
+      p.stroke(255, 119, 0, a*0.65);
+      p.strokeWeight(0.9);
+      p.ellipse(pl.x, pl.y, pl.r*2, pl.r*2);
+      pl.r += params.speed*2.8;
+    } else if (pl.type==='crystal') {
+      p.noFill();
+      p.stroke(125, 255, 79, a*0.55);
+      p.strokeWeight(0.6);
+      p.ellipse(pl.x, pl.y, pl.r*2, pl.r*2);
+      pl.r += params.speed*1.8;
+    } else if (pl.type==='laser') {
+      p.noFill();
+      p.stroke(255, 220, 0, a*0.7);
+      p.strokeWeight(1.2);
+      p.ellipse(pl.x, pl.y, pl.r*2, pl.r*2);
+      pl.r += params.speed*6;
+    }
+    pl.life--;
+    checkHit(pl);
+  }
+}
+
+function checkHit(pl) {
+  if (pl.type !== 'flash' && pl.type !== 'reflect') return;
+  for (let nd of nodes) {
+    if (nd.id === pl.sourceId) continue;
+    let d = Math.hypot(nd.x-pl.x, nd.y-pl.y);
+    let tol = params.speed*6 + 4;
+    if (Math.abs(d - pl.r) < tol && !nd.flashed) {
+      // thermo affects how much signal passes through mask
+      let thermoBonus = nd.thermo * 0.4;
+      let visBonus = nd.viscosity * 0.25;
+      nd.activation = Math.min(1, nd.activation + params.intensity*(1 - nd.maskLevel*0.45) + thermoBonus);
+      nd.flashed = true;
+      refCount++;
+      if (pl.depth < params.reflections) {
+        pulses.push({x:nd.x, y:nd.y, r:4, life:65, maxLife:65,
+          type:'reflect', sourceId:nd.id, depth:pl.depth+1});
+        crystalEdges.push({x1:pl.x, y1:pl.y, x2:nd.x, y2:nd.y, alpha:0.08});
+        if (nd.activation > 0.55 && !nd.crystalized) {
+          nd.crystalized = true;
+          pulses.push({x:nd.x, y:nd.y, r:3, life:50, maxLife:50,
+            type:'crystal', sourceId:nd.id, depth:pl.depth+1});
+        }
+        // viscosity extends signal retention
+        if (nd.viscosity > 0.6 && pl.depth < params.reflections - 1) {
+          setTimeout(() => {
+            pulses.push({x:nd.x, y:nd.y, r:3, life:40, maxLife:40,
+              type:'reflect', sourceId:nd.id, depth:pl.depth+2});
+          }, nd.viscosity * 300);
+        }
+      }
+    }
+  }
+}
+
+function drawNodes(p) {
+  for (let nd of nodes) {
+    nd.phase += 0.025;
+    let pulse = 0.5 + 0.5*Math.sin(nd.phase);
+    let sz = 6 + nd.trueFreq*5;
+
+    let col;
+    if (nd.crystalized) {
+      let g = 145 + pulse*110;
+      col = p.color(50, g, 50);
+      sz += 3.5;
+    } else if (nd.flashed) {
+      col = p.color(220, 90+pulse*80, 15);
+      sz += 2.5;
+    } else if (nd.activation > 0.25) {
+      col = p.color(15, 90+nd.activation*100, 190+nd.activation*65);
+    } else {
+      if (nd.group===1) col = p.color(50, 70, 160, 170);
+      else if (nd.group===2) col = p.color(160, 50, 50, 170);
+      else col = p.color(40, 60, 100, 150);
+    }
+
+    // mask shell
+    if (nd.maskLevel > 0.35 && !nd.flashed) {
+      p.noFill();
+      p.stroke(60, 85, 140, nd.maskLevel*90);
+      p.strokeWeight(0.8);
+      p.ellipse(nd.x, nd.y, sz*2.7, sz*2.7);
+    }
+
+    p.noStroke();
+    p.fill(col);
+    p.ellipse(nd.x, nd.y, sz*2, sz*2);
+
+    // glow
+    if (nd.activation > 0.4 || nd.crystalized) {
+      p.noFill();
+      p.stroke(nd.crystalized ? p.color(125,255,79,50) : p.color(0,212,255,50));
+      p.strokeWeight(0.8);
+      p.ellipse(nd.x, nd.y, sz*2+7+pulse*5, sz*2+7+pulse*5);
+    }
+
+    // intra-group connections
+    for (let nd2 of nodes) {
+      if (nd2.id <= nd.id) continue;
+      if (nd2.group===nd.group && nd.group!==0) {
+        let d = Math.hypot(nd.x-nd2.x, nd.y-nd2.y);
+        if (d < 115) {
+          let a = (1-d/115)*35;
+          p.stroke(nd.group===1 ? p.color(50,70,200,a) : p.color(200,50,50,a));
+          p.strokeWeight(0.4);
+          p.line(nd.x,nd.y,nd2.x,nd2.y);
+        }
+      }
+    }
+  }
+}
+
+function drawSnake(p) {
+  // Build snake path through crystalized nodes by activation order
+  let cNodes = nodes.filter(n => n.crystalized);
+  if (cNodes.length < 3) return;
+  // sort by angle from center
+  let cx=340, cy=190;
+  cNodes.sort((a,b) => Math.atan2(a.y-cy,a.x-cx) - Math.atan2(b.y-cy,b.x-cx));
+
+  let t = (Date.now()/1000) % 1;
+  p.noFill();
+  p.strokeWeight(2);
+  for (let i=0;i<cNodes.length-1;i++) {
+    let seg = (i/cNodes.length + t) % 1;
+    let g = 80 + seg*175;
+    let a = 100 + seg*100;
+    p.stroke(50, g, 50, a);
+    p.beginShape();
+    for (let j=Math.max(0,i-1);j<=Math.min(cNodes.length-1,i+2);j++) {
+      p.curveVertex(cNodes[j].x, cNodes[j].y);
+    }
+    p.endShape();
+  }
+  snakeIndex = cNodes.length;
+  document.getElementById('m-snake').textContent = cNodes.length + '/' + nodes.length;
+}
+
+// ════════════════════════════════════
+//  CONTROLS
+// ════════════════════════════════════
+function igniteNode(p, idx) {
+  if (idx === undefined) {
+    let cx=340, cy=190, best=0, bd=9999;
+    for (let i=0;i<nodes.length;i++) {
+      let d=Math.hypot(nodes[i].x-cx, nodes[i].y-cy);
+      if (d<bd) { bd=d; best=i; }
+    }
+    idx = best;
+  }
+  let nd = nodes[idx];
+  nd.activation = 1;
+  nd.flashed = true;
+  nd.maskLevel = 0;
+  let lType = laserMode==='macro' ? 'laser' : 'flash';
+  pulses.push({x:nd.x, y:nd.y, r:8, life:95, maxLife:95, type:lType, sourceId:nd.id, depth:0});
+  refCount = 0;
+  log(`[FLASH] Узел #${idx} · Freq:${nd.trueFreq.toFixed(3)} · Лазер:${laserMode==='macro'?'Событийный горизонт':'Волевой акт'}`, 'warn');
+  setFDL('a', 'active');
+  updSvet('v', `Узел #${idx} · Накал`);
+  updSvet('e', 'Активна');
+  setMode('reflect');
+}
+
+function triggerFlash() { if (window._p5ref) igniteNode(window._p5ref); }
+
+function crystallize() {
+  for (let nd of nodes) {
+    if (nd.activation > 0.4) nd.crystalized = true;
+  }
+  setMode('crystal');
+  setFDL('s', 'active');
+  updSvet('t', 'Кристалл осаждён');
+  log('[CRYSTAL] Змея зафиксирована на подложке', 'ok');
+  document.getElementById('fstate-s').textContent = 'Синтез завершён';
+}
+
+function runFDLCycle() {
+  cycleRunning = true; cyclePhase = 0; cycleTimer = 0;
+  resetSim(false);
+  setMode('static');
+  log('[FDL] Полный цикл Теза→Антитеза→Синтез запущен', 'fdl');
+}
+
+function runCycle(p) {
+  cycleTimer++;
+  if (cyclePhase===0 && cycleTimer>70) {
+    setMode('flash');
+    igniteNode(p);
+    cyclePhase=1; cycleTimer=0;
+  } else if (cyclePhase===1 && cycleTimer>130) {
+    setMode('reflect');
+    cyclePhase=2; cycleTimer=0;
+  } else if (cyclePhase===2 && cycleTimer>160) {
+    crystallize();
+    cyclePhase=3; cycleTimer=0;
+    cycleRunning=false;
+  }
+}
+
+function resetSim(doLog=true) {
+  if (window._p5ref) initNodes(window._p5ref);
+  setMode('static');
+  if (doLog) log('[RESET] Поле сброшено');
+  document.getElementById('fstate-t').textContent = 'Active';
+  document.getElementById('fstate-a').textContent = 'Не активирована';
+  document.getElementById('fstate-s').textContent = 'Ожидает антитезы';
+  document.getElementById('fdl-t').className = 'fdl-cell t-active';
+  document.getElementById('fdl-a').className = 'fdl-cell';
+  document.getElementById('fdl-s').className = 'fdl-cell';
+}
+
+// ════════════════════════════════════
+//  METRICS
+// ════════════════════════════════════
+function updateMetrics() {
+  let active = nodes.filter(n=>n.activation>0.3).length;
+  let cryst = nodes.filter(n=>n.crystalized).length;
+  let cPct = Math.round(cryst/Math.max(1,nodes.length)*100);
+  let cond = (active/Math.max(1,nodes.length)*(1-params.polar*0.4)).toFixed(2);
+  document.getElementById('m-conduct').textContent = cond;
+  document.getElementById('m-active').textContent = active;
+  document.getElementById('m-refs').textContent = refCount;
+  document.getElementById('m-crystal').textContent = cPct+'%';
+  // update hw bars
+  document.getElementById('hw-thermo-bar').style.width = (params.thermo*100)+'%';
+  document.getElementById('hw-viscosity-bar').style.width = (params.viscosity*100)+'%';
+}
+
+// ════════════════════════════════════
+//  UI HELPERS
+// ════════════════════════════════════
+function setMode(m) {
+  simMode = m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active','fdl-t','fdl-a','fdl-s'));
+  const map = {static:'fdl-t', flash:'fdl-a', reflect:'active', crystal:'fdl-s'};
+  document.getElementById('mb-'+m)?.classList.add(map[m]);
+  const phases = ['static','flash','reflect','crystal'];
+  const idx = phases.indexOf(m);
+  for (let i=0;i<4;i++) {
+    let el = document.getElementById('ps-'+i);
+    el.classList.remove('active','done');
+    if (i===idx) el.classList.add('active');
+    else if (i<idx) el.classList.add('done');
+  }
+}
+
+function setLaser(l) {
+  laserMode = l;
+  document.querySelectorAll('.laser-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('lb-'+l)?.classList.add('active');
+  log(`[LASER] Инициатор: ${l==='micro'?'Волевой акт (микро)':'Событийный горизонт (макро)'}`);
+}
+
+function setFDL(letter, cls) {
+  let el = document.getElementById('fdl-'+letter);
+  if (!el) return;
+  el.className = 'fdl-cell ' + letter + '-active';
+  let stateEl = document.getElementById('fstate-'+letter);
+  if (!stateEl) return;
+  if (letter==='t') stateEl.textContent = 'Активна · Маски включены';
+  if (letter==='a') stateEl.textContent = 'Вспышка · Антитеза';
+  if (letter==='s') stateEl.textContent = 'Синтез завершён';
+}
+
+function updSvet(k, txt) {
+  let el = document.getElementById('svet-'+k);
+  if (el) el.textContent = txt;
+}
+
+function updateParam(key, val) {
+  val = parseFloat(val);
+  params[key] = val;
+  let el = document.getElementById('v-'+key);
+  if (el) el.textContent = Number.isInteger(params[key]) ? params[key] : params[key].toFixed(2);
+}
+
+function reinitNodes() { if (window._p5ref) initNodes(window._p5ref); }
+function prevSeed() { params.seed=Math.max(1,params.seed-1); document.getElementById('s-seed').value=params.seed; document.getElementById('v-seed').textContent=params.seed; reinitNodes(); }
+function nextSeed() { params.seed=Math.min(999,params.seed+1); document.getElementById('s-seed').value=params.seed; document.getElementById('v-seed').textContent=params.seed; reinitNodes(); }
+
+let sectionStates = { metrics:true, 'fdl-panel':true, 'svet-panel':true, 'compare-panel':false, 'hw-panel':false };
+
+function toggleSection(id) {
+  sectionStates[id] = !sectionStates[id];
+  let el = document.getElementById(id);
+  if (sectionStates[id]) el.classList.remove('hidden');
+  else el.classList.add('hidden');
+  // toggle button
+  let btns = document.querySelectorAll('.sec-btn');
+  let labels = {'metrics':'Метрики','fdl-panel':'ФДЛ','svet-panel':'SVET','compare-panel':'Сравнение','hw-panel':'Hardware'};
+  btns.forEach(b => {
+    if (b.textContent === labels[id]) {
+      b.classList.toggle('on', sectionStates[id]);
+    }
+  });
+}
+
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+
+  // Show/hide panels based on tab
+  let summaryEl = document.getElementById('summary-panel');
+  if (tab==='summary') { summaryEl.classList.remove('hidden'); }
+  else { summaryEl.classList.add('hidden'); }
+
+  if (tab==='compare') {
+    sectionStates['compare-panel']=true;
+    document.getElementById('compare-panel').classList.remove('hidden');
+  }
+  if (tab==='hw') {
+    sectionStates['hw-panel']=true;
+    document.getElementById('hw-panel').classList.remove('hidden');
+  }
+  if (tab==='fdl') {
+    sectionStates['fdl-panel']=true;
+    document.getElementById('fdl-panel').classList.remove('hidden');
+  }
+}
+
+function log(msg, type='') {
+  let p = document.getElementById('log-panel');
+  let el = document.createElement('div');
+  el.className = 'log-e ' + type;
+  let ts = new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  el.textContent = `[${ts}] ${msg}`;
+  p.appendChild(el);
+  p.scrollTop = p.scrollHeight;
+}
+
+// Seeded RNG
+function SR(seed) {
+  this.seed = seed % 2147483647;
+  if (this.seed<=0) this.seed+=2147483646;
+  this.next = function() {
+    this.seed = this.seed*16807%2147483647;
+    return (this.seed-1)/2147483646;
+  };
+}
+
+// Init
+new p5(sketch);
+</script>
+</body>
+</html>

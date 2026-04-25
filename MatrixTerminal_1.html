@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOVEYA · Матричный Терминал</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; min-height: 100vh; }
+  body {
+    background: radial-gradient(ellipse at top, #14110a 0%, #0a0a0a 60%);
+    color: #e8e8e8;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  #root { padding: 24px 32px; max-width: 1400px; margin: 0 auto; }
+  @media (max-width: 640px) { #root { padding: 16px; } }
+
+  header.top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 16px; flex-wrap: wrap; margin-bottom: 32px;
+    padding-bottom: 24px; border-bottom: 1px solid #2a2a2a;
+  }
+  h1.title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 36px; font-weight: 300; color: #e8d77a;
+    letter-spacing: -0.5px; line-height: 1.1;
+  }
+  .subtitle {
+    font-size: 12px; color: #888; letter-spacing: 2px;
+    text-transform: uppercase; margin-top: 6px;
+  }
+  .lang-switch { display: flex; gap: 2px; flex-wrap: wrap; }
+  .lang-btn {
+    background: transparent; color: #888; border: 1px solid #2a2a2a;
+    padding: 6px 10px; font-family: inherit; font-size: 11px;
+    cursor: pointer; letter-spacing: 0.5px; transition: all 0.2s;
+  }
+  .lang-btn:hover { border-color: #555; color: #ccc; }
+  .lang-btn.active { background: #e8d77a; color: #0a0a0a; border-color: #e8d77a; }
+
+  .tabs {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    border-bottom: 1px solid #2a2a2a; margin-bottom: 24px;
+  }
+  .tab {
+    background: transparent; color: #888; border: 1px solid transparent;
+    border-bottom: 1px solid transparent; padding: 10px 16px;
+    font-family: inherit; font-size: 13px; letter-spacing: 0.5px;
+    text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+    position: relative; top: 1px;
+  }
+  .tab:hover { color: #ccc; }
+  .tab.active {
+    background: #0d0d0d; color: #e8d77a; border-color: #3a3a2a;
+    border-bottom: 1px solid #0d0d0d;
+  }
+
+  .card {
+    background: #0d0d0d; border: 1px solid #2a2a2a; padding: 16px;
+  }
+  .card-label {
+    font-size: 10px; color: #666; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+
+  .grid { display: grid; gap: 16px; }
+  .grid-fit { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .grid-2-1 { grid-template-columns: 1fr 2fr; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 700px) {
+    .grid-3, .grid-2-1, .grid-2 { grid-template-columns: 1fr; }
+  }
+
+  input[type="text"], textarea {
+    width: 100%; background: #0d0d0d; border: 1px solid #2a2a2a;
+    color: #e8e8e8; font-family: inherit; outline: none;
+    transition: border-color 0.2s;
+  }
+  input[type="text"] { padding: 14px 16px; font-size: 18px; letter-spacing: 1.5px; }
+  input[type="text"]:focus, textarea:focus { border-color: #e8d77a; }
+  textarea {
+    min-height: 200px; padding: 16px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 13px; line-height: 1.7; resize: vertical;
+  }
+
+  input[type="range"] { width: 100%; accent-color: #e8d77a; }
+
+  .field-label {
+    display: block; font-size: 11px; letter-spacing: 1px;
+    color: #888; text-transform: uppercase; margin-bottom: 8px;
+  }
+
+  button.btn {
+    font-family: inherit; font-size: 12px; letter-spacing: 1px;
+    text-transform: uppercase; padding: 10px 16px; cursor: pointer;
+    transition: all 0.2s; border: 1px solid #e8d77a;
+  }
+  button.btn-primary { background: #e8d77a; color: #0a0a0a; }
+  button.btn-primary:hover { background: #f0e090; }
+  button.btn-secondary { background: transparent; color: #e8d77a; }
+  button.btn-secondary:hover { background: rgba(232,215,122,0.1); }
+
+  .op-letter-card {
+    background: #0d0d0d; border: 1px solid #2a2a2a; padding: 12px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .op-letter { font-size: 24px; color: #e8d77a; font-weight: 300; }
+  .op-meta { font-size: 10px; color: #888; letter-spacing: 0.5px; }
+  .op-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 8px; }
+
+  .coh-bar { background: #1a1a1a; height: 4px; margin-top: 8px; position: relative; }
+  .coh-bar > div {
+    background: linear-gradient(90deg, #c77a7a, #e8d77a, #9bc77a);
+    height: 100%; transition: width 0.4s;
+  }
+
+  pre.ast {
+    margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: #888; line-height: 1.6; max-height: 320px; overflow: auto;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .log-line { font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.8; }
+
+  .clover-yes {
+    margin-top: 16px; padding: 12px;
+    background: rgba(155,199,122,0.08); border: 1px solid #9bc77a44;
+    color: #9bc77a; font-size: 13px; letter-spacing: 0.5px;
+  }
+  .clover-no {
+    margin-top: 16px; padding: 12px;
+    background: rgba(199,122,122,0.08); border: 1px solid #c77a7a44;
+    color: #c77a7a; font-size: 13px; letter-spacing: 0.5px;
+  }
+
+  .info-strip {
+    padding: 12px; border-left: 2px solid #e8d77a44;
+    background: #0d0d0d; font-size: 11px; color: #888; line-height: 1.6;
+  }
+
+  footer.bottom {
+    margin-top: 48px; padding-top: 16px; border-top: 1px solid #2a2a2a;
+    font-size: 10px; color: #555; letter-spacing: 0.5px; line-height: 1.6;
+  }
+
+  /* RTL подгонка */
+  [dir="rtl"] .info-strip { border-left: none; border-right: 2px solid #e8d77a44; }
+
+  /* Скроллбар */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: #0d0d0d; }
+  ::-webkit-scrollbar-thumb { background: #2a2a2a; }
+  ::-webkit-scrollbar-thumb:hover { background: #3a3a2a; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useMemo } = React;
+
+// ═══════════════════════════════════════════════════════════════════════════
+// i18n
+// ═══════════════════════════════════════════════════════════════════════════
+const I18N = {
+  ru: {
+    title: "Матричный Терминал",
+    subtitle: "Семантико-инженерная среда NOVEYA",
+    tabs: { op: "Буквичный Оператор", parser: "Парсер «Гармонии»", sim: "Симулятор E=(Σ,Φ,Γ,τ)", dash: "Дашборд Резонанса" },
+    op: {
+      input: "Введите слово или фразу",
+      placeholder: "напр.: ИСТИНА, ВОДА, СВЕТ",
+      vector: "Итоговый вектор",
+      synth: "Синтез", diss: "Разрушение", neutral: "Нейтрально",
+      operators: "Операторы по буквам",
+      coherence: "Когерентность",
+      layers: "7 слоёв Логоса",
+      rolesLegend: "Роли: С — связь · О — образ · Р — различение · Д — действие · П — поток · М — модуляция · И — импульс",
+    },
+    parser: {
+      input: "Программа на «Гармонии»", run: "Скомпилировать и запустить",
+      example: "Загрузить пример: очистка воды",
+      ast: "AST (синтаксическое дерево)", out: "Журнал интерпретатора",
+      cloverHeader: "Этический фильтр «Клевер»",
+      cloverYes: "ДА — патч одобрен", cloverNo: "НЕТ — требуется пересборка",
+      tokens: "Токены",
+    },
+    sim: {
+      header: "Параметры состояния системы",
+      sigma: "Σ — Состояние системы",
+      phi: "Φ — Геометрический фактор (топологическая ловушка)",
+      gamma: "Γ — Семантический оператор (символ/частота)",
+      tau: "τ — Время / ориентация",
+      result: "Вероятность когерентного перехода",
+      contributions: "Вклад параметров",
+      formula: "E = (Σ, Φ, Γ, τ) — параметрическая модель состояний. Это символическая модель когерентности, не модель физической трансмутации вещества.",
+    },
+    dash: {
+      header: "Когерентность подсистем",
+      tone: "Опорный Тон проекта", project: "Текущий проект",
+      coherence: "Внутренняя когерентность", sectors: "Сектора Nebi-Ula (12)",
+      legend: "Согласованность собственных параметров системы. Не содержит претензии на «настройку на планету».",
+      sectorNames: ["Земля","Вода","Воздух","Огонь","Эфир","Слово","Число","Образ","Время","Связь","Память","Свет"],
+    },
+    disclaimer: "Инструмент работает как символическая семантическая среда. Расчёты — внутри собственной аксиоматики системы; они не описывают физическую трансмутацию вещества.",
+  },
+  en: {
+    title: "Matrix Terminal",
+    subtitle: "NOVEYA semantic-engineering environment",
+    tabs: { op: "Letter Operator", parser: "Garmoniya Parser", sim: "E=(Σ,Φ,Γ,τ) Simulator", dash: "Resonance Dashboard" },
+    op: { input: "Enter a word or phrase", placeholder: "e.g.: TRUTH, WATER, LIGHT", vector: "Resulting vector", synth: "Synthesis", diss: "Dissolution", neutral: "Neutral", operators: "Operators by letter", coherence: "Coherence", layers: "7 Logos layers", rolesLegend: "Roles: C — connection · O — image · R — distinction · D — action · F — flow · M — modulation · I — impulse" },
+    parser: { input: "Program in Garmoniya", run: "Compile & run", example: "Load example: water purification", ast: "AST (syntax tree)", out: "Interpreter log", cloverHeader: "Clover ethics filter", cloverYes: "YES — patch approved", cloverNo: "NO — rebuild required", tokens: "Tokens" },
+    sim: { header: "System state parameters", sigma: "Σ — System state", phi: "Φ — Geometric factor (topological trap)", gamma: "Γ — Semantic operator (symbol/frequency)", tau: "τ — Time / orientation", result: "Coherent-transition probability", contributions: "Parameter contributions", formula: "E = (Σ, Φ, Γ, τ) — a parametric state model. Symbolic coherence model, not physical matter transmutation." },
+    dash: { header: "Subsystem coherence", tone: "Project base tone", project: "Current project", coherence: "Internal coherence", sectors: "Nebi-Ula sectors (12)", legend: "Consistency of the system's own parameters. No claim of planetary tuning.", sectorNames: ["Earth","Water","Air","Fire","Ether","Word","Number","Image","Time","Link","Memory","Light"] },
+    disclaimer: "The tool operates as a symbolic semantic environment. Computations stay within the system's own axiomatics; they do not describe physical matter transmutation.",
+  },
+  de: {
+    title: "Matrix-Terminal",
+    subtitle: "Semantisch-technische Umgebung NOVEYA",
+    tabs: { op: "Buchstaben-Operator", parser: "Garmoniya-Parser", sim: "E=(Σ,Φ,Γ,τ)-Simulator", dash: "Resonanz-Dashboard" },
+    op: { input: "Wort oder Phrase eingeben", placeholder: "z. B.: WAHRHEIT, WASSER, LICHT", vector: "Ergebnisvektor", synth: "Synthese", diss: "Auflösung", neutral: "Neutral", operators: "Operatoren je Buchstabe", coherence: "Kohärenz", layers: "7 Logos-Ebenen", rolesLegend: "Rollen: V — Verbindung · B — Bild · U — Unterscheidung · A — Aktion · F — Fluss · M — Modulation · I — Impuls" },
+    parser: { input: "Programm in Garmoniya", run: "Kompilieren & ausführen", example: "Beispiel laden: Wasserreinigung", ast: "AST (Syntaxbaum)", out: "Interpreter-Log", cloverHeader: "Klee-Ethikfilter", cloverYes: "JA — Patch genehmigt", cloverNo: "NEIN — Neuaufbau nötig", tokens: "Tokens" },
+    sim: { header: "Systemzustandsparameter", sigma: "Σ — Systemzustand", phi: "Φ — Geometrischer Faktor (topologische Falle)", gamma: "Γ — Semantischer Operator (Symbol/Frequenz)", tau: "τ — Zeit / Orientierung", result: "Wahrscheinlichkeit kohärenten Übergangs", contributions: "Parameteranteile", formula: "E = (Σ, Φ, Γ, τ) — parametrisches Zustandsmodell. Symbolisches Kohärenzmodell, kein Modell physischer Transmutation." },
+    dash: { header: "Subsystem-Kohärenz", tone: "Grundton des Projekts", project: "Aktuelles Projekt", coherence: "Interne Kohärenz", sectors: "Nebi-Ula-Sektoren (12)", legend: "Konsistenz eigener Parameter. Kein Anspruch auf planetare Abstimmung.", sectorNames: ["Erde","Wasser","Luft","Feuer","Äther","Wort","Zahl","Bild","Zeit","Verbindung","Erinnerung","Licht"] },
+    disclaimer: "Das Werkzeug arbeitet als symbolische semantische Umgebung. Berechnungen liegen innerhalb der Axiomatik des Systems; sie beschreiben keine physische Materietransmutation.",
+  },
+  es: {
+    title: "Terminal Matricial",
+    subtitle: "Entorno semántico-ingenieril NOVEYA",
+    tabs: { op: "Operador de Letras", parser: "Parser de Garmoniya", sim: "Simulador E=(Σ,Φ,Γ,τ)", dash: "Panel de Resonancia" },
+    op: { input: "Introduce una palabra o frase", placeholder: "p. ej.: VERDAD, AGUA, LUZ", vector: "Vector resultante", synth: "Síntesis", diss: "Disolución", neutral: "Neutral", operators: "Operadores por letra", coherence: "Coherencia", layers: "7 capas del Logos", rolesLegend: "Roles: C — conexión · I — imagen · D — distinción · A — acción · F — flujo · M — modulación · P — impulso" },
+    parser: { input: "Programa en Garmoniya", run: "Compilar y ejecutar", example: "Cargar ejemplo: purificación de agua", ast: "AST (árbol sintáctico)", out: "Registro del intérprete", cloverHeader: "Filtro ético Trébol", cloverYes: "SÍ — parche aprobado", cloverNo: "NO — se requiere reconstrucción", tokens: "Tokens" },
+    sim: { header: "Parámetros del estado del sistema", sigma: "Σ — Estado del sistema", phi: "Φ — Factor geométrico (trampa topológica)", gamma: "Γ — Operador semántico (símbolo/frecuencia)", tau: "τ — Tiempo / orientación", result: "Probabilidad de transición coherente", contributions: "Contribuciones de parámetros", formula: "E = (Σ, Φ, Γ, τ) — modelo paramétrico de estados. Modelo simbólico de coherencia, no de transmutación física." },
+    dash: { header: "Coherencia de subsistemas", tone: "Tono base del proyecto", project: "Proyecto actual", coherence: "Coherencia interna", sectors: "Sectores Nebi-Ula (12)", legend: "Consistencia de los parámetros propios. Sin pretensión de sintonización planetaria.", sectorNames: ["Tierra","Agua","Aire","Fuego","Éter","Palabra","Número","Imagen","Tiempo","Enlace","Memoria","Luz"] },
+    disclaimer: "La herramienta funciona como entorno semántico simbólico. Los cálculos están dentro de la axiomática del propio sistema; no describen transmutación física.",
+  },
+  zh: {
+    title: "矩阵终端",
+    subtitle: "NOVEYA 语义工程环境",
+    tabs: { op: "字符算子", parser: "和谐解析器", sim: "E=(Σ,Φ,Γ,τ) 模拟器", dash: "共振仪表板" },
+    op: { input: "输入词或短语", placeholder: "例如：真理、水、光", vector: "结果向量", synth: "合成", diss: "消散", neutral: "中性", operators: "按字母的算子", coherence: "一致性", layers: "逻各斯七层", rolesLegend: "角色：C—联系 · O—意象 · R—区分 · D—行动 · F—流 · M—调制 · I—脉冲" },
+    parser: { input: "和谐语言程序", run: "编译并运行", example: "加载示例：水净化", ast: "AST（语法树）", out: "解释器日志", cloverHeader: "三叶草伦理过滤器", cloverYes: "是——补丁已通过", cloverNo: "否——需要重建", tokens: "词法单元" },
+    sim: { header: "系统状态参数", sigma: "Σ — 系统状态", phi: "Φ — 几何因子（拓扑陷阱）", gamma: "Γ — 语义算子（符号/频率）", tau: "τ — 时间 / 朝向", result: "相干跃迁概率", contributions: "参数贡献", formula: "E = (Σ, Φ, Γ, τ) — 状态参数模型。符号一致性模型，并非物理嬗变模型。" },
+    dash: { header: "子系统一致性", tone: "项目基调", project: "当前项目", coherence: "内部一致性", sectors: "Nebi-Ula 十二扇区", legend: "系统自有参数的一致性。无行星调谐之主张。", sectorNames: ["地","水","气","火","以太","言","数","像","时","联","忆","光"] },
+    disclaimer: "本工具作为符号语义环境运行。计算位于系统自有公理之内；不描述物理嬗变。",
+  },
+  ar: {
+    title: "محطة المصفوفة",
+    subtitle: "بيئة دلالية–هندسية لـ NOVEYA",
+    tabs: { op: "مُشغِّل الحروف", parser: "محلِّل هارمونيا", sim: "محاكي E=(Σ,Φ,Γ,τ)", dash: "لوحة الرنين" },
+    op: { input: "أدخل كلمة أو عبارة", placeholder: "مثلاً: حق، ماء، نور", vector: "المتجه الناتج", synth: "تركيب", diss: "تفكُّك", neutral: "محايد", operators: "العوامل بحسب الحرف", coherence: "التماسك", layers: "طبقات اللوغوس السبع", rolesLegend: "الأدوار: ص — صلة · م — صورة · ت — تمييز · ع — عمل · ت — تدفُّق · ت — تعديل · د — دفع" },
+    parser: { input: "برنامج بلغة هارمونيا", run: "ترجمة وتشغيل", example: "تحميل مثال: تنقية الماء", ast: "AST (شجرة الصيغة)", out: "سِجِلّ المفسِّر", cloverHeader: "مرشّح شَفَع الأخلاقي", cloverYes: "نعم — اعتُمد التحديث", cloverNo: "لا — يلزم إعادة البناء", tokens: "وحدات لغوية" },
+    sim: { header: "معامِلات حالة النظام", sigma: "Σ — حالة النظام", phi: "Φ — العامل الهندسي (مَصيدة طوبولوجية)", gamma: "Γ — المُشغِّل الدلالي (رمز/تردُّد)", tau: "τ — الزمن / التوجُّه", result: "احتمال الانتقال المتماسك", contributions: "إسهامات المعامِلات", formula: "E = (Σ, Φ, Γ, τ) — نموذج معامِلات للحالة. نموذج تماسك رمزي، لا يصف تحوُّلاً مادّيًا." },
+    dash: { header: "تماسك الأنظمة الفرعية", tone: "النغمة الأساس للمشروع", project: "المشروع الحالي", coherence: "التماسك الداخلي", sectors: "قطاعات Nebi-Ula (12)", legend: "اتساق معامِلات النظام نفسه. دون ادّعاء ضبط كوكبي.", sectorNames: ["أرض","ماء","هواء","نار","أثير","كلمة","عدد","صورة","زمن","صلة","ذاكرة","نور"] },
+    disclaimer: "الأداة بيئة دلالية رمزية. الحسابات داخل بَدَهيّات النظام نفسه؛ لا تصف تحوُّلاً مادّيًا.",
+  },
+  he: {
+    title: "מסוף המטריצה",
+    subtitle: "סביבה סמנטית-הנדסית של NOVEYA",
+    tabs: { op: "אופרטור אותיות", parser: "מפענח הרמוניה", sim: "סימולטור E=(Σ,Φ,Γ,τ)", dash: "לוח תהודה" },
+    op: { input: "הקלד מילה או צירוף", placeholder: "למשל: אמת, מים, אור", vector: "וקטור מתקבל", synth: "סינתזה", diss: "פירוק", neutral: "נייטרלי", operators: "אופרטורים לפי אות", coherence: "לכידות", layers: "שבע שכבות הלוגוס", rolesLegend: "תפקידים: ק — קשר · צ — צורה · ה — הבחנה · פ — פעולה · ז — זרימה · א — אפנון · ד — דחף" },
+    parser: { input: "תוכנית בהרמוניה", run: "הידור והרצה", example: "טעינת דוגמה: טיהור מים", ast: "AST (עץ תחביר)", out: "יומן המפענח", cloverHeader: "מסנן אתי תלתן", cloverYes: "כן — הטלאי אושר", cloverNo: "לא — נדרש בנייה מחדש", tokens: "אסימונים" },
+    sim: { header: "פרמטרי מצב המערכת", sigma: "Σ — מצב המערכת", phi: "Φ — גורם גיאומטרי (מלכודת טופולוגית)", gamma: "Γ — אופרטור סמנטי (סמל/תדר)", tau: "τ — זמן / התמצאות", result: "הסתברות מעבר לכיד", contributions: "תרומות פרמטרים", formula: "E = (Σ, Φ, Γ, τ) — מודל פרמטרי של מצב. מודל לכידות סמלי, לא מודל טרנסמוטציה פיזיקלית." },
+    dash: { header: "לכידות תת-מערכות", tone: "צליל יסוד של הפרויקט", project: "פרויקט נוכחי", coherence: "לכידות פנימית", sectors: "מגזרי Nebi-Ula (12)", legend: "עקביות הפרמטרים העצמיים של המערכת. ללא טענה לכיוון פלנטרי.", sectorNames: ["אדמה","מים","אוויר","אש","אתר","מילה","מספר","דמות","זמן","קשר","זיכרון","אור"] },
+    disclaimer: "הכלי פועל כסביבה סמנטית סמלית. החישובים נמצאים בתוך האקסיומטיקה של המערכת עצמה; אין הם מתארים טרנסמוטציה פיזיקלית.",
+  },
+};
+const RTL_LANGS = new Set(["ar","he"]);
+
+const ROLE_NAMES = {
+  ru: { C:"Связь", O:"Образ", R:"Различение", D:"Действие", F:"Поток", M:"Модуляция", I:"Импульс" },
+  en: { C:"Connection", O:"Image", R:"Distinction", D:"Action", F:"Flow", M:"Modulation", I:"Impulse" },
+  de: { C:"Verbindung", O:"Bild", R:"Unterscheidung", D:"Aktion", F:"Fluss", M:"Modulation", I:"Impuls" },
+  es: { C:"Conexión", O:"Imagen", R:"Distinción", D:"Acción", F:"Flujo", M:"Modulación", I:"Impulso" },
+  zh: { C:"联系", O:"意象", R:"区分", D:"行动", F:"流", M:"调制", I:"脉冲" },
+  ar: { C:"صلة", O:"صورة", R:"تمييز", D:"عمل", F:"تدفق", M:"تعديل", I:"دفع" },
+  he: { C:"קשר", O:"צורה", R:"הבחנה", D:"פעולה", F:"זרימה", M:"אפנון", I:"דחף" },
+};
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Семантический операторный словарь
+// ═══════════════════════════════════════════════════════════════════════════
+const LETTER_OPS = {
+  "А":{role:"I",weight:0.85,layer:1}, "Б":{role:"O",weight:0.55,layer:2},
+  "В":{role:"C",weight:0.70,layer:3}, "Г":{role:"D",weight:0.50,layer:3},
+  "Д":{role:"F",weight:0.65,layer:5}, "Е":{role:"C",weight:0.45,layer:3},
+  "Ж":{role:"F",weight:0.60,layer:5}, "З":{role:"R",weight:-0.30,layer:4},
+  "И":{role:"C",weight:0.55,layer:3}, "Й":{role:"M",weight:0.20,layer:5},
+  "К":{role:"R",weight:-0.40,layer:4},"Л":{role:"C",weight:0.75,layer:3},
+  "М":{role:"O",weight:0.50,layer:2}, "Н":{role:"R",weight:-0.20,layer:4},
+  "О":{role:"O",weight:0.65,layer:2}, "П":{role:"D",weight:0.40,layer:7},
+  "Р":{role:"F",weight:0.80,layer:5}, "С":{role:"C",weight:0.65,layer:3},
+  "Т":{role:"D",weight:0.55,layer:7}, "У":{role:"M",weight:0.30,layer:5},
+  "Ф":{role:"M",weight:0.20,layer:5}, "Х":{role:"R",weight:-0.50,layer:4},
+  "Ц":{role:"I",weight:0.45,layer:1}, "Ч":{role:"R",weight:-0.25,layer:4},
+  "Ш":{role:"F",weight:0.35,layer:5}, "Щ":{role:"F",weight:0.30,layer:5},
+  "Ъ":{role:"M",weight:0.10,layer:6}, "Ы":{role:"M",weight:0.15,layer:6},
+  "Ь":{role:"M",weight:0.10,layer:6}, "Э":{role:"I",weight:0.30,layer:1},
+  "Ю":{role:"C",weight:0.50,layer:3}, "Я":{role:"I",weight:0.70,layer:1},
+  "Ё":{role:"I",weight:0.40,layer:1}, "І":{role:"C",weight:0.55,layer:3},
+  "Ї":{role:"C",weight:0.50,layer:3}, "Є":{role:"C",weight:0.45,layer:3},
+};
+const LATIN_OPS = {
+  A:{role:"I",weight:0.80,layer:1}, B:{role:"O",weight:0.50,layer:2},
+  C:{role:"R",weight:-0.30,layer:4},D:{role:"D",weight:0.50,layer:7},
+  E:{role:"C",weight:0.45,layer:3}, F:{role:"M",weight:0.20,layer:5},
+  G:{role:"D",weight:0.45,layer:3}, H:{role:"M",weight:0.15,layer:6},
+  I:{role:"C",weight:0.55,layer:3}, J:{role:"M",weight:0.20,layer:5},
+  K:{role:"R",weight:-0.40,layer:4},L:{role:"C",weight:0.70,layer:3},
+  M:{role:"O",weight:0.50,layer:2}, N:{role:"R",weight:-0.20,layer:4},
+  O:{role:"O",weight:0.65,layer:2}, P:{role:"D",weight:0.40,layer:7},
+  Q:{role:"R",weight:-0.35,layer:4},R:{role:"F",weight:0.75,layer:5},
+  S:{role:"C",weight:0.60,layer:3}, T:{role:"D",weight:0.55,layer:7},
+  U:{role:"M",weight:0.30,layer:5}, V:{role:"C",weight:0.55,layer:3},
+  W:{role:"F",weight:0.40,layer:5}, X:{role:"R",weight:-0.50,layer:4},
+  Y:{role:"I",weight:0.35,layer:1}, Z:{role:"R",weight:-0.30,layer:4},
+};
+function lookupOp(ch) {
+  const u = ch.toUpperCase();
+  if (LETTER_OPS[u]) return { letter: u, ...LETTER_OPS[u] };
+  if (LATIN_OPS[u]) return { letter: u, ...LATIN_OPS[u] };
+  return null;
+}
+function decompose(text) {
+  const ops = [];
+  for (const ch of text) { const op = lookupOp(ch); if (op) ops.push(op); }
+  if (ops.length === 0) return null;
+  const sum = ops.reduce((s,o) => s + o.weight, 0);
+  const avg = sum / ops.length;
+  const variance = ops.reduce((s,o) => s + Math.pow(o.weight - avg, 2), 0) / ops.length;
+  const coherence = Math.max(0, 1 - variance);
+  const layerHist = Array(7).fill(0);
+  for (const o of ops) layerHist[o.layer - 1] += Math.abs(o.weight);
+  return { ops, sum, avg, coherence, layerHist };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Лексер и парсер «Гармонии»
+// ═══════════════════════════════════════════════════════════════════════════
+const KEYWORDS = new Set([
+  "элемент","связь","цель","функция","управление","если","тогда","иначе",
+  "взаимодействие","передача_данных","самоотображение","руководство",
+  "диалектическое_противоречие","разрешение_противоречия",
+  "моделирование_среды","взаимодействие_с_средой","с","через",
+  "клевер","обогащает","среду","проверка",
+]);
+function tokenize(src) {
+  const tokens = []; let i = 0;
+  while (i < src.length) {
+    const ch = src[i];
+    if (/\s/.test(ch)) { i++; continue; }
+    if (ch === "/" && src[i+1] === "/") { while (i < src.length && src[i] !== "\n") i++; continue; }
+    if (ch === "{" || ch === "}") { tokens.push({type:"brace",value:ch}); i++; continue; }
+    if (ch === '"') {
+      let j = i+1, s = "";
+      while (j < src.length && src[j] !== '"') { s += src[j]; j++; }
+      tokens.push({type:"string",value:s}); i = j+1; continue;
+    }
+    const m = src.slice(i).match(/^[\p{L}_][\p{L}0-9_]*/u);
+    if (m) {
+      const w = m[0];
+      tokens.push({type: KEYWORDS.has(w.toLowerCase()) ? "keyword" : "ident", value: w});
+      i += w.length; continue;
+    }
+    const n = src.slice(i).match(/^[0-9]+(\.[0-9]+)?/);
+    if (n) { tokens.push({type:"number",value:Number(n[0])}); i += n[0].length; continue; }
+    tokens.push({type:"punct",value:ch}); i++;
+  }
+  return tokens;
+}
+function parse(tokens) {
+  const ast = { type: "Program", body: [] };
+  let p = 0;
+  const peek = () => tokens[p];
+  const eat  = () => tokens[p++];
+  while (p < tokens.length) {
+    const t = peek(); if (!t) break;
+    const lower = (t.value || "").toString().toLowerCase();
+    if (t.type === "keyword" && lower === "элемент") { eat(); const name = eat(); ast.body.push({type:"Element", name: name?.value}); }
+    else if (t.type === "keyword" && lower === "связь") { eat(); const a = eat(); const sKw = eat(); const b = eat(); ast.body.push({type:"Link", from: a?.value, to: b?.value, via: sKw?.value}); }
+    else if (t.type === "keyword" && lower === "цель") { eat(); const name = eat(); ast.body.push({type:"Goal", name: name?.value}); }
+    else if (t.type === "keyword" && lower === "функция") {
+      eat(); const name = eat(); let body = [];
+      if (peek()?.value === "{") {
+        eat();
+        while (peek() && peek().value !== "}") body.push(eat());
+        if (peek()?.value === "}") eat();
+      }
+      ast.body.push({type:"Function", name: name?.value, bodyTokens: body});
+    }
+    else if (t.type === "keyword" && lower === "клевер") {
+      eat(); let predicate = null;
+      while (peek() && peek().value !== "{") eat();
+      if (peek()?.value === "{") {
+        eat(); const inner = [];
+        while (peek() && peek().value !== "}") inner.push(eat());
+        if (peek()?.value === "}") eat();
+        predicate = inner.map(t => t.value).join(" ");
+      }
+      ast.body.push({type:"CloverCheck", predicate});
+    } else { eat(); }
+  }
+  return ast;
+}
+function interpret(ast, t) {
+  const log = []; let cloverResult = null;
+  for (const node of ast.body) {
+    if (node.type === "Element") log.push(`+ элемент :: «${node.name}» зарегистрирован`);
+    else if (node.type === "Link") log.push(`↔ связь :: ${node.from} ⇌ ${node.to}`);
+    else if (node.type === "Goal") log.push(`◎ цель :: ${node.name}`);
+    else if (node.type === "Function") log.push(`λ функция :: ${node.name}() определена`);
+    else if (node.type === "CloverCheck") {
+      const p = (node.predicate || "").toLowerCase();
+      const enriches = p.includes("обогащает") || p.includes("enrich");
+      const negated = /\bне\b|\bnot\b/.test(p);
+      cloverResult = enriches && !negated;
+      log.push(`✦ ${t.parser.cloverHeader.toUpperCase()} :: ${cloverResult ? t.parser.cloverYes : t.parser.cloverNo}`);
+    }
+  }
+  return { log, cloverResult };
+}
+
+const EXAMPLE_PROGRAM = `// Пример: контур очистки воды как символическая программа
+элемент Вода
+элемент Фильтр_Геометрический
+элемент Резонатор_Семантический
+
+связь Вода с Фильтр_Геометрический
+связь Фильтр_Геометрический с Резонатор_Семантический
+
+цель Стабилизация_Контура
+
+функция очистка {
+  передача_данных
+}
+
+клевер проверка {
+  обогащает среду : да
+}
+`;
+
+// ═══════════════════════════════════════════════════════════════════════════
+// КОМПОНЕНТЫ UI
+// ═══════════════════════════════════════════════════════════════════════════
+function Card({ label, children, style }) {
+  return (
+    <div className="card" style={style}>
+      <div className="card-label">{label}</div>
+      {children}
+    </div>
+  );
+}
+function CoherenceBar({ value }) {
+  return <div className="coh-bar"><div style={{ width: `${value*100}%` }}></div></div>;
+}
+function LayerHistogram({ histogram, title }) {
+  const max = Math.max(...histogram, 0.001);
+  const labels = ["1·АУМ","2·Образ","3·Слово","4·Различение","5·Поток","6·Структура","7·Ять"];
+  return (
+    <div className="card">
+      <div className="card-label">{title}</div>
+      <div style={{ display: "flex", alignItems: "flex-end", gap: 8, height: 80 }}>
+        {histogram.map((v, i) => (
+          <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+            <div style={{
+              width: "100%", background: "#e8d77a",
+              height: `${(v/max)*70}px`,
+              transition: "height 0.4s",
+              opacity: 0.3 + 0.7 * (v/max),
+            }}></div>
+            <div style={{ fontSize: 9, color: "#666", letterSpacing: 0.3, textAlign: "center" }}>{labels[i]}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function LetterOperatorPanel({ t, lang }) {
+  const [text, setText] = useState("");
+  const result = useMemo(() => decompose(text), [text]);
+  const roleNames = ROLE_NAMES[lang] || ROLE_NAMES.ru;
+  const verdict = !result ? null
+    : result.avg > 0.15 ? { color: "#9bc77a", label: t.op.synth }
+    : result.avg < -0.15 ? { color: "#c77a7a", label: t.op.diss }
+    : { color: "#888", label: t.op.neutral };
+  return (
+    <div>
+      <label className="field-label">{t.op.input}</label>
+      <input type="text" value={text} onChange={e => setText(e.target.value)} placeholder={t.op.placeholder} style={{ marginBottom: 24 }} />
+      {result && (
+        <>
+          <div className="grid grid-fit" style={{ marginBottom: 24 }}>
+            <Card label={t.op.vector}>
+              <div style={{ fontSize: 28, color: verdict.color, fontWeight: 300 }}>
+                {result.avg >= 0 ? "+" : ""}{result.avg.toFixed(3)}
+              </div>
+              <div style={{ fontSize: 12, color: "#888", letterSpacing: 1, textTransform: "uppercase", marginTop: 4 }}>
+                {verdict.label}
+              </div>
+            </Card>
+            <Card label={t.op.coherence}>
+              <div style={{ fontSize: 28, color: "#e8d77a", fontWeight: 300 }}>
+                {(result.coherence*100).toFixed(1)}%
+              </div>
+              <CoherenceBar value={result.coherence} />
+            </Card>
+          </div>
+          <div className="card-label" style={{ marginBottom: 12 }}>{t.op.operators}</div>
+          <div className="op-grid" style={{ marginBottom: 24 }}>
+            {result.ops.map((op, i) => (
+              <div key={i} className="op-letter-card">
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                  <span className="op-letter">{op.letter}</span>
+                  <span style={{ fontSize: 11, color: op.weight > 0 ? "#9bc77a" : "#c77a7a" }}>
+                    {op.weight > 0 ? "+" : ""}{op.weight.toFixed(2)}
+                  </span>
+                </div>
+                <div className="op-meta">{roleNames[op.role]} · L{op.layer}</div>
+              </div>
+            ))}
+          </div>
+          <LayerHistogram histogram={result.layerHist} title={t.op.layers} />
+          <div style={{ fontSize: 10, color: "#555", marginTop: 16, letterSpacing: 0.5 }}>{t.op.rolesLegend}</div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function ParserPanel({ t }) {
+  const [code, setCode] = useState("");
+  const [result, setResult] = useState(null);
+  const run = () => {
+    const tokens = tokenize(code);
+    const ast = parse(tokens);
+    const exec = interpret(ast, t);
+    setResult({ tokens, ast, exec });
+  };
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" }}>
+        <button className="btn btn-secondary" onClick={() => setCode(EXAMPLE_PROGRAM)}>{t.parser.example}</button>
+        <button className="btn btn-primary" onClick={run}>▷ {t.parser.run}</button>
+      </div>
+      <textarea value={code} onChange={e => setCode(e.target.value)} placeholder={t.parser.input} style={{ marginBottom: 16 }}></textarea>
+      {result && (
+        <div className="grid grid-2" style={{ marginTop: 8 }}>
+          <Card label={t.parser.ast}>
+            <pre className="ast">{JSON.stringify(result.ast, null, 2)}</pre>
+          </Card>
+          <Card label={t.parser.out}>
+            <div>
+              {result.exec.log.map((line, i) => (
+                <div key={i} className="log-line" style={{ color: line.includes("✦") ? "#e8d77a" : "#9bc77a" }}>{line}</div>
+              ))}
+            </div>
+            {result.exec.cloverResult !== null && (
+              <div className={result.exec.cloverResult ? "clover-yes" : "clover-no"}>
+                ☘ {result.exec.cloverResult ? t.parser.cloverYes : t.parser.cloverNo}
+              </div>
+            )}
+          </Card>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Slider({ label, value, setValue, color }) {
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+        <span style={{ fontSize: 12, color: "#aaa" }}>{label}</span>
+        <span style={{ fontSize: 12, color, fontFamily: "monospace" }}>{value}</span>
+      </div>
+      <input type="range" min={0} max={100} value={value} onChange={e => setValue(Number(e.target.value))} style={{ accentColor: color }} />
+    </div>
+  );
+}
+function SimulatorPanel({ t }) {
+  const [sigma, setSigma] = useState(50);
+  const [phi, setPhi] = useState(60);
+  const [gamma, setGamma] = useState(70);
+  const [tau, setTau] = useState(40);
+  const probability = useMemo(() => {
+    const w = (sigma*0.30 + phi*0.25 + gamma*0.30 + tau*0.15)/100;
+    return 1/(1 + Math.exp(-(w - 0.5)*6));
+  }, [sigma, phi, gamma, tau]);
+  const contributions = [
+    { label: "Σ", val: sigma, w: 0.30, color: "#e8d77a" },
+    { label: "Φ", val: phi,   w: 0.25, color: "#9bc77a" },
+    { label: "Γ", val: gamma, w: 0.30, color: "#7ac7c7" },
+    { label: "τ", val: tau,   w: 0.15, color: "#c77ac7" },
+  ];
+  return (
+    <div>
+      <div className="card-label" style={{ marginBottom: 16 }}>{t.sim.header}</div>
+      <div className="grid" style={{ marginBottom: 24 }}>
+        <Slider label={t.sim.sigma} value={sigma} setValue={setSigma} color="#e8d77a" />
+        <Slider label={t.sim.phi}   value={phi}   setValue={setPhi}   color="#9bc77a" />
+        <Slider label={t.sim.gamma} value={gamma} setValue={setGamma} color="#7ac7c7" />
+        <Slider label={t.sim.tau}   value={tau}   setValue={setTau}   color="#c77ac7" />
+      </div>
+      <div className="grid grid-2-1" style={{ marginBottom: 24 }}>
+        <Card label={t.sim.result}>
+          <div style={{ fontSize: 56, color: "#e8d77a", fontWeight: 200, letterSpacing: -1, lineHeight: 1 }}>
+            {(probability*100).toFixed(1)}%
+          </div>
+          <CoherenceBar value={probability} />
+        </Card>
+        <Card label={t.sim.contributions}>
+          <svg viewBox="0 0 400 140" style={{ width: "100%", height: "auto" }}>
+            {contributions.map((c, i) => {
+              const h = (c.val/100)*c.w*200;
+              const x = 50 + i*90;
+              return (
+                <g key={i}>
+                  <rect x={x-25} y={120-h} width={50} height={h} fill={c.color} opacity={0.7}></rect>
+                  <text x={x} y={135} textAnchor="middle" fill="#888" fontSize="14" fontFamily="serif">{c.label}</text>
+                  <text x={x} y={120-h-6} textAnchor="middle" fill={c.color} fontSize="10">
+                    {(c.val*c.w).toFixed(1)}
+                  </text>
+                </g>
+              );
+            })}
+          </svg>
+        </Card>
+      </div>
+      <div className="info-strip">ⓘ {t.sim.formula}</div>
+    </div>
+  );
+}
+
+function RadarChart({ values, labels }) {
+  const N = values.length;
+  const cx = 220, cy = 220, R = 170;
+  const points = values.map((v, i) => {
+    const a = (i/N)*2*Math.PI - Math.PI/2;
+    const r = (v/100)*R;
+    return [cx + r*Math.cos(a), cy + r*Math.sin(a)];
+  });
+  const path = "M " + points.map(p => p.join(",")).join(" L ") + " Z";
+  return (
+    <div className="card" style={{ display: "flex", justifyContent: "center" }}>
+      <svg viewBox="0 0 440 440" style={{ maxWidth: 440, width: "100%", height: "auto" }}>
+        {[0.25,0.5,0.75,1].map((s, i) => (
+          <circle key={i} cx={cx} cy={cy} r={R*s} fill="none" stroke="#2a2a2a" strokeWidth="0.5"></circle>
+        ))}
+        {Array.from({length:N},(_,i) => {
+          const a = (i/N)*2*Math.PI - Math.PI/2;
+          return <line key={i} x1={cx} y1={cy} x2={cx + R*Math.cos(a)} y2={cy + R*Math.sin(a)} stroke="#2a2a2a" strokeWidth="0.5"></line>;
+        })}
+        <path d={path} fill="#e8d77a" fillOpacity="0.18" stroke="#e8d77a" strokeWidth="1.4"></path>
+        {points.map((p, i) => <circle key={i} cx={p[0]} cy={p[1]} r="3" fill="#e8d77a"></circle>)}
+        {labels.map((l, i) => {
+          const a = (i/N)*2*Math.PI - Math.PI/2;
+          const tx = cx + (R+22)*Math.cos(a);
+          const ty = cy + (R+22)*Math.sin(a);
+          return <text key={i} x={tx} y={ty} fill="#888" fontSize="11" textAnchor="middle" dominantBaseline="middle">{l}</text>;
+        })}
+      </svg>
+    </div>
+  );
+}
+function DashboardPanel({ t }) {
+  const [tone, setTone] = useState(72);
+  const [project, setProject] = useState(58);
+  const sectorVals = useMemo(
+    () => Array.from({length:12},(_,i) => 30 + Math.round(50*Math.abs(Math.sin((i+1)*1.7 + tone*0.1)))),
+    [tone]
+  );
+  const coh = useMemo(() => Math.max(0, 100 - Math.abs(tone - project)*1.4), [tone, project]);
+  return (
+    <div>
+      <div className="card-label" style={{ marginBottom: 16 }}>{t.dash.header}</div>
+      <div className="grid grid-3" style={{ marginBottom: 24 }}>
+        <Card label={t.dash.tone}>
+          <div style={{ fontSize: 32, color: "#e8d77a", fontWeight: 300 }}>{tone}</div>
+          <input type="range" min={0} max={100} value={tone} onChange={e => setTone(Number(e.target.value))} style={{ accentColor: "#e8d77a", marginTop: 8 }} />
+        </Card>
+        <Card label={t.dash.project}>
+          <div style={{ fontSize: 32, color: "#9bc77a", fontWeight: 300 }}>{project}</div>
+          <input type="range" min={0} max={100} value={project} onChange={e => setProject(Number(e.target.value))} style={{ accentColor: "#9bc77a", marginTop: 8 }} />
+        </Card>
+        <Card label={t.dash.coherence}>
+          <div style={{ fontSize: 32, fontWeight: 300, color: coh > 70 ? "#9bc77a" : coh > 40 ? "#e8d77a" : "#c77a7a" }}>
+            {coh.toFixed(0)}%
+          </div>
+          <CoherenceBar value={coh/100} />
+        </Card>
+      </div>
+      <div className="card-label" style={{ marginBottom: 12 }}>{t.dash.sectors}</div>
+      <RadarChart values={sectorVals} labels={t.dash.sectorNames} />
+      <div className="info-strip" style={{ marginTop: 16 }}>ⓘ {t.dash.legend}</div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// КОРНЕВОЙ КОМПОНЕНТ
+// ═══════════════════════════════════════════════════════════════════════════
+function App() {
+  const [lang, setLang] = useState("ru");
+  const [tab, setTab]   = useState("op");
+  const t = I18N[lang];
+  const isRTL = RTL_LANGS.has(lang);
+
+  React.useEffect(() => {
+    document.documentElement.dir = isRTL ? "rtl" : "ltr";
+    document.documentElement.lang = lang;
+  }, [lang, isRTL]);
+
+  const langs = [
+    { code: "ru", label: "RU" }, { code: "en", label: "EN" }, { code: "de", label: "DE" },
+    { code: "es", label: "ES" }, { code: "zh", label: "中" }, { code: "ar", label: "AR" }, { code: "he", label: "HE" },
+  ];
+  const tabs = [
+    { key: "op", label: t.tabs.op },
+    { key: "parser", label: t.tabs.parser },
+    { key: "sim", label: t.tabs.sim },
+    { key: "dash", label: t.tabs.dash },
+  ];
+
+  return (
+    <>
+      <header className="top">
+        <div>
+          <h1 className="title">⫷ {t.title} ⫸</h1>
+          <div className="subtitle">NOVEYA · {t.subtitle}</div>
+        </div>
+        <div className="lang-switch">
+          {langs.map(l => (
+            <button key={l.code} className={"lang-btn " + (lang === l.code ? "active" : "")} onClick={() => setLang(l.code)}>
+              {l.label}
+            </button>
+          ))}
+        </div>
+      </header>
+
+      <div className="tabs">
+        {tabs.map(it => (
+          <button key={it.key} className={"tab " + (tab === it.key ? "active" : "")} onClick={() => setTab(it.key)}>
+            {it.label}
+          </button>
+        ))}
+      </div>
+
+      <main>
+        {tab === "op"     && <LetterOperatorPanel t={t} lang={lang} />}
+        {tab === "parser" && <ParserPanel t={t} />}
+        {tab === "sim"    && <SimulatorPanel t={t} />}
+        {tab === "dash"   && <DashboardPanel t={t} />}
+      </main>
+
+      <footer className="bottom">ⓘ {t.disclaimer}</footer>
+    </>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</script>
+</body>
+</html>
