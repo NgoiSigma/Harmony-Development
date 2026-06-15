@@ -1,0 +1,26 @@
+KBD Metaharmony
+COPYRIGHT "Metaharmony Keyboard Layout"
+
+COMPANY "Metaharmony System"
+LOCALENAME "ru-RU"
+VERSION 1.0
+
+SHIFTSTATE
+0	// Без модификаторов
+1	// Shift
+2	// Ctrl
+6	// AltGr
+
+LAYOUT
+// VK_Код | Нормальн | Shift | Ctrl | AltGr
+0x0026	369	Ψ	Ω	∞
+0x0031	♈	♉	♊	♋
+0x0032	♌	♍	♎	♏
+0x0033	♐	♑	♒	♓
+0x0034	🜂	🜄	⚛	⛩
+0x0035	Аз	Бу	Ве	Ге
+0x0036	Да	Ел	Жи	Зе
+0x0037	Иже	Как	Люд	Мысл
+0x0038	Наш	Он	Покой	Рцы
+0x0039	Слово	Твердо	Ук	Ферт
+0x0030	Хер	Ци	Червь	Ша
