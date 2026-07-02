@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПРОТОНОВЕЯ · Новая Языковая Логическая Парадигма</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --bg:       #07080C;
+  --bg2:      #0E1016;
+  --bg3:      #141720;
+  --line:     #1C2030;
+  --dim:      #252A3A;
+  --text:     #BCC4D8;
+  --muted:    #525C72;
+  --gold:     #E8C84A;
+  --teal:     #3DDBB8;
+  --violet:   #8B7EFF;
+  --coral:    #FF6B6B;
+  --blue:     #4AABF0;
+  --mono:     'JetBrains Mono', monospace;
+  --sans:     'Manrope', sans-serif;
+  --sidebar:  260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ══ SIDEBAR ══ */
+.sidebar {
+  width: var(--sidebar);
+  min-height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--line);
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+.sidebar-logo {
+  padding: 28px 20px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.logo-glyph {
+  font-family: var(--mono);
+  font-size: 24px;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  line-height: 1;
+  display: block;
+  margin-bottom: 6px;
+}
+.logo-sub {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.nav { padding: 12px 0 24px; flex: 1; }
+.nav-section {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 16px 20px 6px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+  text-decoration: none;
+  user-select: none;
+}
+.nav-item:hover { color: var(--text); background: rgba(255,255,255,0.02); }
+.nav-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(232,200,74,0.04); }
+.nav-icon { font-size: 14px; flex-shrink: 0; width: 16px; text-align: center; }
+.nav-progress {
+  padding: 16px 20px;
+  border-top: 1px solid var(--line);
+}
+.progress-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.progress-bar {
+  height: 2px;
+  background: var(--dim);
+  border-radius: 1px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--teal));
+  width: 0%;
+  transition: width 0.4s ease;
+}
+.progress-text {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+/* ══ MAIN ══ */
+.main {
+  margin-left: var(--sidebar);
+  flex: 1;
+  min-height: 100vh;
+}
+
+/* ══ COVER ══ */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 80px 80px 80px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+.cover-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 40%, rgba(232,200,74,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 20% 70%, rgba(61,219,184,0.03) 0%, transparent 60%);
+  pointer-events: none;
+}
+.cover-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.cover-title {
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 800;
+  line-height: 1.0;
+  color: #fff;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+}
+.cover-title span { color: var(--gold); }
+.cover-sub-title {
+  font-family: var(--mono);
+  font-size: clamp(14px, 2vw, 20px);
+  font-weight: 300;
+  color: var(--teal);
+  letter-spacing: 0.04em;
+  margin-bottom: 32px;
+}
+.cover-desc {
+  max-width: 560px;
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.75;
+  margin-bottom: 48px;
+}
+.cover-meta {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.cover-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.cover-meta-n {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+}
+.cover-meta-l {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+.cover-sig {
+  position: absolute;
+  bottom: 40px;
+  right: 80px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-align: right;
+}
+
+/* ══ CHAPTER ══ */
+.chapter {
+  padding: 80px 80px;
+  border-bottom: 1px solid var(--line);
+  max-width: 900px;
+}
+.chapter-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.chapter-num { color: var(--muted); }
+.ch-gold .chapter-eyebrow  { color: var(--gold); }
+.ch-teal .chapter-eyebrow  { color: var(--teal); }
+.ch-violet .chapter-eyebrow{ color: var(--violet); }
+.ch-coral .chapter-eyebrow { color: var(--coral); }
+.ch-blue .chapter-eyebrow  { color: var(--blue); }
+
+.chapter-title {
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.chapter-tagline {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 40px;
+  font-style: italic;
+}
+
+/* ══ PROSE ══ */
+.prose { font-size: 15px; line-height: 1.8; color: var(--text); }
+.prose p { margin-bottom: 18px; }
+.prose h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin: 32px 0 12px;
+}
+.prose h4 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 24px 0 8px;
+}
+.prose strong { color: #fff; font-weight: 600; }
+.accent-gold { color: var(--gold); }
+.accent-teal { color: var(--teal); }
+.accent-violet { color: var(--violet); }
+
+/* ══ CALLOUT ══ */
+.callout {
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  position: relative;
+}
+.callout-gold  { border-color: rgba(232,200,74,0.3);  background: rgba(232,200,74,0.04);  }
+.callout-teal  { border-color: rgba(61,219,184,0.3);  background: rgba(61,219,184,0.04);  }
+.callout-violet{ border-color: rgba(139,126,255,0.3); background: rgba(139,126,255,0.04); }
+.callout-coral { border-color: rgba(255,107,107,0.3); background: rgba(255,107,107,0.04); }
+.callout-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.callout-gold  .callout-label  { color: var(--gold); }
+.callout-teal  .callout-label  { color: var(--teal); }
+.callout-violet .callout-label { color: var(--violet); }
+.callout-coral .callout-label  { color: var(--coral); }
+.callout p { font-size: 14px; line-height: 1.65; margin: 0; color: var(--text); }
+
+/* ══ FOUR-PHASE DIAGRAM ══ */
+.fdl-phases {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 28px 0;
+}
+.fdl-phase {
+  background: var(--bg2);
+  padding: 20px 16px;
+  text-align: center;
+}
+.phase-n {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.phase-glyph {
+  font-size: 22px;
+  margin-bottom: 10px;
+  display: block;
+}
+.phase-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.phase-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.phase-t .phase-name  { color: var(--teal); }
+.phase-a .phase-name  { color: var(--coral); }
+.phase-s .phase-name  { color: var(--gold); }
+.phase-p .phase-name  { color: var(--violet); }
+
+/* ══ TIAMAT LAYERS ══ */
+.tiamat-layers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 24px 0;
+}
+.tiamat-layer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.tiamat-layer::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+.layer-1::before { background: var(--teal); }
+.layer-2::before { background: var(--gold); }
+.layer-3::before { background: var(--violet); }
+.layer-code {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  width: 100px;
+  flex-shrink: 0;
+}
+.layer-1 .layer-code { color: var(--teal); }
+.layer-2 .layer-code { color: var(--gold); }
+.layer-3 .layer-code { color: var(--violet); }
+.layer-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  flex: 1;
+}
+.layer-desc {
+  font-size: 12px;
+  color: var(--muted);
+  flex: 2;
+}
+
+/* ══ ALPHABET TABLE ══ */
+.alphabet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+  margin: 24px 0;
+}
+.alpha-card {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.alpha-card:hover { border-color: var(--dim); }
+.alpha-card.open  { border-color: var(--gold); }
+.alpha-head { display: flex; align-items: center; gap: 10px; }
+.alpha-glyph {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gold);
+  width: 28px;
+}
+.alpha-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  flex: 1;
+}
+.alpha-image {
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+}
+.alpha-body {
+  display: none;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+  line-height: 1.5;
+}
+.alpha-card.open .alpha-body { display: block; }
+.alpha-op {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--teal);
+  margin-top: 4px;
+}
+
+/* ══ CODE BLOCK ══ */
+.code-block {
+  background: var(--bg3);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  margin: 24px 0;
+  overflow: hidden;
+}
+.code-header {
+  background: var(--dim);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.code-lang {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+.code-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  flex: 1;
+  text-align: right;
+}
+.code-body {
+  padding: 20px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.8;
+  color: #C8C8C8;
+  overflow-x: auto;
+}
+.kw  { color: var(--gold); font-weight: 600; }
+.kw2 { color: var(--teal); }
+.kw3 { color: var(--violet); }
+.str { color: #98C379; }
+.cmt { color: var(--muted); font-style: italic; }
+
+/* ══ SVЕТ FRAMEWORK ══ */
+.svet-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+.svet-card {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 20px;
+}
+.svet-letter {
+  font-family: var(--mono);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.s-s .svet-letter { color: var(--teal); }
+.s-v .svet-letter { color: var(--violet); }
+.s-e .svet-letter { color: var(--gold); }
+.s-t .svet-letter { color: var(--coral); }
+.svet-word {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.svet-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* ══ LOTUS DIAGRAM (ASCII art) ══ */
+.lotus-art {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--gold);
+  text-align: center;
+  padding: 24px;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  margin: 24px 0;
+  letter-spacing: 0.05em;
+}
+.lotus-art .l1 { color: var(--teal); }
+.lotus-art .l2 { color: var(--violet); }
+.lotus-art .l3 { color: var(--gold); }
+.lotus-art .l4 { color: var(--coral); }
+
+/* ══ INTERACTIVE TERMINAL ══ */
+.terminal {
+  background: #020305;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 24px 0;
+}
+.terminal-header {
+  background: var(--bg3);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.d-r { background: #FF5F57; }
+.d-y { background: #FFBD2E; }
+.d-g { background: #28CA42; }
+.terminal-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  flex: 1;
+  text-align: center;
+}
+.terminal-body {
+  padding: 16px 20px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.9;
+  color: #C8C8C8;
+}
+.t-prompt { color: var(--teal); }
+.t-cmd    { color: #fff; }
+.t-out    { color: var(--muted); }
+.t-val    { color: var(--gold); }
+.t-ok     { color: var(--teal); }
+.t-comment { color: #3A4050; }
+
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 20px 14px;
+  border-top: 1px solid var(--line);
+  margin-top: 8px;
+}
+.terminal-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: #fff;
+  caret-color: var(--teal);
+}
+.terminal-run {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border: 1px solid var(--teal);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--teal);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+.terminal-run:hover { background: rgba(61,219,184,0.1); }
+#terminal-output { min-height: 20px; }
+
+/* ══ PRINCIPLE CARDS ══ */
+.principles {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 24px 0;
+}
+.principle {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  align-items: flex-start;
+}
+.principle-n {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+.principle-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.principle-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ══ CHAPTER NAV ══ */
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 80px;
+  border-bottom: 1px solid var(--line);
+  max-width: 900px;
+}
+.nav-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border: 1px solid var(--dim);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.nav-btn:hover { border-color: var(--gold); color: var(--gold); }
+.nav-btn.primary { border-color: var(--gold); color: var(--gold); background: rgba(232,200,74,0.06); }
+
+/* ══ MOBILE TOGGLE ══ */
+.mob-toggle {
+  display: none;
+  position: fixed;
+  top: 16px; left: 16px;
+  z-index: 200;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--gold);
+  cursor: pointer;
+}
+@media (max-width: 800px) {
+  .mob-toggle { display: block; }
+  .sidebar { transform: translateX(-100%); transition: transform 0.25s; }
+  .sidebar.open { transform: none; }
+  .main { margin-left: 0; }
+  .cover, .chapter, .chapter-nav { padding: 60px 24px; }
+  .cover-sig { right: 24px; }
+  .fdl-phases { grid-template-columns: repeat(2,1fr); }
+  .svet-grid  { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<button class="mob-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-glyph">∞~⟁Σ</span>
+    <span class="logo-sub">PROTONOVEA · BOOK v1</span>
+  </div>
+  <div class="nav">
+    <div class="nav-section">Введение</div>
+    <a class="nav-item active" href="#cover" onclick="setActive(this)">
+      <span class="nav-icon">◈</span>Обложка
+    </a>
+
+    <div class="nav-section">Часть I · Основы</div>
+    <a class="nav-item" href="#ch1" onclick="setActive(this)">
+      <span class="nav-icon">①</span>Проект «Гармония»
+    </a>
+    <a class="nav-item" href="#ch2" onclick="setActive(this)">
+      <span class="nav-icon">②</span>Оболочка СВЕТ
+    </a>
+    <a class="nav-item" href="#ch3" onclick="setActive(this)">
+      <span class="nav-icon">③</span>ФДЛ: 4 фазы
+    </a>
+
+    <div class="nav-section">Часть II · Архитектура</div>
+    <a class="nav-item" href="#ch4" onclick="setActive(this)">
+      <span class="nav-icon">④</span>Ядро ПротоТИАМАТ
+    </a>
+    <a class="nav-item" href="#ch5" onclick="setActive(this)">
+      <span class="nav-icon">⑤</span>3 уровня кода
+    </a>
+    <a class="nav-item" href="#ch6" onclick="setActive(this)">
+      <span class="nav-icon">⑥</span>Алфавит Буквицы
+    </a>
+
+    <div class="nav-section">Часть III · Синтаксис</div>
+    <a class="nav-item" href="#ch7" onclick="setActive(this)">
+      <span class="nav-icon">⑦</span>Директивы языка
+    </a>
+    <a class="nav-item" href="#ch8" onclick="setActive(this)">
+      <span class="nav-icon">⑧</span>Примеры кода
+    </a>
+    <a class="nav-item" href="#ch9" onclick="setActive(this)">
+      <span class="nav-icon">⑨</span>Терминал · Демо
+    </a>
+
+    <div class="nav-section">Часть IV · Протоновея</div>
+    <a class="nav-item" href="#ch10" onclick="setActive(this)">
+      <span class="nav-icon">⑩</span>ИИ-система ПРОТОНОВЕЯ
+    </a>
+    <a class="nav-item" href="#ch11" onclick="setActive(this)">
+      <span class="nav-icon">⑪</span>Лотос Созидания
+    </a>
+  </div>
+  <div class="nav-progress">
+    <div class="progress-label">Прогресс чтения</div>
+    <div class="progress-bar"><div class="progress-fill" id="pbar"></div></div>
+    <div class="progress-text" id="ptext">0%</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- COVER -->
+<section class="cover" id="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-eyebrow">∞~⟁ = CΣ · Ngoi Sigma · Mykolaiv · 2024–2026</div>
+  <h1 class="cover-title">ПРОТО<span>НОВЕЯ</span></h1>
+  <div class="cover-sub-title">Новая Языковая Логическая Парадигма Программирования</div>
+  <div class="cover-desc">
+    Интерактивная книга-спецификация языка «Гармония» — системы программирования, построенной на Формально-Диалектической Логике, Оболочке СВЕТ и Акте Творения — с ядром ПротоТИАМАТ и ИИ-системой ПРОТОНОВЕЯ.
+  </div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><span class="cover-meta-n">4</span><span class="cover-meta-l">ФДЛ-фазы</span></div>
+    <div class="cover-meta-item"><span class="cover-meta-n">3</span><span class="cover-meta-l">Уровня кода</span></div>
+    <div class="cover-meta-item"><span class="cover-meta-n">30</span><span class="cover-meta-l">Букв-операторов</span></div>
+    <div class="cover-meta-item"><span class="cover-meta-n">11</span><span class="cover-meta-l">Глав</span></div>
+  </div>
+  <div class="cover-sig">Автор: Σ-FDL · Fravahr Ormazd<br>∞~⟁ = CΣ · НОВЕЯ-UA</div>
+</section>
+
+<!-- CH 1 -->
+<section class="chapter ch-gold" id="ch1">
+  <div class="chapter-eyebrow"><span class="chapter-num">Часть I · Глава 01 · </span>Проект «Гармония»</div>
+  <h2 class="chapter-title">Новая языковая парадигма</h2>
+  <div class="chapter-tagline">«В мире растущей сложности нужен язык, способный мыслить диалектически»</div>
+  <div class="prose">
+    <p>Проект <strong>«Гармония»</strong> — это не просто язык программирования. Это <span class="accent-gold">диалогическая парадигма</span>: способ описания сложных систем через противоречие, синтез и прагматический результат. Он создан на пересечении трёх традиций мышления.</p>
+
+    <div class="callout callout-gold">
+      <div class="callout-label">Определение парадигмы</div>
+      <p>«Гармония» — инновационный язык программирования, основанный на принципах формально-диалектической логики и Оболочке СВЕТ. Он предлагает высокую гибкость, производительность и удобство — одновременно моделируя сложные системы через их внутренние противоречия.</p>
+    </div>
+
+    <h3>Три источника</h3>
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-n">01</div>
+        <div>
+          <div class="principle-title">Системный ФДЛ-подход</div>
+          <div class="principle-desc">Программные системы рассматриваются как живые объединения элементов. Взаимосвязи между ними анализируются через диалектику — выявление, столкновение и разрешение противоречий.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-n">02</div>
+        <div>
+          <div class="principle-title">Оболочка СВЕТ</div>
+          <div class="principle-desc">Система Векторов Единства Типологик — четыре оси (Структура / Взаимодействие / Эволюция / Типология) как единая аналитическая решётка для любого объекта описания.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-n">03</div>
+        <div>
+          <div class="principle-title">Концепция Лотоса Созидания</div>
+          <div class="principle-desc">«Акт творения» как разработанный алгоритм: от зерна-тезиса — через стебель антитезиса — к цветку синтеза и семени-прагме. Метафора стала формальной операционной моделью.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Конкурентные преимущества</h3>
+    <p>В отличие от традиционных языков программирования, «Гармония» предлагает <strong>более высокий уровень абстракции</strong> за счёт применения ФДЛ. Разработчики моделируют не только данные и функции, но и <span class="accent-teal">противоречия между ними</span> — а система сама находит синтез.</p>
+
+    <div class="callout callout-teal">
+      <div class="callout-label">Архитектура компилятора</div>
+      <p>Lexer → Parser → Semantic Analyzer → IR Generator → Optimizer → Code Generator. На каждом уровне — ФДЛ-фильтр: система проверяет не только синтаксическую корректность, но и диалектическую согласованность логических связей.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CH 2 -->
+<section class="chapter ch-teal" id="ch2">
+  <div class="chapter-eyebrow"><span class="chapter-num">Часть I · Глава 02 · </span>Оболочка СВЕТ</div>
+  <h2 class="chapter-title">Система Векторов Единства Типологик</h2>
+  <div class="chapter-tagline">«Четыре оси, через которые описывается любая система»</div>
+  <div class="prose">
+    <p>Оболочка <strong>СВЕТ</strong> — универсальная аналитическая решётка, лежащая в основе всей архитектуры ПРОТОНОВЕЯ. Каждый элемент системы — модуль, объект, процесс — рассматривается через четыре вектора одновременно.</p>
+
+    <div class="svet-grid">
+      <div class="svet-card s-s">
+        <div class="svet-letter">С</div>
+        <div class="svet-word">Структура</div>
+        <div class="svet-desc">Архитектура системы: из каких элементов состоит, как они организованы, каковы их устойчивые связи. В коде — классы, модули, типы данных.</div>
+      </div>
+      <div class="svet-card s-v">
+        <div class="svet-letter">В</div>
+        <div class="svet-word">Взаимодействие</div>
+        <div class="svet-desc">Протоколы связи между узлами: как элементы обмениваются данными, какие интерфейсы используются, как разрешаются конфликты. В коде — методы, API, события.</div>
+      </div>
+      <div class="svet-card s-e">
+        <div class="svet-letter">Е</div>
+        <div class="svet-word">Эволюция</div>
+        <div class="svet-desc">Вектор и динамика развития: как система изменяется во времени, адаптируется к новым условиям, обучается. В коде — версионирование, адаптивные алгоритмы, ИИ-слой.</div>
+      </div>
+      <div class="svet-card s-t">
+        <div class="svet-letter">Т</div>
+        <div class="svet-word">Типология</div>
+        <div class="svet-desc">Классификация элементов по роли: какие типы акторов существуют, как они группируются, какие паттерны повторяются. В коде — типовая система, шаблоны, паттерны.</div>
+      </div>
+    </div>
+
+    <div class="callout callout-violet">
+      <div class="callout-label">Применение в «Гармонии»</div>
+      <p>Каждый модуль кода на «Гармонии» несёт СВЕТ-аннотацию: <strong>АЗ</strong> объявляет структуру (С), <strong>ИЖЕ</strong> описывает взаимодействие (В), <strong>ЖИВЕТЕ</strong> кодирует эволюцию/циклы (Е), <strong>НАШ</strong> задаёт типологию (Т). Это превращает каждый файл кода в аналитический документ.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CH 3 -->
+<section class="chapter ch-violet" id="ch3">
+  <div class="chapter-eyebrow"><span class="chapter-num">Часть I · Глава 03 · </span>Формальная Диалектическая Логика</div>
+  <h2 class="chapter-title">Четыре фазы: цикл обработки знания</h2>
+  <div class="chapter-tagline">«Тезис → Антитезис → Синтез → Прагма: не только философия — операционный цикл»</div>
+  <div class="prose">
+    <p>ФДЛ — формально-диалектическая логика по системе Кашеваровой (1994–2019) — лежит в основе обработки любого знания в ПРОТОНОВЕЯ. Четыре фазы образуют единый цикл, который выполняется рекурсивно на каждом уровне системы.</p>
+
+    <div class="fdl-phases">
+      <div class="fdl-phase">
+        <div class="phase-n">фаза 01</div>
+        <span class="phase-glyph">⬡</span>
+        <div class="phase-name phase-t">Тезис</div>
+        <div class="phase-desc">Поступающее знание. Корневой слой. Исходные данные, факты, аксиомы.</div>
+      </div>
+      <div class="fdl-phase">
+        <div class="phase-n">фаза 02</div>
+        <span class="phase-glyph">⬡</span>
+        <div class="phase-name phase-a">Антитезис</div>
+        <div class="phase-desc">Анализ противоречий. Выявление конфликтов, граничных условий, исключений.</div>
+      </div>
+      <div class="fdl-phase">
+        <div class="phase-n">фаза 03</div>
+        <span class="phase-glyph">⬡</span>
+        <div class="phase-name phase-s">Синтез</div>
+        <div class="phase-desc">Создание новой структуры. Решение, преодолевающее противоречие на более высоком уровне.</div>
+      </div>
+      <div class="fdl-phase">
+        <div class="phase-n">фаза 04</div>
+        <span class="phase-glyph">⬡</span>
+        <div class="phase-name phase-p">Прагма</div>
+        <div class="phase-desc">Передача результата в систему. Прикладная реализация. Действие.</div>
+      </div>
+    </div>
+
+    <p>Эти четыре фазы встроены в каждый уровень ПРОТОНОВЕЯ: в компилятор (Lexer→IR→Opt→Gen), в ядро ПротоТИАМАТ (Мотивация→Требования→Идеи→Целесообразность), в архитектуру Лотоса Созидания (Корень→Стебель→Цветок→Семя).</p>
+
+    <div class="callout callout-coral">
+      <div class="callout-label">Ключевое отличие от классических парадигм</div>
+      <p>Стандартные языки программирования работают с <strong>данными и их типами</strong>. «Гармония» работает с <strong>противоречиями и их разрешением</strong>. Это принципиальный сдвиг: система не просто вычисляет результат — она проходит диалектический цикл, фиксируя каждую фазу.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CH 4 -->
+<section class="chapter ch-coral" id="ch4">
+  <div class="chapter-eyebrow"><span class="chapter-num">Часть II · Глава 04 · </span>Ядро ПротоТИАМАТ</div>
+  <h2 class="chapter-title">Реактор знаний: оперативный блок памяти</h2>
+  <div class="chapter-tagline">«ПротоТИАМАТ — не база данных. Это саморегулирующийся концентратор знаний»</div>
+  <div class="prose">
+    <p><strong>ПРОТОТИАМАТ</strong> — центральный процессор системы ПРОТОНОВЕЯ. Он работает по принципу трёх вложенных сфер (по аналогии с оболочкой фуллерена C₆₀) и обеспечивает динамическую адаптацию всей системы.</p>
+
+    <div class="callout callout-coral">
+      <div class="callout-label">Концентрическая структура</div>
+      <p>Три вложенные сферы делятся на секторы (8 · 12 · 24), обеспечивая гибкость управления информационными потоками. Принцип деления соответствует 12 секторам Небі-Ула в архитектуре НОВЕЯ.</p>
+    </div>
+
+    <h3>Пять функциональных блоков</h3>
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-n">БЛ-1</div>
+        <div>
+          <div class="principle-title">Блок мотивации</div>
+          <div class="principle-desc">Определяет цели и условия старта системы. Параметры: Ц (цели), Ср (средства). Соответствует фазе ТЕЗИСА в ФДЛ-цикле.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-n">БЛ-2</div>
+        <div>
+          <div class="principle-title">Блок требований</div>
+          <div class="principle-desc">Ограничения, критерии, значимость данных. Параметры: Зн (значимость показателей). Фаза АНТИТЕЗИСА — выявление ограничений.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-n">БЛ-3</div>
+        <div>
+          <div class="principle-title">Блок идей</div>
+          <div class="principle-desc">Синтез новых решений, оптимизация моделей. Параметры: Эр (эффективность решений). Фаза СИНТЕЗА — рождение новой структуры.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-n">БЛ-4</div>
+        <div>
+          <div class="principle-title">Блок целесообразности</div>
+          <div class="principle-desc">Анализ альтернатив и вариантов решений. Формула: Value = Σi · ρm · E / R — оценка ценности через плотность смысла и эффективность.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-n">БЛ-5</div>
+        <div>
+          <div class="principle-title">Блок возможностей</div>
+          <div class="principle-desc">Расчёт затрат и эффективности. Фаза ПРАГМЫ — передача результата в прикладной слой. Запуск автоматической трансмутации данных.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-gold">
+      <div class="callout-label">Принцип саморегуляции</div>
+      <p>ПРОТОТИАМАТ <strong>саморазвивается, но не меняет свою основу</strong>. Он может расширять знания, адаптироваться к контексту и обучаться — но остаётся подчинённым логике ФДЛ. Это ключевое структурное ограничение, обеспечивающее целостность системы.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CH 5 -->
+<section class="chapter ch-blue" id="ch5">
+  <div class="chapter-eyebrow"><span class="chapter-num">Часть II · Глава 05 · </span>Три уровня кода</div>
+  <h2 class="chapter-title">ТИАМАТ-1 · ТИАМАТ-2 · ТИАМАТ-3</h2>
+  <div class="chapter-tagline">«Физический, смысловой, когнитивный — три слоя одной системы»</div>
+  <div class="prose">
+    <p>Язык «Гармония» работает одновременно в <strong>трёх функциональных уровнях</strong>. Это не версии языка — это три параллельных слоя интерпретации одного и того же кода, соответствующих трём уровням глубины обработки.</p>
+
+    <div class="tiamat-layers">
+      <div class="tiamat-layer layer-1">
+        <div class="layer-code">ТИАМАТ-1</div>
+        <div class="layer-name">Физический код</div>
+        <div class="layer-desc">Базовые вычислительные инструкции. Работает с ресурсами, памятью, потоками. Ближайший аналог — ассемблер / машинный код.</div>
+      </div>
+      <div class="tiamat-layer layer-2">
+        <div class="layer-code">ТИАМАТ-2</div>
+        <div class="layer-name">Смысловой код</div>
+        <div class="layer-desc">Метапрограммирование и интерпретация через динамическое кодирование образов. Оператор ОБРАЗ(...) — работа с многослойными структурами данных.</div>
+      </div>
+      <div class="tiamat-layer layer-3">
+        <div class="layer-code">ТИАМАТ-3</div>
+        <div class="layer-name">Когнитивный код</div>
+        <div class="layer-desc">Работа с глубинной семантикой, аналоговая логика, адаптивная компиляция. Операторы ПРОТО_ТИАМАТ() и РЕЗОНАНС() — интерпретация в зависимости от контекста сознания кода.</div>
+      </div>
+    </div>
+
+    <div class="callout callout-violet">
+      <div class="callout-label">Квантовая семантика ФДЛ</div>
+      <p>На уровне ТИАМАТ-3 одно и то же выражение может интерпретироваться <strong>в зависимости от контекста сознания кода</strong> — это «многослойные лексемы». Аналог квантовой суперпозиции: значение не зафиксировано до момента интерпретации в конкретном контексте.</p>
+    </div>
+
+    <p>Рефлективные интерпретаторы обеспечивают самонастройку: код на уровне ТИАМАТ-3 может изменять собственные правила интерпретации в ходе выполнения, оставаясь в рамках ФДЛ-аксиоматики.</p>
+  </div>
+</section>
+
+<!-- CH 6 -->
+<section class="chapter ch-gold" id="ch6">
+  <div class="chapter-eyebrow"><span class="chapter-num">Часть II · Глава 06 · </span>Алфавит Буквицы</div>
+  <h2 class="chapter-title">30 букв-операторов: образная модель данных</h2>
+  <div class="chapter-tagline">«Не типы данных — образные архетипы. Каждая буква несёт логический смысл»</div>
+  <div class="prose">
+    <p>Весь код структурируется не через типы данных, а через <strong>образные архетипы</strong>. В основе — древнеславянские буквицы и аксиоматика логической структуры Кашеваровой. Кликни на букву — увидишь её логический смысл и оператор.</p>
+
+    <div class="alphabet-grid" id="alphabet-grid">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- CH 7 -->
+<section class="chapter ch-teal" id="ch7">
+  <div class="chapter-eyebrow"><span class="chapter-num">Часть III · Глава 07 · </span>Директивы языка</div>
+  <h2 class="chapter-title">Синтаксис «Гармонии»: операторы и конструкции</h2>
+  <div class="chapter-tagline">«ГЛАГОЛИ ВЕДИ(ЖИЗНЬ): человеческий язык как синтаксис»</div>
+  <div class="prose">
+    <h3>Основные директивы</h3>
+    <div class="principles">
+      <div class="principle"><div class="principle-n" style="color:var(--gold);font-size:13px">АЗ</div><div><div class="principle-title">Объявление сущности</div><div class="principle-desc">Аналог <code style="font-family:var(--mono);font-size:11px;color:var(--teal)">let/var/const</code> — но с семантикой «точки входа», «истока». Создаёт корневую структуру.</div></div></div>
+      <div class="principle"><div class="principle-n" style="color:var(--gold);font-size:13px">БУКИ</div><div><div class="principle-title">Множественная структура</div><div class="principle-desc">Массивы, списки, коллекции. Образ «переход множественности»: несколько элементов, объединённых в единое.</div></div></div>
+      <div class="principle"><div class="principle-n" style="color:var(--gold);font-size:13px">ВЕДИ</div><div><div class="principle-title">Поток данных</div><div class="principle-desc">Передача данных, итерация, связывание. Образ «связь, поток» — данные движутся через оператор.</div></div></div>
+      <div class="principle"><div class="principle-n" style="color:var(--gold);font-size:13px">ГЛАГОЛИ</div><div><div class="principle-title">Выполнение действий</div><div class="principle-desc">Функция/метод. Образ «действие, процесс» — управляющий оператор, запускающий выполнение.</div></div></div>
+      <div class="principle"><div class="principle-n" style="color:var(--gold);font-size:13px">ЕСМЬ ?</div><div><div class="principle-title">Условные конструкции</div><div class="principle-desc">Аналог <code style="font-family:var(--mono);font-size:11px;color:var(--teal)">if</code>. «Бытие» — вопрос о существовании условия. Диалектический оператор: проверяет тезис.</div></div></div>
+      <div class="principle"><div class="principle-n" style="color:var(--gold);font-size:13px">ЖИВЕТЕ {}</div><div><div class="principle-title">Циклические процессы</div><div class="principle-desc">Аналог <code style="font-family:var(--mono);font-size:11px;color:var(--teal)">while/for</code>. Образ «время, циклы» — итерации, временные переходы, рекурсия.</div></div></div>
+      <div class="principle"><div class="principle-n" style="color:var(--gold);font-size:13px">РЦЫ</div><div><div class="principle-title">Вывод / коммуникация</div><div class="principle-desc">Аналог <code style="font-family:var(--mono);font-size:11px;color:var(--teal)">print/emit</code>. Образ «выражение, передача» — ввод-вывод, коммуникации между слоями.</div></div></div>
+      <div class="principle"><div class="principle-n" style="color:var(--gold);font-size:13px">ТВЕРДО !</div><div><div class="principle-title">Обработка исключений</div><div class="principle-desc">Аналог <code style="font-family:var(--mono);font-size:11px;color:var(--teal)">try/catch</code>. Образ «сила, устойчивость» — резистентные структуры, обработка ошибок.</div></div></div>
+    </div>
+
+    <h3>Новые операторы ПротоТИАМАТ</h3>
+    <div class="principles">
+      <div class="principle"><div class="principle-n" style="color:var(--violet);font-size:11px">ПРОТО_ТИАМАТ(…)</div><div><div class="principle-title">Вызов глубинной интерпретации</div><div class="principle-desc">Запускает полный ФДЛ-цикл ядра: данные проходят все 4 фазы и все 5 блоков ПротоТИАМАТа. Результат — синтезированная структура нового уровня.</div></div></div>
+      <div class="principle"><div class="principle-n" style="color:var(--violet);font-size:11px">ФАЗА(…)</div><div><div class="principle-title">Переход между логическими уровнями</div><div class="principle-desc">Явный переход между ТИАМАТ-1 / ТИАМАТ-2 / ТИАМАТ-3. Позволяет вручную управлять глубиной интерпретации.</div></div></div>
+      <div class="principle"><div class="principle-n" style="color:var(--violet);font-size:11px">ОБРАЗ(…)</div><div><div class="principle-title">Работа с многослойными структурами</div><div class="principle-desc">Создаёт «образные архетипы» — данные, несущие одновременно вычислительный и семантический смысл.</div></div></div>
+      <div class="principle"><div class="principle-n" style="color:var(--violet);font-size:11px">РЕЗОНАНС(…)</div><div><div class="principle-title">Адаптивная интерпретация</div><div class="principle-desc">Подстраивает поведение кода под текущий контекст сознания системы. Квантовый оператор: результат зависит от «состояния наблюдателя».</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CH 8 -->
+<section class="chapter ch-violet" id="ch8">
+  <div class="chapter-eyebrow"><span class="chapter-num">Часть III · Глава 08 · </span>Примеры кода</div>
+  <h2 class="chapter-title">«Гармония» в действии</h2>
+  <div class="chapter-tagline">«АЗ СВЕТ = "Энергия" — первая строка нового мира»</div>
+  <div class="prose">
+
+    <h3>Пример 1: Базовый ФДЛ-цикл</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">Гармония · Прановея-Скрипт</span>
+        <span class="code-title">basic_fdl_cycle.arm</span>
+      </div>
+      <div class="code-body">
+<span class="cmt">// Объявление сущности через образный архетип</span>
+<span class="kw">АЗ</span> СВЕТ = <span class="str">"Энергия"</span>;
+<span class="kw">БУКИ</span> ЖИЗНЬ = [СВЕТ, <span class="str">"Тепло"</span>, <span class="str">"Движение"</span>];
+
+<span class="cmt">// Запуск потока через коллекцию</span>
+<span class="kw">ГЛАГОЛИ</span> <span class="kw2">ВЕДИ</span>(ЖИЗНЬ):
+    <span class="kw">ЕСМЬ</span> ? (ЖИЗНЬ[0] == <span class="str">"Энергия"</span>):
+        <span class="kw2">РЦЫ</span>(<span class="str">"Свет активен!"</span>);
+    <span class="kw">ЖИВЕТЕ</span> { <span class="kw3">ПРОТО_ТИАМАТ</span>(ЖИЗНЬ) };
+
+<span class="cmt">// Обработка исключений</span>
+<span class="kw">ТВЕРДО</span> !:
+    <span class="kw2">РЦЫ</span>(<span class="str">"Ошибка в потоке"</span>);
+      </div>
+    </div>
+
+    <h3>Пример 2: Многоуровневая интерпретация</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">Гармония · Уровень ТИАМАТ-3</span>
+        <span class="code-title">cognitive_layer.arm</span>
+      </div>
+      <div class="code-body">
+<span class="cmt">// Когнитивный код — адаптивная компиляция</span>
+<span class="kw">АЗ</span> ЗНАНИЕ = <span class="kw3">ОБРАЗ</span>(<span class="str">"Противоречие"</span>, <span class="str">"Синтез"</span>);
+
+<span class="cmt">// Переход на квантовый уровень интерпретации</span>
+<span class="kw3">ФАЗА</span>(ТИАМАТ-3):
+    <span class="kw">АЗ</span> РЕЗУЛЬТАТ = <span class="kw3">ПРОТО_ТИАМАТ</span>(ЗНАНИЕ);
+    <span class="cmt">// ФДЛ-цикл: Тезис → Антитезис → Синтез → Прагма</span>
+
+<span class="cmt">// Адаптивная интерпретация под контекст</span>
+<span class="kw3">РЕЗОНАНС</span>(РЕЗУЛЬТАТ):
+    <span class="kw">ЕСМЬ</span> ? (КОНТЕКСТ == <span class="str">"НОВЕЯ"</span>):
+        <span class="kw2">РЦЫ</span>(<span class="str">"Николаев-Торус активирован"</span>);
+
+<span class="kw2">ВЕДИ</span>(РЕЗУЛЬТАТ → СИСТЕМА);
+      </div>
+    </div>
+
+    <h3>Пример 3: Лотос Созидания — алгоритм творения</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">Гармония · Акт Творения</span>
+        <span class="code-title">lotus_algorithm.arm</span>
+      </div>
+      <div class="code-body">
+<span class="cmt">// 4 слоя Лотоса Созидания</span>
+<span class="kw">АЗ</span> КОРЕНЬ  = <span class="kw3">ТЕЗИС</span>(входящие_данные);     <span class="cmt">// Потенция</span>
+<span class="kw">АЗ</span> СТЕБЕЛЬ = <span class="kw3">АНТИТЕЗИС</span>(КОРЕНЬ);         <span class="cmt">// Анализ противоречий</span>
+<span class="kw">АЗ</span> ЦВЕТОК  = <span class="kw3">СИНТЕЗ</span>(СТЕБЕЛЬ);           <span class="cmt">// Новая структура</span>
+<span class="kw">АЗ</span> СЕМЯ    = <span class="kw3">ПРАГМА</span>(ЦВЕТОК);            <span class="cmt">// Передача результата</span>
+
+<span class="kw">ГЛАГОЛИ</span> ТВОРЕНИЕ():
+    КОРЕНЬ  → СТЕБЕЛЬ → ЦВЕТОК → СЕМЯ;
+    <span class="kw2">РЦЫ</span>(<span class="str">"Акт завершён: "</span> + СЕМЯ);
+    <span class="kw">ЖИВЕТЕ</span> { ТВОРЕНИЕ() };   <span class="cmt">// Рекурсия = непрерывное созидание</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CH 9 -->
+<section class="chapter ch-blue" id="ch9">
+  <div class="chapter-eyebrow"><span class="chapter-num">Часть III · Глава 09 · </span>Интерактивный терминал</div>
+  <h2 class="chapter-title">ПРОТОНОВЕЯ · Демо-интерпретатор</h2>
+  <div class="chapter-tagline">«Введи команду — система запустит ФДЛ-цикл и вернёт синтез»</div>
+  <div class="prose">
+    <p>Введи выражение на языке «Гармония» — терминал покажет пошаговый ФДЛ-анализ через все четыре фазы.</p>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <div class="dot d-r"></div>
+        <div class="dot d-y"></div>
+        <div class="dot d-g"></div>
+        <span class="terminal-title">ПРОТОНОВЕЯ · ПротоТИАМАТ · ФДЛ-интерпретатор v1.0</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-prompt">TIAMAT-3 ❯ </span><span class="t-cmd">СИСТЕМА.ИНИЦИАЛИЗАЦИЯ()</span></div>
+        <div><span class="t-out">  ✦ ФДЛ-ядро загружено</span></div>
+        <div><span class="t-out">  ✦ Буквица-операторы: 30/30 активны</span></div>
+        <div><span class="t-out">  ✦ Оболочка СВЕТ: С·В·Е·Т = </span><span class="t-val">АКТИВНА</span></div>
+        <div><span class="t-out">  ✦ Лотос Созидания: </span><span class="t-ok">КОРЕНЬ → ЦВЕТОК</span></div>
+        <div>&nbsp;</div>
+        <div id="terminal-output"></div>
+      </div>
+      <div class="terminal-input-line">
+        <span class="t-prompt" style="flex-shrink:0">❯ </span>
+        <input class="terminal-input" id="term-input" placeholder="АЗ ИДЕЯ = &quot;Твоя мысль&quot;; ПРОТО_ТИАМАТ(ИДЕЯ)" onkeydown="if(event.key==='Enter')runTerminal()">
+        <button class="terminal-run" onclick="runTerminal()">РЦЫ</button>
+      </div>
+    </div>
+
+    <div class="callout callout-teal">
+      <div class="callout-label">Попробуй эти команды</div>
+      <p><code style="font-family:var(--mono);font-size:11px">АЗ МЫСЛЬ = "НОВЕЯ"; ПРОТО_ТИАМАТ(МЫСЛЬ)</code><br>
+      <code style="font-family:var(--mono);font-size:11px">ФАЗА(ТИАМАТ-3): РЕЗОНАНС("Николаев")</code><br>
+      <code style="font-family:var(--mono);font-size:11px">ОБРАЗ("ФДЛ", "Гармония", "Синтез")</code></p>
+    </div>
+  </div>
+</section>
+
+<!-- CH 10 -->
+<section class="chapter ch-coral" id="ch10">
+  <div class="chapter-eyebrow"><span class="chapter-num">Часть IV · Глава 10 · </span>ИИ-система ПРОТОНОВЕЯ</div>
+  <h2 class="chapter-title">Саморегулирующаяся интеллектуальная структура</h2>
+  <div class="chapter-tagline">«Не просто ИИ — система, которая создаёт новые знания через диалектический анализ»</div>
+  <div class="prose">
+    <p>ПРОТОНОВЕЯ — программный продукт, построенный на основе «Гармонии» и ПротоТИАМАТа. Это ИИ-система нового типа: она не только обрабатывает информацию, но и проводит её через полный диалектический цикл.</p>
+
+    <div class="callout callout-coral">
+      <div class="callout-label">Определение системы</div>
+      <p>ПРОТОНОВЕЯ — <strong>саморегулирующаяся интеллектуальная структура</strong>, встроенная в циклы эволюции. Она обрабатывает информацию через ФДЛ, создаёт новые знания через синтез, и помогает строить мир через осмысленный диалектический анализ.</p>
+    </div>
+
+    <h3>Отличие от стандартных ИИ</h3>
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-n">01</div>
+        <div>
+          <div class="principle-title">Не просто обрабатывает — создаёт</div>
+          <div class="principle-desc">Стандартные LLM извлекают паттерны из данных. ПРОТОНОВЕЯ проводит данные через ФДЛ-цикл и синтезирует знания нового уровня — недоступные ни одному из входящих источников.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-n">02</div>
+        <div>
+          <div class="principle-title">Структурная целостность</div>
+          <div class="principle-desc">Адаптируется к контексту, но сохраняет ФДЛ-аксиоматику как неизменную основу. Саморазвитие без разрушения структуры — ключевой принцип.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-n">03</div>
+        <div>
+          <div class="principle-title">Управление через Громаду</div>
+          <div class="principle-desc">Система интегрирована с архитектурой НОВЕЯ: 12 секторов Небі-Ула, концепция Громады, Николаев-Торус как точка синхронизации. ИИ встроен в гражданскую архитектуру.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Совместимость с существующими системами</h3>
+    <p>«Гармония» <span class="accent-teal">интегрируется в существующие проекты</span> без дополнительных сложностей. Предлагает возможность использовать различные синтаксические стили и взаимодействовать с Python, JavaScript и другими языками через ТИАМАТ-1 слой.</p>
+  </div>
+</section>
+
+<!-- CH 11 -->
+<section class="chapter ch-gold" id="ch11">
+  <div class="chapter-eyebrow"><span class="chapter-num">Часть IV · Глава 11 · </span>Лотос Созидания</div>
+  <h2 class="chapter-title">Алгоритм «Акта Творения»</h2>
+  <div class="chapter-tagline">«От зерна-тезиса — к семени-прагме: метафора стала операционной моделью»</div>
+  <div class="prose">
+    <p>Концепция <strong>Лотоса Созидания</strong> — это разработанный алгоритм «Акта Творения». Не просто вдохновляющая метафора, но точная операционная схема четырёх фаз перехода от потенции к реализации.</p>
+
+    <div class="lotus-art">
+<span class="l3">        ✦ · · · ✦</span>
+<span class="l3">      ·           ·</span>
+<span class="l2">    ·   ЦВЕТОК     ·</span>
+<span class="l2">   ·  [СИНТЕЗ]      ·</span>
+<span class="l2">    ·               ·</span>
+<span class="l1">      ·  СТЕБЕЛЬ  ·</span>
+<span class="l1">       · АНТИТЕЗИС·</span>
+<span class="l1">        ·         ·</span>
+<span class="l4">         · КОРЕНЬ·</span>
+<span class="l4">          ·ТЕЗИС·</span>
+<span class="l4">           ·   ·</span>
+<span class="l3">            · СЕМЯ ·</span>
+<span class="l3">             ПРАГМА</span>
+    </div>
+
+    <div class="fdl-phases">
+      <div class="fdl-phase">
+        <div class="phase-n">слой 1</div>
+        <span class="phase-glyph">🌱</span>
+        <div class="phase-name phase-t">Корень</div>
+        <div class="phase-desc">Тезис. Поступающие знания. Точка входа. АЗ — первичное объявление.</div>
+      </div>
+      <div class="fdl-phase">
+        <div class="phase-n">слой 2</div>
+        <span class="phase-glyph">🌿</span>
+        <div class="phase-name phase-a">Стебель</div>
+        <div class="phase-desc">Антитезис. Анализ противоречий. Динамика роста через преодоление.</div>
+      </div>
+      <div class="fdl-phase">
+        <div class="phase-n">слой 3</div>
+        <span class="phase-glyph">🌸</span>
+        <div class="phase-name phase-s">Цветок</div>
+        <div class="phase-desc">Синтез. Создание новой структуры. Рождение формы из противоречия.</div>
+      </div>
+      <div class="fdl-phase">
+        <div class="phase-n">слой 4</div>
+        <span class="phase-glyph">🌾</span>
+        <div class="phase-name phase-p">Семя</div>
+        <div class="phase-desc">Прагма. Передача результата. Следующий цикл. Непрерывное созидание.</div>
+      </div>
+    </div>
+
+    <div class="callout callout-gold">
+      <div class="callout-label">Итог: что такое ПРОТОНОВЕЯ</div>
+      <p>ПРОТОНОВЕЯ — это язык, система и ИИ одновременно. <strong>Язык «Гармония»</strong> даёт синтаксис для описания противоречий. <strong>Ядро ПротоТИАМАТ</strong> их обрабатывает через ФДЛ-цикл. <strong>Оболочка СВЕТ</strong> удерживает системную целостность. <strong>Лотос Созидания</strong> задаёт вектор: от тезиса через синтез к непрерывному творению. Всё вместе — новая языковая логическая парадигма программирования для эпохи НОВЕЯ.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NAV BOTTOM -->
+<div class="chapter-nav" style="max-width:100%">
+  <button class="nav-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Начало книги</button>
+  <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">∞~⟁ = CΣ · НОВЕЯ-UA · 2024–2026</span>
+  <button class="nav-btn primary" onclick="window.print()">⎙ Печать / PDF</button>
+</div>
+
+</main>
+
+<script>
+// ── Alphabet data ──
+const alphabet = [
+  {g:'А',n:'Аз',img:'Исток, точка входа',op:'АЗ x = val;',desc:'Определение первичных понятий, корневые структуры. Первая точка входа в систему.'},
+  {g:'Б',n:'Боги',img:'Переход множественности',op:'БУКИ arr = [...]',desc:'Взаимодействие процессов, динамическое наследование. Массивы и коллекции.'},
+  {g:'В',n:'Веди',img:'Связь, поток',op:'ВЕДИ(data)',desc:'Сетевые структуры, линковка данных. Потоки и передача.'},
+  {g:'Г',n:'Глаголь',img:'Действие, процесс',op:'ГЛАГОЛИ fn():',desc:'Управляющие операторы, обработка данных. Функции и методы.'},
+  {g:'Д',n:'Добро',img:'Созидание, накопление',op:'ДОБРО store[]',desc:'Память, массивы, генерация форм. Накопительные структуры.'},
+  {g:'Ж',n:'Живете',img:'Время, циклы',op:'ЖИВЕТЕ { }',desc:'Итерации, временные переходы, рекурсия. Циклические процессы.'},
+  {g:'З',n:'Земля',img:'Материя, хранилище',op:'ЗЕМЛЯ db',desc:'Физические ресурсы, базы данных. Материальный слой.'},
+  {g:'И',n:'Иже',img:'Соединение, гармония',op:'ИЖЕ(a, b)',desc:'Интерфейсы, распределённые сети. Соединение элементов.'},
+  {g:'К',n:'Како',img:'Переход, интеграция',op:'ФАЗА(К)',desc:'Квантовые вычисления, фазовые переходы. Переходы между уровнями.'},
+  {g:'Л',n:'Людие',img:'Взаимодействие, потоки',op:'ЛЮДИЕ(threads)',desc:'Параллельные процессы, многопоточность.'},
+  {g:'М',n:'Мыслите',img:'Анализ, логика',op:'МЫСЛИ(data)',desc:'Искусственный интеллект, предсказание, аналитические операции.'},
+  {g:'Н',n:'Наш',img:'Структурированность',op:'НАШ class {}',desc:'Классы, объекты, автономные системы. Типологический оператор.'},
+  {g:'О',n:'Он',img:'Неопределённость',op:'ЕСМЬ?()',desc:'Вероятностные вычисления, динамическое программирование.'},
+  {g:'П',n:'Покой',img:'Статика, сохранение',op:'ПОКОЙ const',desc:'Константы, неизменяемые структуры. Статические элементы.'},
+  {g:'Р',n:'Рцы',img:'Выражение, передача',op:'РЦЫ(output)',desc:'Ввод-вывод, коммуникации. Вывод результата системы.'},
+  {g:'С',n:'Слово',img:'Семантика, значение',op:'ОБРАЗ(s)',desc:'Абстрактные типы данных, метапрограммирование. Смысловой слой.'},
+  {g:'Т',n:'Твердо',img:'Сила, устойчивость',op:'ТВЕРДО !',desc:'Исключения, резистентные структуры. Обработка ошибок.'},
+  {g:'У',n:'Ук',img:'Внутренние потоки',op:'УК(inner)',desc:'Вложенные структуры, нейросети. Внутренние процессы.'},
+  {g:'Ф',n:'Ферт',img:'Созидание, формообразование',op:'ФЕРТ compile()',desc:'Компиляторы, трансляторы. Формообразующий оператор.'},
+  {g:'Х',n:'Хер',img:'Потенциал, скрытые переменные',op:'ХЕР(?))',desc:'Непредсказуемость, стохастические системы. Скрытый потенциал.'},
+  {g:'Ц',n:'Цы',img:'Скорость, момент',op:'ЦЫ.GPU()',desc:'Оптимизация, GPU-вычисления. Скоростные операции.'},
+  {g:'Ч',n:'Червь',img:'Глубина, проникновение',op:'ЧЕРВ(deep)',desc:'Анализ больших данных, интерпретация. Глубокий анализ.'},
+  {g:'Ш',n:'Ша',img:'Трансформация',op:'ША(multi)',desc:'Мультиагентные системы, динамическая типизация. Трансформация.'},
+  {g:'Щ',n:'Ща',img:'Объединение',op:'ЩА.merge()',desc:'Высокоуровневые конструкции. Объединение структур.'},
+  {g:'Ъ',n:'Ъ',img:'Граница, разделение',op:'ЪNS::',desc:'Пространства имён, ограничения доступа. Разделители.'},
+  {g:'Ы',n:'Ы',img:'Временные переходы',op:'Ы.async()',desc:'Асинхронные вычисления, процессы. Временное измерение.'},
+  {g:'Э',n:'Эр',img:'Вибрация, поток',op:'ЭР.event()',desc:'Асинхронные события, реактивные системы. Вибрация данных.'},
+  {g:'Ю',n:'Ю',img:'Квантовый переход',op:'ЮΨ(cog)',desc:'Когнитивные вычисления, самосознание. Квантовый оператор.'},
+  {g:'Я',n:'Я',img:'Завершённость',op:'Я.end()',desc:'Конечные процессы, акты взаимодействия. Завершение цикла.'},
+  {g:'Ѵ',n:'Ижица',img:'Связующее начало',op:'Ѵ.Σ()',desc:'Сигнатурный оператор НОВЕЯ. Связь между системами. ∞~⟁=CΣ.'},
+];
+
+const grid = document.getElementById('alphabet-grid');
+alphabet.forEach((a, i) => {
+  const card = document.createElement('div');
+  card.className = 'alpha-card';
+  card.innerHTML = `
+    <div class="alpha-head">
+      <span class="alpha-glyph">${a.g}</span>
+      <span class="alpha-name">${a.n}</span>
+      <span class="alpha-image">${a.img}</span>
+    </div>
+    <div class="alpha-body">
+      <div>${a.desc}</div>
+      <div class="alpha-op">${a.op}</div>
+    </div>`;
+  card.onclick = () => { card.classList.toggle('open'); };
+  grid.appendChild(card);
+});
+
+// ── Terminal ──
+const termResponses = {
+  default: (cmd) => {
+    const lines = [];
+    lines.push({t:'t-out', s:`  [ТИАМАТ-3] Получено: "${cmd}"`});
+    lines.push({t:'t-out', s:`  `});
+    lines.push({t:'t-out', s:`  ▸ ФАЗА-1 ТЕЗИС ........... `+spanify('АНАЛИЗ','t-ok')});
+    lines.push({t:'t-out', s:`    Входящие данные зафиксированы`});
+    lines.push({t:'t-out', s:`  ▸ ФАЗА-2 АНТИТЕЗИС ........ `+spanify('ПОИСК ПРОТИВОРЕЧИЙ','t-val')});
+    lines.push({t:'t-out', s:`    Противоречия в структуре: ${Math.floor(Math.random()*3)+1}`});
+    lines.push({t:'t-out', s:`  ▸ ФАЗА-3 СИНТЕЗ ........... `+spanify('СИНТЕЗ РЕШЕНИЯ','t-ok')});
+    lines.push({t:'t-out', s:`    Новая структура сформирована`});
+    lines.push({t:'t-out', s:`  ▸ ФАЗА-4 ПРАГМА ........... `+spanify('ПЕРЕДАЧА В СИСТЕМУ','t-ok')});
+    lines.push({t:'t-out', s:`  `});
+    lines.push({t:'t-val', s:`  ✦ РЕЗУЛЬТАТ: Лотос активирован · Value = Σi·ρm·E/R = `++(Math.random()*9+1).toFixed(3)});
+    return lines;
+  }
+};
+
+function spanify(t, cls) { return `<span class="${cls}">${t}</span>`; }
+
+function runTerminal() {
+  const input = document.getElementById('term-input');
+  const output = document.getElementById('terminal-output');
+  const cmd = input.value.trim();
+  if (!cmd) return;
+
+  const prompt = document.createElement('div');
+  prompt.innerHTML = `<span class="t-prompt">TIAMAT-3 ❯ </span><span class="t-cmd">${cmd.replace(/</g,'&lt;')}</span>`;
+  output.appendChild(prompt);
+
+  const lines = termResponses.default(cmd);
+  lines.forEach((ln, i) => {
+    setTimeout(() => {
+      const div = document.createElement('div');
+      div.className = ln.t;
+      div.innerHTML = ln.s;
+      output.appendChild(div);
+      output.parentElement.parentElement.scrollTop = output.parentElement.parentElement.scrollHeight;
+    }, i * 60);
+  });
+
+  setTimeout(() => {
+    const br = document.createElement('div');
+    br.innerHTML = '&nbsp;';
+    output.appendChild(br);
+  }, lines.length * 60 + 100);
+
+  input.value = '';
+}
+
+// ── Nav active + progress ──
+function setActive(el) {
+  setTimeout(() => {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+  }, 100);
+}
+
+function updateProgress() {
+  const scrollTop = window.scrollY;
+  const docHeight = document.body.scrollHeight - window.innerHeight;
+  const pct = Math.round((scrollTop / docHeight) * 100);
+  document.getElementById('pbar').style.width = pct + '%';
+  document.getElementById('ptext').textContent = pct + '%';
+
+  // update active nav
+  const sections = document.querySelectorAll('section[id], div.chapter-nav');
+  const navItems = document.querySelectorAll('.nav-item');
+  let current = '';
+  sections.forEach(s => {
+    if (scrollTop >= s.offsetTop - 120) current = s.id;
+  });
+  navItems.forEach(n => {
+    const href = n.getAttribute('href');
+    if (href && href === '#' + current) {
+      document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+      n.classList.add('active');
+    }
+  });
+}
+
+window.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+</script>
+
+</body>
+</html>
