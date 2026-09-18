@@ -1,0 +1,30 @@
+-- Инициализация расширения TimescaleDB
+CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE;
+
+-- 1. Таблица метрик волнового гомеостаза Спасского холма
+CREATE TABLE spas_hill_telemetry (
+    time TIMESTAMPTZ NOT NULL,
+    schumann_freq DOUBLE PRECISION NOT NULL,       -- Текущая частота Шумана (Гц)
+    frequency_shift DOUBLE PRECISION NOT NULL,     -- Сдвиг частоты относительно 7.83 Гц
+    grav_gradient_sum DOUBLE PRECISION NOT NULL,   -- Суммарный градиент планет (d²Φ/dr²)
+    force_field DOUBLE PRECISION NOT NULL,         -- Напряженность упругого поля вакуума
+    ingul_pressure DOUBLE PRECISION NOT NULL       -- Давление в палео-дренах (МПа)
+);
+
+-- Превращаем таблицу в гипертаблицу с шагом секционирования в 1 день
+SELECT create_hypertable('spas_hill_telemetry', 'time', chunk_time_interval => INTERVAL '1 day');
+
+-- 2. Таблица логов исполнительных команд диспетчерского пульта
+CREATE TABLE genesis_dispatch_logs (
+    time TIMESTAMPTZ NOT NULL,
+    status VARCHAR(50) NOT NULL,                   -- CRITICAL_DISPATCH / STABLE_GO_HOMEOSTAS
+    q_discharge DOUBLE PRECISION NOT NULL,         -- Расход сброса палео-русла (м³/с)
+    power_transferred_mw DOUBLE PRECISION NOT NULL,-- Переброшенная мощность гидротарана (МВт)
+    electrotrans_grid_load REAL                    -- Нагрузка тяговых фидеров (%)
+);
+
+SELECT create_hypertable('genesis_dispatch_logs', 'time', chunk_time_interval => INTERVAL '1 day');
+
+-- Создание индексов для мгновенной маркшейдерской выборки
+CREATE INDEX idx_spas_freq ON spas_hill_telemetry (time DESC, schumann_freq);
+CREATE INDEX idx_genesis_status ON genesis_dispatch_logs (status, time DESC);
