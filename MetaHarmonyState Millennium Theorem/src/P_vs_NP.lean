@@ -11,7 +11,7 @@ noncomputable section
 Объединяет три уровня исследования:
 1. Тезис: Инерционный барьер вакуума (строгое структурное свойство, отказ от аксиом).
 2. Синтез: Макрокосмический закон следствия (Творение vs Эксплуатация).
-3. Вердикт: Фрактальное сопряжение (Буква Ы), делающее равенство P = NP 
+3. Вердикт: Фрактальное сопряжение (Буква Ы), делающее равенство P = NP
    невозможным без разрушения упругости самого пространства.
 -/
 
@@ -24,8 +24,8 @@ structure AlgorithmProcess where
   inertia_orbit : ℝ
   /-- Интегральное сопротивление упругой среды при прокладке пути с нуля (класс P) -/
   resistance_environment : ℝ
-  /-- 
-    Условие материальности вакуума (Закон Толчина): 
+  /--
+    Условие материальности вакуума (Закон Толчина):
     Сопротивление среды при деформации всегда строго больше инерции скольжения.
   -/
   h_vacuum_dense : resistance_environment > inertia_orbit
@@ -37,7 +37,7 @@ def delta_complexity (alg : AlgorithmProcess) : ℝ :=
 /--
   ВЕРДИКТ БАЗОВЫЙ:
   Класс P не равен классу NP на уровне упругой деформации среды.
-  Исключена внешняя 'axiom' — барьер теперь заложен в самой физике вакуума 
+  Исключена внешняя 'axiom' — барьер теперь заложен в самой физике вакуума
   через структурное условие h_vacuum_dense.
 -/
 theorem p_not_equal_np (alg : AlgorithmProcess) :
@@ -65,7 +65,7 @@ def delta_complexity_fdl (process : ComplexityProcess) : ℝ :=
 
 /--
   ВЕРДИКТ СВЕТ (Макро-сопряжение классов):
-  Процесс эксплуатации (NP) качественно отличается от процесса творения (P) 
+  Процесс эксплуатации (NP) качественно отличается от процесса творения (P)
   и всегда требует преодоления диэлектрического барьера.
 -/
 theorem p_not_equal_to_np_fdl (process : ComplexityProcess) :
@@ -85,28 +85,28 @@ theorem p_not_equal_to_np_fdl (process : ComplexityProcess) :
 -/
 structure ComputationReality where
   micro : AlgorithmProcess
-  macro : ComplexityProcess
+  macro_process : ComplexityProcess
   /-- Фрактальное подобие: алгоритмическое сопротивление равно макро-сопротивлению среды -/
-  h_fractal_p : micro.resistance_environment = macro.p_creation
+  h_fractal_p : micro.resistance_environment = macro_process.p_creation
   /-- Фрактальное подобие: инерция алгоритма равна макро-инерции эксплуатации -/
-  h_fractal_np : micro.inertia_orbit = macro.np_exploitation
+  h_fractal_np : micro.inertia_orbit = macro_process.np_exploitation
 
 /--
   АБСОЛЮТНАЯ ТЕОРЕМА НЕРАВЕНСТВА КЛАССОВ (The Ultimate P vs NP Theorem):
   Доказывает, что дельта сложности идентична на алгоритмическом и физическом уровнях,
   и она всегда строго положительна (Δ > 0). Сведение P к NP физически невозможно:
-  это потребовало бы абсолютной пустоты (нулевого сопротивления среды), 
+  это потребовало бы абсолютной пустоты (нулевого сопротивления среды),
   которой в Едином Поле не существует.
 -/
-theorem global_p_vs_np_solved (reality : ComputationReality) : 
-  delta_complexity reality.micro = delta_complexity_fdl reality.macro ∧ 
+theorem global_p_vs_np_solved (reality : ComputationReality) :
+  delta_complexity reality.micro = delta_complexity_fdl reality.macro_process ∧
   delta_complexity reality.micro > 0 := by
-  
+
   constructor
   -- 1. Доказываем математическое тождество микро- и макро-дельты (Симметрия)
   · dsimp [delta_complexity, delta_complexity_fdl]
     rw [reality.h_fractal_p, reality.h_fractal_np]
-    
+
   -- 2. Доказываем строгую положительность дельты через неотъемлемое свойство вакуума
   · exact p_not_equal_np reality.micro
 

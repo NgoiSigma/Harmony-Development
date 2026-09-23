@@ -53,7 +53,10 @@ theorem qumran_macroscopic_jump_bounded
   (h_coupled : IsQumranCoupled state)
   (h_zero : IsMagneticGateZeroed state) :
   state.I_T_kora + state.I_T_kara = 0 := by
-  simpa [IsQumranCoupled, IsMagneticGateZeroed, h_zero] using h_coupled
+  rw [IsQumranCoupled] at h_coupled
+  rw [IsMagneticGateZeroed] at h_zero
+  rw [h_zero, zero_smul] at h_coupled
+  exact h_coupled
 
 end Qumran
 
@@ -74,7 +77,7 @@ theorem balance_valid
   (h_resonance :
     state.B_ch = Matrix.trace (state.Pi_ext_crit * state.H_mon) * state.gamma_L) :
   IsCalibrated state := by
-  simpa [IsCalibrated, h_resonance]
+  simp [IsCalibrated, h_resonance]
 
 end Monopole
 

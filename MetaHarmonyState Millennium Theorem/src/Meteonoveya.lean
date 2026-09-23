@@ -46,7 +46,7 @@ structure MeteonoveyaContour where
 def calculate_force_field (c : MeteonoveyaContour) : ℝ :=
   c.params.k_vac * c.grav_gradient_sum
 
-/-- 
+/--
   Предикат Аварийного Диспетчирования (Час Быка):
   Инверсия силового поля уводит контур в опасный инфразвуковой кошмар деградации (force_field < 0),
   требующий немедленного открытия задвижек палео-русла Ингула.
@@ -59,16 +59,16 @@ def IsGenesisSyncRequired (c : MeteonoveyaContour) : Prop :=
 -- ============================================================================
 /--
   ТЕОРЕМА СПАССКОГО МЕРИДИАНА (The Meteonoveya Dispatch Validation):
-  Доказывает в машинном коде Lean 4, что при возникновении критического 
+  Доказывает в машинном коде Lean 4, что при возникновении критического
   инфразвукового сдвига, автоматика ГИС-интерфейса выдает строго определенную
-  команду на запуск гидротарана `power_genesis_mw = 15.91` МВт, возвращая 
+  команду на запуск гидротарана `power_genesis_mw = 15.91` МВт, возвращая
   Николаевский полуостров в состояние коэволюционного Лада.
 -/
 theorem meteonoveya_dispatch_verified
   (c : MeteonoveyaContour)
-  (h_critical_fall : IsGenesisSyncRequired c)
+  (_h_critical_fall : IsGenesisSyncRequired c)
   : c.params.power_genesis_mw = 15.91 := by
-  
+
   -- Извлекаем жестко зафиксированную константу мощности для пульта Николаевэлектротранса
   have h_fixed := c.params.h_power_fixed
   -- Прямое доказательство равенства на основе спецификации типа

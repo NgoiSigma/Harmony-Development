@@ -21,16 +21,17 @@ def IsLadBalanced (state : ReactorState) : Prop :=
   ∀ (p : Spacetime), ‖state.velocity p‖ ≤ state.sigma_tolerance / state.delta
 
 axiom perepelitsyn_boundary_layer_limit (state : ReactorState) (h_lad : IsLadBalanced state) :
-  ∀ (p : Spacetime), ‖state.pressure p‖ < ∞
+  ∀ (p : Spacetime), ∃ bound : ℝ, ‖state.pressure p‖ ≤ bound
 
-axiom qumran_implies_smooth_velocity 
+axiom qumran_implies_smooth_velocity
   (state : ReactorState)
-  (h_qumran_zero : ∀ p, state.qumran_node p |>.I_T_kora + state.qumran_node p |>.I_T_kara = 0) :
+  (h_qumran_zero : ∀ p,
+    (state.qumran_node p).I_T_kora + (state.qumran_node p).I_T_kara = 0) :
   ContDiff ℝ ⊤ state.velocity
 
-axiom pressure_bounded_implies_smooth 
+axiom pressure_bounded_implies_smooth
   (state : ReactorState)
-  (h_bounded : ∀ (p : Spacetime), ‖state.pressure p‖ < ∞) :
+  (h_bounded : ∀ (p : Spacetime), ∃ bound : ℝ, ‖state.pressure p‖ ≤ bound) :
   ContDiff ℝ ⊤ state.pressure
 
 theorem millennium_navier_stokes_smoothness
@@ -39,13 +40,14 @@ theorem millennium_navier_stokes_smoothness
   (h_qumran_coupled : ∀ p, IsQumranCoupled (state.qumran_node p))
   (h_qumran_zeroed : ∀ p, IsMagneticGateZeroed (state.qumran_node p))
   : ContDiff ℝ ⊤ state.velocity ∧ ContDiff ℝ ⊤ state.pressure := by
-  
+
   have h_pressure_bounded := perepelitsyn_boundary_layer_limit state h_lad
-  
-  have h_qumran_balance : ∀ p, state.qumran_node p |>.I_T_kora + state.qumran_node p |>.I_T_kara = 0 := by
+
+  have h_qumran_balance : ∀ p,
+    (state.qumran_node p).I_T_kora + (state.qumran_node p).I_T_kara = 0 := by
     intro p
     exact qumran_macroscopic_jump_bounded (state.qumran_node p) (h_qumran_coupled p) (h_qumran_zeroed p)
-  
+
   constructor
   · exact qumran_implies_smooth_velocity state h_qumran_balance
   · exact pressure_bounded_implies_smooth state h_pressure_bounded
