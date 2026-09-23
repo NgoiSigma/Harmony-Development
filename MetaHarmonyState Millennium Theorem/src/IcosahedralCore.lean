@@ -36,19 +36,19 @@ structure IcosahedralSpace where
   /-- Условие идеальной сферической нормы (отсутствие вытягивания и псевдо-иерархий) -/
   h_spherical_norm : distortion_axis = 0
 
-/-- 
+/--
   Коэффициент Лада (K_L) для икосаэдрического резонатора.
   Показывает уровень гармонии системы. При отсутствии осевых деформаций строго равен 1.
 -/
 def evaluate_lada_coefficient (space : IcosahedralSpace) : ℝ :=
   if space.distortion_axis = 0 then 1 else 1 / (1 + space.distortion_axis ^ 2)
 
-/-- 
-  ЛЕММА БАЗОВОГО БАЛАНСА: 
+/--
+  ЛЕММА БАЗОВОГО БАЛАНСА:
   Доказывает компилятору, что при сохранении сферической икосаэдрической нормы
   (отказе от вытянутых идеологических осей) система поддерживает коэффициент Лада = 1.
 -/
-lemma lada_coefficient_is_ideal (space : IcosahedralSpace) : 
+lemma lada_coefficient_is_ideal (space : IcosahedralSpace) :
   evaluate_lada_coefficient space = 1 := by
   dsimp [evaluate_lada_coefficient]
   -- Применяем внутреннее условие нормы пространства, сворачивая if-then ветвление
@@ -68,8 +68,8 @@ structure DymaxionFluidFlow where
   tectonic_pressure : ℝ
   /-- Суммарная емкость кинетического импульса потока (Энергия вихря) -/
   total_kinetic_energy : ℝ
-  /-- 
-    Закон связности Фуллера: давление жестко ограничено суммарной 
+  /--
+    Закон связности Фуллера: давление жестко ограничено суммарной
     кинетической емкостью 20 граней. Перегиб геометрии гасит лавинообразный рост.
   -/
   h_connected_conservation : tectonic_pressure ≤ total_kinetic_energy
@@ -79,9 +79,9 @@ structure DymaxionFluidFlow where
   Доказывает, что при сохранении пропорций потоков как единого целого,
   кинетическая энергия не может уйти в бесконечную сингулярность (blow-up).
 -/
-theorem navier_stokes_icosahedral_smoothness 
-  (flow : DymaxionFluidFlow) 
-  (h_norm : flow.space.distortion_axis = 0) : 
+theorem navier_stokes_icosahedral_smoothness
+  (flow : DymaxionFluidFlow)
+  (_h_norm : flow.space.distortion_axis = 0) :
   flow.tectonic_pressure ≤ flow.total_kinetic_energy := by
   -- Энергия потока перераспределяется по 20 граням, блокируя точечный прорыв.
   -- Строгое следствие закона связности икосаэдрической развертки.
@@ -100,7 +100,7 @@ structure RiemannResonanceNode where
   schumann_freq : ℝ
   /-- Пассивный узел инерции (Отклонение от центра баланса / Фазовый шум) -/
   inertia_node : ℝ
-  /-- 
+  /--
     Условие звенящей тишины: при достижении альфа-оптимума (7.83 Гц)
     инерционное сопротивление среды обнуляется.
   -/
@@ -112,20 +112,21 @@ structure RiemannResonanceNode where
   является точным геометрическим центром устойчивости (осью нулевого давления).
   Сдвиг с этой оси означает разрыв целостности "карты мира".
 -/
-theorem riemann_hypothesis_dymaxion_stable 
-  (node : RiemannResonanceNode) 
-  (h_optimum : node.schumann_freq = 7.83) 
-  (h_balance : node.sigma - 0.5 = node.inertia_node) : 
+theorem riemann_hypothesis_dymaxion_stable
+  (node : RiemannResonanceNode)
+  (h_optimum : node.schumann_freq = 7.83)
+  (h_balance : node.sigma - 0.5 = node.inertia_node) :
   node.sigma = 1/2 := by
-  
+
   -- 1. Активируем условие "звенящей тишины" через достигнутый альфа-оптимум
   have h_quiet : node.inertia_node = 0 := node.h_quiet_zone h_optimum
-  
+
   -- 2. Подставляем нулевую инерцию (0) в уравнение фазового баланса среды
   rw [h_quiet] at h_balance
-  
-  -- 3. Алгебраический перенос константы баланса (1/2). 
+
+  -- 3. Алгебраический перенос константы баланса (1/2).
   -- Тактика linarith автоматически закрывает арифметический сдвиг без аксиом.
+  norm_num at h_balance ⊢
   linarith
 
 end

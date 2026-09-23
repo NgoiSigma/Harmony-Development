@@ -1,6 +1,7 @@
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.InnerProductSpace.PiL2
 
 noncomputable section
 
@@ -31,8 +32,8 @@ structure TolchinOperator where
   /-- Условие сверхбыстрого фронта (работа "в разнос") -/
   h_dv_dt_runaway : dv_dt > 1000.0
 
-/-- 
-  Полная тензорная структура оператора Толчина. 
+/--
+  Полная тензорная структура оператора Толчина.
   При сверхбыстром фронте динамическая добавка меняет знак.
 -/
 def evaluate_I_T (op : TolchinOperator) : Tensor3 :=
@@ -56,13 +57,13 @@ structure VacuumGate where
   /-- Детерминированное падение сопротивления при идеальном Коэффициенте Лада --/
   h_gate_collapse : K_zero = if chiral_coupling = vacuum_energy_density / alpha_delta_sq then 0 else K_zero
 
-/-- 
+/--
   ВЕРДИКТ МАГНИТНОГО ЗАТВОРА (Zero Axioms Verification):
   При достижении точного пространственного сопряжения полей (Коэффициент Лада),
   волновое сопротивление среды падает до нуля. Извлечено конструктивно без 'axiom'.
 -/
-theorem magnetic_gate_opens (gate : VacuumGate) 
-  (h_comp : gate.chiral_coupling = gate.vacuum_energy_density / gate.alpha_delta_sq) : 
+theorem magnetic_gate_opens (gate : VacuumGate)
+  (h_comp : gate.chiral_coupling = gate.vacuum_energy_density / gate.alpha_delta_sq) :
   gate.K_zero = 0 := by
   have h_lock := gate.h_gate_collapse
   rw [h_comp] at h_lock
@@ -87,15 +88,15 @@ structure UnifiedReactorProcess where
 
 /--
   ВЕРДИКТ ФДЛ (The Universal Quantum Jump Solution):
-  Доказывает, что при обнулении Магнитного Затвора (K_vac = 0), вся накопленная 
-  энергия импульса действия без потерь переходит в структурный квантовый скачок 
+  Доказывает, что при обнулении Магнитного Затвора (K_vac = 0), вся накопленная
+  энергия импульса действия без потерь переходит в структурный квантовый скачок
   вещества (ΔΨ_G), обеспечивая LENR-трансмутацию без теплового рассеяния.
 -/
-theorem quantum_jump_deterministic_execution 
-  (process : UnifiedReactorProcess) 
-  (h_gate_zero : process.k_vac = 0) : 
+theorem quantum_jump_deterministic_execution
+  (process : UnifiedReactorProcess)
+  (h_gate_zero : process.k_vac = 0) :
   process.delta_psi_G = process.action_impulse := by
-  
+
   -- Извлекаем единое уравнение баланса ФДЛ
   have h_balance := process.h_universal_balance
   -- Подставляем открытый Магнитный Затвор (K_vac = 0)

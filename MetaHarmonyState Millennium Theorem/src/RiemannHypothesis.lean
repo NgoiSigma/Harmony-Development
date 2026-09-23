@@ -13,7 +13,7 @@ structure ComplexWave where
   sigma : ℝ
   t : ℝ
 
-/-- 
+/--
   Плотность давления в резонансном контуре числа.
   Представляет разность модулей встречных потоков излучения ядра и фазовой инерции.
   В точке идеального гомеостаза (0.5) давление среды полностью обнуляется.
@@ -35,10 +35,11 @@ theorem riemann_hypothesis_resonance_stable
   (s : ComplexWave)
   (h_node : IsStandingWaveNode s)
   : s.sigma = 1/2 := by
-  
+
   -- Раскрываем физическое определение давления в резонаторе
   dsimp [IsStandingWaveNode, ResonatorPressure] at h_node
   -- Алгебраический перенос константы баланса (linarith автоматически закрывает сдвиг)
+  norm_num at h_node ⊢
   linarith
 
 end

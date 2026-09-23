@@ -1,19 +1,8 @@
-import Lake
-open Lake System
+import Mathlib.Data.Matrix.Basic
 
-package «harmony_development» where
-  leanOptions := #[
-    ⟨`pp.unicode.fun, true⟩
-  ]
+/-!
+# Monopole coupling
 
-require mathlib from git
-  "https://github.com"
-
-@[default_target]
-lean_lib «HarmonyDevelopment» where
-  srcDir := "src"
-  modules := #[
-    `QumranAxis,
-    `MonopoleCoupling, -- Добавлен новый верифицированный модуль
-    `NavierStokesFdl
-  ]
+This source module is intentionally kept separate from the project Lake
+configuration, which belongs in the parent `lakefile.lean`.
+-/
