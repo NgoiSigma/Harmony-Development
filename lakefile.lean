@@ -3,7 +3,7 @@ open Lake System
 
 package «harmony_development» where
   leanOptions := #[
-    `pp.unicode.fun, true
+    ⟨`pp.unicode.fun, true⟩
   ]
 
 require mathlib from git
