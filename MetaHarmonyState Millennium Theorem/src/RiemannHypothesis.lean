@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 
@@ -44,7 +43,7 @@ theorem riemann_hypothesis_resonance_stable
   linarith
 
 end
-=======
+/-
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 
@@ -90,4 +89,4 @@ theorem riemann_hypothesis_resonance_stable
   linarith
 
 end
->>>>>>> c5e96e566937d44055d4597b5a24f3e44ce223af
+-/

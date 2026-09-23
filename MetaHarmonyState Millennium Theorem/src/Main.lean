@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Complex.Basic
@@ -222,7 +221,7 @@ theorem bsd_rank_equals_resonance_depth (reactor : EllipticAccumulator) :
   exact reactor.rcy_operator_lock
 
 end
-=======
+/-
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Complex.Basic
@@ -446,4 +445,4 @@ theorem bsd_rank_equals_resonance_depth (reactor : EllipticAccumulator) :
   exact reactor.rcy_operator_lock
 
 end
->>>>>>> c5e96e566937d44055d4597b5a24f3e44ce223af
+-/

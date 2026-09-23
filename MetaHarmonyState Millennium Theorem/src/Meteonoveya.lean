@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
@@ -76,7 +75,7 @@ theorem meteonoveya_dispatch_verified
   exact h_fixed
 
 end
-=======
+/-
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
@@ -154,4 +153,4 @@ theorem meteonoveya_dispatch_verified
   exact h_fixed
 
 end
->>>>>>> c5e96e566937d44055d4597b5a24f3e44ce223af
+-/

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
@@ -131,7 +130,7 @@ theorem riemann_hypothesis_dymaxion_stable
   linarith
 
 end
-=======
+/-
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
@@ -264,4 +263,4 @@ theorem riemann_hypothesis_dymaxion_stable
   linarith
 
 end
->>>>>>> c5e96e566937d44055d4597b5a24f3e44ce223af
+-/

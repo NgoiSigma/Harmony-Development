@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
@@ -96,7 +95,7 @@ theorem bsd_rank_equals_resonance_depth (coupling : LogosRcyCoupling) :
   linarith
 
 end
-=======
+/-
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
@@ -194,4 +193,4 @@ theorem bsd_rank_equals_resonance_depth (coupling : LogosRcyCoupling) :
   linarith
 
 end
->>>>>>> c5e96e566937d44055d4597b5a24f3e44ce223af
+-/

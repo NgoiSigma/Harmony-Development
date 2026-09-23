@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
@@ -112,7 +111,7 @@ theorem global_p_vs_np_solved (reality : ComputationReality) :
   · exact p_not_equal_np reality.micro
 
 end
-=======
+/-
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
@@ -226,4 +225,4 @@ theorem global_p_vs_np_solved (reality : ComputationReality) :
   · exact p_not_equal_np reality.micro
 
 end
->>>>>>> c5e96e566937d44055d4597b5a24f3e44ce223af
+-/

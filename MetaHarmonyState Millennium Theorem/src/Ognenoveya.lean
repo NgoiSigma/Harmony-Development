@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
@@ -76,7 +75,7 @@ theorem ognenoveya_shutter_solved
   exact (lt_div_iff h_pos).mpr h_voltage_surge
 
 end
-=======
+/-
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
@@ -154,4 +153,4 @@ theorem ognenoveya_shutter_solved
   exact (lt_div_iff h_pos).mpr h_voltage_surge
 
 end
->>>>>>> c5e96e566937d44055d4597b5a24f3e44ce223af
+-/
