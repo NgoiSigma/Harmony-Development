@@ -13,3 +13,4 @@ require mathlib from git
 lean_lib «HarmonyDevelopment» where
   -- Указываем текущую директорию как корень модулей, так как файлы лежат там
   srcDir := "."
+  roots := #[`Main, `ThreeBodyPhaseLock]

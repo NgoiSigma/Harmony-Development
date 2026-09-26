@@ -150,4 +150,8 @@ theorem hodge_conjecture_constructive_proof {n : Type} [Fintype n] [DecidableEq 
   ∃ (algebraic_cycle : Matrix n n ℝ), evaluate_hodge_superposition m = algebraic_cycle := by
   use (evaluate_hodge_superposition m)
 
+<<<<<<< HEAD
 end FdlCore
+=======
+end FdlCore
+>>>>>>> a039fa35ca3499b0ea614161730f41b1419ee08c

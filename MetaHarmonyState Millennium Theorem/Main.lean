@@ -1,3 +1,4 @@
+import ThreeBodyPhaseLock
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Complex.Basic
