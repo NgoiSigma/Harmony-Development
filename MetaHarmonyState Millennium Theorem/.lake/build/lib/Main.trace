@@ -2,4 +2,4 @@
  [{"message":
    ".> LEAN_PATH=.\\.\\.lake/packages\\batteries\\.lake\\build\\lib;.\\.\\.lake/packages\\Qq\\.lake\\build\\lib;.\\.\\.lake/packages\\aesop\\.lake\\build\\lib;.\\.\\.lake/packages\\proofwidgets\\.lake\\build\\lib;.\\.\\.lake/packages\\Cli\\.lake\\build\\lib;.\\.\\.lake/packages\\importGraph\\.lake\\build\\lib;.\\.\\.lake/packages\\mathlib\\.lake\\build\\lib;.\\.\\.lake\\build\\lib PATH c:\\Users\\user\\.elan\\toolchains\\leanprover--lean4---v4.11.0\\bin\\lean.exe -Dpp.unicode.fun=true .\\.\\.\\.\\Main.lean -R .\\.\\.\\. -o .\\.\\.lake\\build\\lib\\Main.olean -i .\\.\\.lake\\build\\lib\\Main.ilean -c .\\.\\.lake\\build\\ir\\Main.c --json",
    "level": "trace"}],
- "depHash": "128518755696620633"}
+ "depHash": "1790010597648020496"}
