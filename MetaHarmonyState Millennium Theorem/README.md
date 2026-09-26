@@ -37,7 +37,7 @@ During avalanche-like input momentum surge, the elastic vacuum acts as a monolit
 
 The Lake library compiles the root-level `Main.lean` and `ThreeBodyPhaseLock.lean` modules. Additional standalone modules are in `src/`.
 
-* **`ThreeBodyPhaseLock.lean`:** A conditional algebraic FDL model. Its theorem derives the declared balance equation from explicit resonance and balance hypotheses; it does not solve or establish stability for Newtonian three-body dynamics.
+* **`ThreeBodyPhaseLock.lean`:** A conditional algebraic FDL model. Its theorem uses the declared temporal simultaneity invariant to derive a balance equation from explicit resonance and force/space-time hypotheses; it does not solve or establish stability for Newtonian three-body dynamics.
 
 * **`QumranAxis.lean`:** Manages the clock processor of the dual-contour inertioid. Proves the `qumran_macroscopic_jump_bounded` theorem, confirming that counter-impulses of the "Kora" ($+\omega_1$) and "Kara" ($-\omega_2$) contours yield a null-tensor upon Magnetic Gate collapse, stabilizing gravity.
 * **`MonopoleCoupling.lean` (`Main.lean`):** The core of algebraic rigor. Contains the `loshak_kashevarova_balance_valid` lemma, proven via elementary `rfl` (reflexivity) tactics. Integrating the Loshak-Kashevarova coefficient $\gamma_L$ and the monopole magnetic current matrix $\hat{H}_{mon}$ proves to the smart contract that our model seamlessly bridges macroscopic hydrodynamics and sub-nuclear LENR synthesis without violating conservation laws.

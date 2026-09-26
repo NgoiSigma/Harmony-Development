@@ -1,4 +1,5 @@
 import Mathlib.Data.Real.Basic
+import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
 
 /-!
@@ -56,16 +57,19 @@ theorem three_body_phase_lock
   (F_ext S T_horiz Phi s : ℝ)
   (h_resonance : is_spin_resonance Generator Trigger Vac)
   (h_force : F_ext = Phi)
-  (h_space : S * T_horiz = s * tau.tau_act) :
+  (h_space : S * T_horiz = s * (tau.tau_post - tau.tau_pred)) :
   K_vac_closed Generator Trigger Vac ∧
     tolchin_balanced F_ext S T_horiz Phi s tau.tau_act := by
   constructor
   · exact h_resonance
   · unfold tolchin_balanced
+    have h_time : tau.tau_post - tau.tau_pred = tau.tau_act := by
+      linarith [tau.simultaneous]
     calc
       F_ext * S * T_horiz = Phi * S * T_horiz := by rw [h_force]
       _ = Phi * (S * T_horiz) := by ring
-      _ = Phi * (s * tau.tau_act) := by rw [h_space]
+      _ = Phi * (s * (tau.tau_post - tau.tau_pred)) := by rw [h_space]
+      _ = Phi * (s * tau.tau_act) := by rw [h_time]
       _ = Phi * s * tau.tau_act := by ring
 
 end MetaHarmony
