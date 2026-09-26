@@ -1,5 +1,5 @@
 import Lake
-open Lake DSL
+open Lake System
 
 package «harmony_development» where
   leanOptions := #[
@@ -11,5 +11,8 @@ require mathlib from git
 
 @[default_target]
 lean_lib «HarmonyDevelopment» where
-  -- Указываем текущую директорию как корень модулей, так как файлы лежат там
   srcDir := "."
+  modules := #[
+    `Main,
+    `ThreeBodyPhaseLock
+  ]
