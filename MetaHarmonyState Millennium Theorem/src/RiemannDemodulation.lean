@@ -1,5 +1,6 @@
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Data.Matrix.Basic
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
 
@@ -26,7 +27,7 @@ structure WavePhase where
   /-- Поток инерции электронной оболочки (фазовая динамика среды) -/
   inertia_flow : ℝ
 
-/-- 
+/--
   Условие Идеального Резонанса (Коэффициент Лада):
   Амплитудный потенциал ядра и инерционный отклик вакуума равны на логарифмической оси.
   В парадигме Σ-FDL это жестко фиксирует вещественную координату на 1/2.
@@ -34,7 +35,7 @@ structure WavePhase where
 def IsResonanceAligned (p : WavePhase) : Prop :=
   p.core_radiation = p.inertia_flow
 
-/-- 
+/--
   Функция Демодулированного Сигнала Z(t).
   Описывает амплитуду вещественной волны после компенсации глобальной комплексной фазы.
 -/
@@ -62,7 +63,7 @@ theorem riemann_wave_node_solved
 -- УРОВЕНЬ 2. ДЕМОДУЛЯЦИЯ СИГНАЛА И ОПРЕДЕЛЕНИЕ СУБЪЕКТА СРЕДЫ (Синтез)
 -- ============================================================================
 
-/-- 
+/--
   Многослойный резонатор Оболочки СВЕТ.
   Убирает комплексный шум и скрывает фазовые флуктуации, обнажая вещественные нули.
 -/
@@ -81,11 +82,11 @@ def evaluate_demodulated_node (demod : SvetDemodulator) : ℝ :=
 /--
   ВЕРДИКТ СВЕТ (The Ultimate Riemann Demodulation Theorem):
   Вектор вещественного баланса на линии 0.5 полностью очищен от паразитных мод
-  неконтролируемого экспоненциального роста, так как фильтр СВЕТ принудительно 
+  неконтролируемого экспоненциального роста, так как фильтр СВЕТ принудительно
   обращает комплексный шум в ноль, делая узлы реальности абсолютно проверяемыми.
 -/
-theorem riemann_demodulation_valid 
-  (demod : SvetDemodulator) 
+theorem riemann_demodulation_valid
+  (demod : SvetDemodulator)
   (h_lock : demod.complex_phase_noise = 0) :
   evaluate_demodulated_node demod = 0 := by
   dsimp [evaluate_demodulated_node]
@@ -103,8 +104,8 @@ structure SefirotAxisKeter where
   sigma : ℝ
   /-- Инерционное сопротивление среды (фазовый сдвиг) -/
   inertia_pressure : ℝ
-  /-- 
-    Баланс давления: разница между утверждающим импульсом (σ) 
+  /--
+    Баланс давления: разница между утверждающим импульсом (σ)
     и инерционным шлейфом среды (1 - σ).
   -/
   h_pressure : inertia_pressure = sigma - (1 - sigma)
@@ -116,16 +117,35 @@ class IsResonanceNode (node : SefirotAxisKeter) : Prop where
 /--
   ФИНАЛЬНОЕ ДОКАЗАТЕЛЬСТВО (Ось нулевого давления):
   Любой устойчивый нетривиальный нуль (резонансный узел) обязан лежать
-  строго на критической прямой Re(s) = 1/2. 
+  строго на критической прямой Re(s) = 1/2.
   Уход с этой оси означает нарушение самосопряженности и распад системы.
 -/
-theorem riemann_hypothesis_fdl_solved 
-  (node : SefirotAxisKeter) 
-  [res : IsResonanceNode node] : 
+theorem riemann_hypothesis_fdl_solved
+  (node : SefirotAxisKeter)
+  [res : IsResonanceNode node] :
   node.sigma = 1/2 := by
   have h_eq := node.h_pressure
   have h_bal := res.h_balance_state
   rw [h_bal] at h_eq
   linarith
+
+
+-- ============================================================================
+-- ВЕЩЕСТВЕННЫЙ ПОВОРОТ ФАЗЫ ВОКРУГ ОСИ Z
+-- ============================================================================
+
+/-- Вектор волны в трехмерном вещественном пространстве координат. -/
+abbrev WaveQuantum := Fin 3 → ℝ
+
+/-- Вещественная матрица поворота на угол `omega * t` вокруг оси Z. -/
+def zAxisPhaseShift (omega t : ℝ) : Matrix (Fin 3) (Fin 3) ℝ :=
+  !![ Real.cos (omega * t), -Real.sin (omega * t), 0 ;
+      Real.sin (omega * t),  Real.cos (omega * t), 0 ;
+      0,                     0,                    1 ]
+
+/-- Поворот вокруг оси Z сохраняет третью координату любого вектора. -/
+theorem z_axis_flow_preservation (omega t : ℝ) (q : WaveQuantum) :
+    (zAxisPhaseShift omega t).mulVec q 2 = q 2 := by
+  simp [zAxisPhaseShift, Matrix.mulVec, Matrix.dotProduct, Fin.sum_univ_succ]
 
 end

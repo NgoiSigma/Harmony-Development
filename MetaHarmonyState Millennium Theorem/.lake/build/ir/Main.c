@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: Main
-// Imports: Init ThreeBodyPhaseLock Mathlib.Data.Matrix.Basic Mathlib.Data.Real.Basic Mathlib.Data.Complex.Basic Mathlib.Analysis.InnerProductSpace.PiL2 Mathlib.Topology.Instances.Real Mathlib.Analysis.Calculus.ContDiff.Basic Mathlib.LinearAlgebra.Trace Mathlib.Tactic.Linarith
+// Imports: Init ThreeBodyPhaseLock PrandtlBoundaryLayer Mathlib.Data.Matrix.Basic Mathlib.Data.Real.Basic Mathlib.Data.Complex.Basic Mathlib.Analysis.InnerProductSpace.PiL2 Mathlib.Topology.Instances.Real Mathlib.Analysis.Calculus.ContDiff.Basic Mathlib.LinearAlgebra.Trace Mathlib.Tactic.Linarith
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -584,6 +584,7 @@ return x_3;
 }
 lean_object* initialize_Init(uint8_t builtin, lean_object*);
 lean_object* initialize_ThreeBodyPhaseLock(uint8_t builtin, lean_object*);
+lean_object* initialize_PrandtlBoundaryLayer(uint8_t builtin, lean_object*);
 lean_object* initialize_Mathlib_Data_Matrix_Basic(uint8_t builtin, lean_object*);
 lean_object* initialize_Mathlib_Data_Real_Basic(uint8_t builtin, lean_object*);
 lean_object* initialize_Mathlib_Data_Complex_Basic(uint8_t builtin, lean_object*);
@@ -601,6 +602,9 @@ res = initialize_Init(builtin, lean_io_mk_world());
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_ThreeBodyPhaseLock(builtin, lean_io_mk_world());
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_PrandtlBoundaryLayer(builtin, lean_io_mk_world());
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_Mathlib_Data_Matrix_Basic(builtin, lean_io_mk_world());

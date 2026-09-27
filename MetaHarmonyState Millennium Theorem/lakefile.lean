@@ -12,4 +12,4 @@ require mathlib from git
 @[default_target]
 lean_lib «HarmonyDevelopment» where
   srcDir := "."
-  roots := #[`Main, `ThreeBodyPhaseLock]
+  roots := #[`Main, `ThreeBodyPhaseLock, `PrandtlBoundaryLayer]
