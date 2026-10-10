@@ -18,5 +18,8 @@ lean_lib «HarmonyDevelopment» where
     `src.UniversalSolver,
     `src.YangMillsMassGap,
     `src.RiemannHypothesisResonance,
-    `src.KrivitskyEarthCore
+    `src.KrivitskyEarthCore,
+    `src.Main,
+    `src.OsmoticVacuum,
+    `src.PrandtlBoundaryLayer
   ]

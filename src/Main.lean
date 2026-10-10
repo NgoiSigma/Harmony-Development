@@ -5,6 +5,10 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Topology.Instances.Real
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.LinearAlgebra.Trace
+import src.OsmoticVacuum
+import src.PrandtlBoundaryLayer
+
+open QuantumComplexity
 
 noncomputable section
 
