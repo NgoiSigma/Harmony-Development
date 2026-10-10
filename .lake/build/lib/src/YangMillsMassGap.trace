@@ -1,0 +1,5 @@
+{"log":
+ [{"message":
+   ".> LEAN_PATH=.\\.\\.lake/packages\\batteries\\.lake\\build\\lib;.\\.\\.lake/packages\\Qq\\.lake\\build\\lib;.\\.\\.lake/packages\\aesop\\.lake\\build\\lib;.\\.\\.lake/packages\\proofwidgets\\.lake\\build\\lib;.\\.\\.lake/packages\\Cli\\.lake\\build\\lib;.\\.\\.lake/packages\\importGraph\\.lake\\build\\lib;.\\.\\.lake/packages\\mathlib\\.lake\\build\\lib;.\\.\\.lake\\build\\lib PATH c:\\Users\\user\\.elan\\toolchains\\leanprover--lean4---v4.11.0\\bin\\lean.exe -Dpp.unicode.fun=true .\\.\\.\\.\\src\\YangMillsMassGap.lean -R .\\.\\.\\. -o .\\.\\.lake\\build\\lib\\src\\YangMillsMassGap.olean -i .\\.\\.lake\\build\\lib\\src\\YangMillsMassGap.ilean -c .\\.\\.lake\\build\\ir\\src\\YangMillsMassGap.c --json",
+   "level": "trace"}],
+ "depHash": "11245355357828089251"}
